@@ -1,37 +1,30 @@
 ---
-title: 'オーダーブック購読'
-description: 'リアルタイムオーダーブックデータの購読'
+title: '板情報購読'
+description: 'リアルタイム板情報（Order Book）の購読'
 ---
 
+製品の最新板情報（Order Book）を購読します。各購読リクエストは前回を上書きします。
 
-<Card title="オンラインテスト" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Hoppscotch で WebSocket API をテスト
-</Card>
+市場別の最大板深度：
 
-## 説明
+| 市場 | 最大深度 |
+|------|----------|
+| 外国為替、貴金属、原油 | 1 レベル |
+| 暗号通貨 | 5 レベル |
+| 香港株 | 10 レベル |
+| 米国株 | 1 レベル |
+| A 株 | 5 レベル |
 
-最新のオーダーブック（板情報）データを購読します。各購読リクエストは前回の購読を上書きします。
-
-製品タイプ別の最大板深度：
-
-| 製品タイプ | 最大深度 |
-|-----------|----------|
-| 外国為替、貴金属、原油 | 1段 |
-| 暗号通貨 | 5段 |
-| 香港株 | 10段 |
-| 米国株 | 1段 |
-| A株 | 5段 |
-
-## リクエスト - コマンドID：22002
+## リクエスト（cmd_id: 22002）
 
 | フィールド | 型 | 必須 | 説明 |
 |-----------|------|------|------|
-| cmd_id | integer | はい | 固定値：22002 |
-| seq_id | integer | はい | リクエストシーケンスID |
-| trace | string | はい | トレースID |
-| data.symbol_list | array | はい | 製品リスト |
+| cmd_id | integer | はい | 固定値 22002 |
+| seq_id | integer | はい | シーケンス番号 |
+| trace | string | はい | 追跡 ID |
+| data.symbol_list | array | はい | 銘柄リスト |
 | data.symbol_list[].code | string | はい | 製品コード |
-| data.symbol_list[].depth_level | integer | いいえ | 深度レベル（デフォルト：1） |
+| data.symbol_list[].depth_level | integer | いいえ | 深度レベル（デフォルト: 1） |
 
 ```json
 {
@@ -47,7 +40,7 @@ description: 'リアルタイムオーダーブックデータの購読'
 }
 ```
 
-## レスポンス - コマンドID：22003
+## レスポンス（cmd_id: 22003）
 
 ```json
 {
@@ -60,15 +53,15 @@ description: 'リアルタイムオーダーブックデータの購読'
 }
 ```
 
-## プッシュ - コマンドID：22999
+## プッシュ（cmd_id: 22999）
 
 | フィールド | 型 | 説明 |
 |-----------|------|------|
 | code | string | 製品コード |
 | seq | string | 相場シーケンス番号 |
 | tick_time | string | タイムスタンプ（ミリ秒） |
-| bids | array | 買い板リスト [{price, volume}] |
-| asks | array | 売り板リスト [{price, volume}] |
+| bids | array | 買い板 [{price, volume}] |
+| asks | array | 売り板 [{price, volume}] |
 
 ```json
 {

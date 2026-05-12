@@ -1,18 +1,11 @@
 ---
 title: 'ハートビート'
-description: 'WebSocket ハートビートキープアライブ'
+description: 'WebSocket 接続維持のための Ping/Pong'
 ---
 
+10 秒ごとにハートビートを送信します。30 秒間ハートビートがないとサーバーが接続を切断します。
 
-<Card title="オンラインテスト" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Hoppscotch で WebSocket API をテスト
-</Card>
-
-## 説明
-
-クライアントは10秒ごとにハートビートを送信する必要があります。30秒以内にハートビートが受信されない場合、サーバーはWebSocket接続を切断します。
-
-## リクエスト - コマンドID：22000
+## リクエスト（cmd_id: 22000）
 
 ```json
 {
@@ -23,7 +16,7 @@ description: 'WebSocket ハートビートキープアライブ'
 }
 ```
 
-## レスポンス - コマンドID：22001
+## レスポンス（cmd_id: 22001）
 
 ```json
 {

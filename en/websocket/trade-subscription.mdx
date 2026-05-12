@@ -1,29 +1,22 @@
 ---
 title: 'Trade Subscription'
-description: 'Subscribe to real-time tick data'
+description: 'Subscribe to real-time trade tick data'
 ---
 
-
-<Card title="Try it online" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Test this WebSocket API using Hoppscotch
-</Card>
-
-## Description
-
-Subscribe to latest trade prices (real-time tick data) for multiple products. Each subscription request overwrites the previous one.
+Subscribe to latest trade prices (real-time tick data). Each subscription request overwrites the previous one.
 
 <Warning>
-To add products to an existing subscription, resend the complete product list. For example, if subscribed to A, B, C and want to add D, E, send A, B, C, D, E.
+To add symbols, resend the full list. For example, if subscribed to A, B, C and you want to add D, send A, B, C, D.
 </Warning>
 
-## Request - Command ID: 22004
+## Request (cmd_id: 22004)
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | cmd_id | integer | Yes | Fixed: 22004 |
-| seq_id | integer | Yes | Request sequence ID |
-| trace | string | Yes | Trace ID (unique per request) |
-| data.symbol_list | array | Yes | Product list |
+| seq_id | integer | Yes | Sequence number, returned in response |
+| trace | string | Yes | Correlation ID, must be unique |
+| data.symbol_list | array | Yes | Symbol list |
 | data.symbol_list[].code | string | Yes | Product code |
 
 ```json
@@ -40,7 +33,7 @@ To add products to an existing subscription, resend the complete product list. F
 }
 ```
 
-## Response - Command ID: 22005
+## Response (cmd_id: 22005)
 
 ```json
 {
@@ -53,7 +46,7 @@ To add products to an existing subscription, resend the complete product list. F
 }
 ```
 
-## Push - Command ID: 22998
+## Push (cmd_id: 22998)
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -63,7 +56,7 @@ To add products to an existing subscription, resend the complete product list. F
 | price | string | Latest trade price |
 | volume | string | Trade volume |
 | turnover | string | Trade turnover |
-| trade_direction | integer | Direction: 0=neutral, 1=buy, 2=sell |
+| trade_direction | integer | 0=neutral, 1=active buy, 2=active sell |
 
 ```json
 {

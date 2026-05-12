@@ -3,33 +3,26 @@ title: 'Depth Subscription'
 description: 'Subscribe to real-time order book data'
 ---
 
+Subscribe to latest order book (depth) data. Each subscription request overwrites the previous one.
 
-<Card title="Try it online" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Test this WebSocket API using Hoppscotch
-</Card>
+Maximum depth levels by market:
 
-## Description
+| Market | Max depth |
+|--------|-----------|
+| Forex, precious metals, oil | 1 level |
+| Crypto | 5 levels |
+| HK stocks | 10 levels |
+| US stocks | 1 level |
+| A-shares | 5 levels |
 
-Subscribe to latest order book (market depth) data. Each subscription request overwrites the previous one.
-
-Maximum depth levels by product type:
-
-| Product Type | Max Depth |
-|--------------|-----------|
-| Forex, Precious Metals, Oil | 1 level |
-| Cryptocurrency | 5 levels |
-| HK Stocks | 10 levels |
-| US Stocks | 1 level |
-| A-Shares | 5 levels |
-
-## Request - Command ID: 22002
+## Request (cmd_id: 22002)
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | cmd_id | integer | Yes | Fixed: 22002 |
-| seq_id | integer | Yes | Request sequence ID |
-| trace | string | Yes | Trace ID |
-| data.symbol_list | array | Yes | Product list |
+| seq_id | integer | Yes | Sequence number |
+| trace | string | Yes | Correlation ID |
+| data.symbol_list | array | Yes | Symbol list |
 | data.symbol_list[].code | string | Yes | Product code |
 | data.symbol_list[].depth_level | integer | No | Depth level (default: 1) |
 
@@ -47,7 +40,7 @@ Maximum depth levels by product type:
 }
 ```
 
-## Response - Command ID: 22003
+## Response (cmd_id: 22003)
 
 ```json
 {
@@ -60,7 +53,7 @@ Maximum depth levels by product type:
 }
 ```
 
-## Push - Command ID: 22999
+## Push (cmd_id: 22999)
 
 | Field | Type | Description |
 |-------|------|-------------|

@@ -109,12 +109,6 @@
                   "zh/websocket/depth-subscription",
                   "zh/websocket/cancel-subscription"
                 ]
-              },
-              {
-                "group": "工具",
-                "pages": [
-                  "zh/websocket/playground"
-                ]
               }
             ]
           }
@@ -196,12 +190,6 @@
                   "en/websocket/depth-subscription",
                   "en/websocket/cancel-subscription"
                 ]
-              },
-              {
-                "group": "Tools",
-                "pages": [
-                  "en/websocket/playground"
-                ]
               }
             ]
           }
@@ -282,12 +270,6 @@
                   "ja/websocket/trade-subscription",
                   "ja/websocket/depth-subscription",
                   "ja/websocket/cancel-subscription"
-                ]
-              },
-              {
-                "group": "ツール",
-                "pages": [
-                  "ja/websocket/playground"
                 ]
               }
             ]

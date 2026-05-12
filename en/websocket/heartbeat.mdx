@@ -1,20 +1,11 @@
 ---
-title: 'AllTick Stock WebSocket Heartbeat - Ping-Pong Mechanism & Connection Keep-Alive'
-description: "This page describes the heartbeat mechanism of AllTick's stock WebSocket API, showing Ping-Pong message formats and how to keep connections alive, detect disconnects, and reconnect, so developers can maintain stable WebSocket streams for realtime tick and order book data."
-seo:
-  keywords: 'AllTick WebSocket heartbeat, ping-pong mechanism, WebSocket keep-alive, stock quote persistent connection, reconnect strategy'
+title: 'Heartbeat'
+description: 'Keep-alive ping/pong mechanism'
 ---
 
+Send a heartbeat every 10 seconds. The server closes the connection after 30 seconds without a heartbeat.
 
-<Card title="Try it online" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Test this WebSocket API using Hoppscotch
-</Card>
-
-## Description
-
-Clients must send a heartbeat every 10 seconds. The server will disconnect the WebSocket connection if no heartbeat is received within 30 seconds.
-
-## Request - Command ID: 22000
+## Request (cmd_id: 22000)
 
 ```json
 {
@@ -25,7 +16,7 @@ Clients must send a heartbeat every 10 seconds. The server will disconnect the W
 }
 ```
 
-## Response - Command ID: 22001
+## Response (cmd_id: 22001)
 
 ```json
 {

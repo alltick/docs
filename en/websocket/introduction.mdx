@@ -1,41 +1,32 @@
 ---
-title: 'AllTick Stock WebSocket Interface API - Realtime Trade Tick & Order Book Streaming Quotes'
-description: "This documentation covers AllTick's stock WebSocket interface, including realtime trade tick streaming, order book depth updates, subscription and cancel methods, heartbeat mechanism, and message format examples, enabling developers to build low-latency quote systems for US, HK, and China A-share markets."
-seo:
-  keywords: 'AllTick stock WebSocket API, realtime trade tick stream, order book depth WebSocket, stock tick streaming data, quote subscription and cancel, low-latency stock quotes'
+title: 'WebSocket API Overview'
+description: 'Real-time market data streaming API overview'
 ---
 
-## Overview
+AllTick WebSocket API provides real-time market data push services. Subscribe to symbols after connecting to continuously receive latest trade prices and order book depth.
 
-AllTick WebSocket API provides real-time market data push services:
+## Protocol commands
 
 | Command ID | Description |
 |------------|-------------|
-| 22000/22001 | Heartbeat |
-| 22002/22003 | Order book subscription |
-| 22004/22005 | Trade price subscription |
+| 22000/22001 | Heartbeat (Ping/Pong) |
+| 22002/22003 | Depth subscription |
+| 22004/22005 | Trade subscription |
 | 22006/22007 | Cancel subscription |
 | 22998 | Trade price push |
 | 22999 | Order book push |
 
 ## Endpoints
 
-**Stocks (US, HK, A-shares):**
+| Asset class | Connection URL |
+|-------------|----------------|
+| US stocks, HK stocks, A-shares, indices | `wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN` |
+| Forex, crypto, precious metals, commodities | `wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN` |
 
-```
-wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN
-```
+## Usage guide
 
-**Forex, Crypto, Precious Metals, Commodities:**
-
-```
-wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
-```
-
-## Usage Guide
-
-1. Include your authentication token in the URL when establishing the WebSocket connection
+1. Include your token as a URL query parameter when connecting
 2. Send a heartbeat every **10 seconds** after connection
-3. Connection will be closed if no heartbeat received within **30 seconds**
-4. Each subscription request overwrites the previous one (to add products, resend the full list)
+3. Connection is closed if no heartbeat received within **30 seconds**
+4. Each subscription request overwrites the previous one (resend the full list to add symbols)
 5. Implement automatic reconnection logic in your client

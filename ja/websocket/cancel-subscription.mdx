@@ -1,22 +1,18 @@
 ---
 title: '購読キャンセル'
-description: 'WebSocket相場購読のキャンセル'
+description: 'マーケットデータプッシュの購読解除'
 ---
-
-
-<Card title="オンラインテスト" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Hoppscotch で WebSocket API をテスト
-</Card>
-
-## 説明
 
 アクティブな相場購読をキャンセルします。
 
-## リクエスト - コマンドID：22006
+## リクエスト（cmd_id: 22006）
 
 | フィールド | 型 | 必須 | 説明 |
 |-----------|------|------|------|
-| cancel_type | uint32 | はい | 0=全てキャンセル、1=板情報キャンセル、2=約定キャンセル、3=為替キャンセル |
+| cmd_id | integer | はい | 固定値 22006 |
+| seq_id | integer | はい | シーケンス番号 |
+| trace | string | はい | 追跡 ID |
+| data.cancel_type | integer | はい | 0=全部、1=板情報、2=約定、3=為替 |
 
 ```json
 {
@@ -29,7 +25,7 @@ description: 'WebSocket相場購読のキャンセル'
 }
 ```
 
-## レスポンス - コマンドID：22007
+## レスポンス（cmd_id: 22007）
 
 ```json
 {

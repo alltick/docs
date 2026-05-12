@@ -1,24 +1,18 @@
 ---
-title: 'AllTick Stock WebSocket Cancel Quote Subscription API - Unsubscribe from Realtime Streams'
-description: "This documentation explains how to use AllTick's stock WebSocket cancel quote subscription interface, including unsubscribe message format, parameters, and examples, allowing developers to stop receiving tick or order book updates for specific symbols and optimize bandwidth and quota usage."
-seo:
-  keywords: 'AllTick cancel quote subscription, WebSocket unsubscribe API, stop realtime tick stream, cancel order book updates, WebSocket subscription management'
+title: 'Cancel Subscription'
+description: 'Unsubscribe from market data push'
 ---
-
-
-<Card title="Try it online" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Test this WebSocket API using Hoppscotch
-</Card>
-
-## Description
 
 Cancel active quote subscriptions.
 
-## Request - Command ID: 22006
+## Request (cmd_id: 22006)
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| cancel_type | uint32 | Yes | 0=cancel all, 1=cancel depth, 2=cancel trade, 3=cancel forex |
+| cmd_id | integer | Yes | Fixed: 22006 |
+| seq_id | integer | Yes | Sequence number |
+| trace | string | Yes | Correlation ID |
+| data.cancel_type | integer | Yes | 0=all, 1=depth, 2=trade, 3=forex |
 
 ```json
 {
@@ -31,7 +25,7 @@ Cancel active quote subscriptions.
 }
 ```
 
-## Response - Command ID: 22007
+## Response (cmd_id: 22007)
 
 ```json
 {

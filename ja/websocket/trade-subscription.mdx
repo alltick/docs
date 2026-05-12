@@ -1,29 +1,22 @@
 ---
 title: '約定価格購読'
-description: 'リアルタイムティックデータの購読'
+description: 'リアルタイム Tick データの購読'
 ---
 
-
-<Card title="オンラインテスト" icon="play" href="https://hoppscotch.io/realtime/websocket">
-  Hoppscotch で WebSocket API をテスト
-</Card>
-
-## 説明
-
-複数製品の最新約定価格（リアルタイムティックデータ）を一括購読します。各購読リクエストは前回の購読を上書きします。
+製品の最新約定価格（リアルタイム Tick）を購読します。各購読リクエストは前回を上書きします。
 
 <Warning>
-既存の購読に製品を追加する場合は、完全な製品リストを再送信してください。例：A、B、Cを購読中にD、Eを追加する場合、A、B、C、D、Eを送信します。
+銘柄を追加する場合は完全なリストを再送信してください。例：A、B、C を購読中に D を追加する場合、A、B、C、D を送信。
 </Warning>
 
-## リクエスト - コマンドID：22004
+## リクエスト（cmd_id: 22004）
 
 | フィールド | 型 | 必須 | 説明 |
 |-----------|------|------|------|
-| cmd_id | integer | はい | 固定値：22004 |
-| seq_id | integer | はい | リクエストシーケンスID |
-| trace | string | はい | トレースID（リクエストごとに一意） |
-| data.symbol_list | array | はい | 製品リスト |
+| cmd_id | integer | はい | 固定値 22004 |
+| seq_id | integer | はい | シーケンス番号 |
+| trace | string | はい | 追跡 ID（一意） |
+| data.symbol_list | array | はい | 銘柄リスト |
 | data.symbol_list[].code | string | はい | 製品コード |
 
 ```json
@@ -40,7 +33,7 @@ description: 'リアルタイムティックデータの購読'
 }
 ```
 
-## レスポンス - コマンドID：22005
+## レスポンス（cmd_id: 22005）
 
 ```json
 {
@@ -53,7 +46,7 @@ description: 'リアルタイムティックデータの購読'
 }
 ```
 
-## プッシュ - コマンドID：22998
+## プッシュ（cmd_id: 22998）
 
 | フィールド | 型 | 説明 |
 |-----------|------|------|
@@ -61,9 +54,9 @@ description: 'リアルタイムティックデータの購読'
 | seq | string | 相場シーケンス番号 |
 | tick_time | string | タイムスタンプ（ミリ秒） |
 | price | string | 最新約定価格 |
-| volume | string | 約定数量 |
-| turnover | string | 約定金額 |
-| trade_direction | integer | 方向：0=中立、1=買い、2=売り |
+| volume | string | 出来高 |
+| turnover | string | 売買代金 |
+| trade_direction | integer | 0=中立、1=能動的買い、2=能動的売り |
 
 ```json
 {
