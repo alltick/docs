@@ -1,30 +1,62 @@
 ---
-title: 'Welcome'
-description: 'Welcome to AllTick API Documentation'
+title: 'AllTick Financial Market Data API'
+description: 'Real-time tick data and historical K-lines for global forex, stock, crypto, and commodity markets'
 ---
 
-## Welcome
+AllTick is a financial market data platform that delivers tick-level quotes, K-line history, order book depth, and trade prices across global asset classes through REST and WebSocket APIs.
 
-Welcome to the AllTick API documentation! Here you'll find tutorials, overviews, feature introductions, and use cases.
+Whether you are building a trading dashboard, running quantitative research, or powering a fintech product, AllTick gives you a single integration point for real-time and historical data from equities, forex, crypto, and more.
 
-## What is AllTick
+## Core capabilities
 
-[AllTick](https://alltick.co/) provides a complete financial market tick data solution, covering forex, HK stock CFDs, US stock CFDs, commodities, and cryptocurrency market data APIs. Designed for exchanges, developers, quant teams, fintech companies, and professional institutions.
+| Capability | Description |
+|------------|-------------|
+| Real-time streaming | WebSocket push with ~170ms average latency |
+| Historical K-lines | Minute, hour, day, week, and month granularities |
+| Order book depth | Multi-level bid/ask data (depth varies by market) |
+| Latest trade price | REST endpoint for point-in-time tick lookups |
+| Multi-language examples | Complete code samples in Go, Python, Java, and PHP |
 
-## Key Features
+## Supported markets
 
-- **Comprehensive Coverage**: Real-time and historical data for forex, stocks, commodities, and cryptocurrencies
-- **Multi-language SDKs**: Client libraries in multiple programming languages for quick integration
-- **WebSocket & REST API**: Low-latency, high-reliability data delivery via both protocols
-- **High Reliability**: Stable service with accurate and complete data
-- **Custom Solutions**: Tailored services for professional institutions and fintech companies
+| Market | Description | Example symbols |
+|--------|-------------|-----------------|
+| Equities | US stocks (CFD), HK stocks (CFD), A-shares | AAPL.US, 700.HK, 600519.SH |
+| Forex | 100+ major and cross currency pairs | EURUSD, USDJPY, GBPUSD |
+| Crypto | Major CEX trading pairs | BTCUSDT, ETHUSDT, SOLUSDT |
+| Precious metals & commodities | Gold, silver, oil | GOLD, SILVER, USOIL |
+| Global indices | Major stock indices | Dow Jones, S&P 500, Hang Seng |
 
-## Product Categories
+## Use cases
 
-| Category | Description | Examples |
-|----------|-------------|----------|
-| Forex | Real-time forex data, historical K-line | USDJPY, EURUSD |
-| Stock CFDs | Real-time HK/US stock CFD quotes | AAPL.US, 700.HK |
-| Precious Metals | Real-time precious metals quotes | GOLD, SILVER |
-| Cryptocurrency | Real-time crypto quotes | BTCUSDT, ETHUSDT |
-| Global Indices | Global stock index data | Dow Jones, S&P 500 |
+<CardGroup cols={2}>
+  <Card title="Trading tools" icon="chart-line">
+    Consume real-time WebSocket feeds to drive order entry systems, signal generators, and live charting
+  </Card>
+  <Card title="Quantitative strategies" icon="robot">
+    Pull historical K-line data to train models, run backtests, and optimize execution algorithms
+  </Card>
+  <Card title="Fintech products" icon="building">
+    Integrate AllTick as your upstream data layer and serve curated market data to your customers
+  </Card>
+  <Card title="Market research" icon="magnifying-glass">
+    Analyze order book depth and trade prices to study liquidity and price discovery
+  </Card>
+</CardGroup>
+
+## API access methods
+
+AllTick exposes two complementary protocols:
+
+| Protocol | Best for | Characteristics |
+|----------|----------|-----------------|
+| REST API | Historical K-line queries, one-time price lookups, server-side pipelines | Pull on demand, simple and direct |
+| WebSocket API | Live dashboards, price alerts, continuous data streams | Subscribe and receive, no polling |
+
+## Get started
+
+Ready to make your first API call? Follow the quickstart guide to register, get your token, and run a working example in under 5 minutes.
+
+<Card title="Quick Start" icon="rocket" href="/en/getting-started/process">
+  Register, get your API token, and make your first market data request
+</Card>

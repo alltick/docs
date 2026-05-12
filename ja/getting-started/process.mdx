@@ -1,35 +1,132 @@
 ---
-title: '接続フロー'
-description: 'AllTick API 接続の手順'
+title: 'クイックスタート'
+description: '5分以内に登録、Token取得、最初のAPIリクエストを実行'
 ---
 
-## ステップ1：APIアドレスとパラメータを理解する
+このガイドでは、AllTick API の最初の呼び出しを成功させるまでの全手順を説明します。最終的に、自分の Token を使って AAPL.US の日足 K ラインデータを取得する動作コード例が得られます。
 
-[APIアドレス説明](/ja/getting-started/api-address)を読み、各インターフェースのURLと必要なパラメータを把握してください。
+## 1. アカウント登録
 
-## ステップ2：Tokenを申請する
+[alltick.co/register](https://alltick.co/register) にアクセスして登録を完了します：
 
-[Token申請](/ja/getting-started/token)ガイドに従って、専用のTokenを取得してください。
+1. 有効なメールアドレスを入力
+2. パスワードを設定（大文字、小文字、数字、特殊文字を含む）
+3. メールに届いた認証コードを入力
+4. 登録をクリック — 成功するとダッシュボードにリダイレクト
 
-## ステップ3：レート制限を理解する
+## 2. API Token を取得
 
-[レート制限](/ja/getting-started/rate-limits)を確認し、リクエスト頻度の制限に注意してください。
+ダッシュボードで **API Keys** セクションに移動し、Token をコピーします。
 
-## ステップ4：リクエスト/レスポンス形式を理解する
+<Warning>
+Token は唯一の認証情報です。再生成すると古い Token は即座に無効になります。すべての統合を更新してください。
+</Warning>
 
-[標準ヘッダー](/ja/getting-started/standard-headers)を確認し、JSONデータの送受信方法を理解してください。
+## 3. エンドポイントを選択
 
-## ステップ5：製品コードを選択する
+AllTick は資産クラスごとに異なる Base URL を使用します：
 
-[製品コードリスト](/ja/getting-started/product-codes)を参照し、照会したい製品コードを選択してください。
+| 資産クラス | Base URL |
+|-----------|----------|
+| 米国株、香港株、A 株、指数 | `https://quote.alltick.co/quote-stock-b-api` |
+| 外国為替、暗号通貨、貴金属、コモディティ | `https://quote.alltick.co/quote-b-api` |
 
-## ステップ6：リクエストを実行する
+## 4. 最初のリクエストを実行
 
-上記のステップを組み合わせて、リクエストURLとパラメータを準備し、マーケットデータを取得してください。
+AAPL.US の直近 10 本の日足 K ラインを取得する例：
 
-## ベストプラクティス
+<CodeGroup>
 
-- **セキュリティ**：Tokenを安全に保管し、不正アクセスから保護する
-- **モニタリング**：APIドキュメントの更新を定期的に確認する
-- **テスト**：本番環境で使用する前にテスト環境で検証する
-- **サポート**：問題が発生した場合は技術サポートに連絡する
+```python Python
+import requests
+import json
+import urllib.parse
+
+token = "YOUR_TOKEN"
+query = json.dumps({
+    "trace": "test-001",
+    "data": {
+        "code": "AAPL.US",
+        "kline_type": 8,
+        "kline_timestamp_end": 0,
+        "query_kline_num": 10,
+        "adjust_type": 0
+    }
+})
+
+url = f"https://quote.alltick.co/quote-stock-b-api/kline?token={token}&query={urllib.parse.quote(query)}"
+response = requests.get(url)
+print(json.dumps(response.json(), indent=2))
+```
+
+```go Go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "net/url"
+)
+
+func main() {
+    token := "YOUR_TOKEN"
+    query := `{"trace":"test-001","data":{"code":"AAPL.US","kline_type":8,"kline_timestamp_end":0,"query_kline_num":10,"adjust_type":0}}`
+
+    reqURL := fmt.Sprintf("https://quote.alltick.co/quote-stock-b-api/kline?token=%s&query=%s",
+        token, url.QueryEscape(query))
+
+    resp, err := http.Get(reqURL)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
+}
+```
+
+</CodeGroup>
+
+`YOUR_TOKEN` をダッシュボードで取得した実際の Token に置き換えてください。
+
+## 5. レスポンスを確認
+
+成功レスポンスの例：
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "test-001",
+  "data": {
+    "kline_list": [
+      {
+        "timestamp": 1700000000,
+        "open_price": "189.50",
+        "close_price": "191.20",
+        "high_price": "192.00",
+        "low_price": "188.80",
+        "volume": "52000000"
+      }
+    ]
+  }
+}
+```
+
+## 次のステップ
+
+<CardGroup cols={2}>
+  <Card title="API アドレス" icon="server" href="/ja/getting-started/api-address">
+    すべての REST・WebSocket エンドポイント URL を確認
+  </Card>
+  <Card title="製品コード" icon="list" href="/ja/getting-started/product-codes">
+    対応銘柄コードを参照
+  </Card>
+  <Card title="レート制限" icon="gauge" href="/ja/getting-started/rate-limits">
+    プラン別の呼び出し頻度制限を確認
+  </Card>
+  <Card title="WebSocket API" icon="bolt" href="/ja/websocket/introduction">
+    リアルタイムマーケットデータストリームに接続
+  </Card>
+</CardGroup>

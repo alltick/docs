@@ -1,44 +1,49 @@
 ---
-title: 'AllTick产品代码列表总览 - 外汇、美股、港股、A股、期货与加密货币代码文档'
-description: '本页面汇总AllTick支持的各大市场产品代码文档入口，包括外汇、美股、港股、A股、商品期货与加密货币等，统一说明代码命名规范与市场标识，方便开发者在接入多市场Tick数据和K线API时快速查找对应的产品代码列表。'
-seo:
-  keywords: 'AllTick产品代码列表, 外汇品种代码, 美股港股代码, A股代码文档, 期货合约代码, 加密货币代码表, 多市场行情代码'
+title: '产品代码'
+description: '支持的品种代码格式与示例'
 ---
 
-## 产品分类
+AllTick 使用统一的代码格式标识金融产品。代码区分大小写，必须与下方列表完全一致。
 
-AllTick 支持以下产品类别：
+## 代码格式
+
+| 市场 | 格式 | 示例 |
+|------|------|------|
+| 美股 | `{TICKER}.US` | AAPL.US, TSLA.US, GOOGL.US |
+| 港股 | `{代码}.HK` | 700.HK, 9988.HK, 1299.HK |
+| A 股（上交所） | `{代码}.SH` | 600519.SH, 601318.SH |
+| A 股（深交所） | `{代码}.SZ` | 000858.SZ, 000001.SZ |
+| 外汇 | `{BASE}{QUOTE}` | EURUSD, USDJPY, GBPUSD |
+| 加密货币 | `{BASE}{QUOTE}` | BTCUSDT, ETHUSDT, SOLUSDT |
+| 贵金属 | 固定代码 | GOLD, SILVER |
+| 能源 | 固定代码 | USOIL, UKOIL |
+
+## 常用品种
 
 ### 外汇
 
-常见代码：`EURUSD`, `USDJPY`, `GBPUSD`, `AUDUSD`, `USDCAD`, `USDCHF`
+`EURUSD` `USDJPY` `GBPUSD` `AUDUSD` `USDCAD` `USDCHF` `NZDUSD` `EURGBP`
 
 ### 加密货币
 
-常见代码：`BTCUSDT`, `ETHUSDT`, `BNBUSDT`, `XRPUSDT`, `SOLUSDT`
+`BTCUSDT` `ETHUSDT` `BNBUSDT` `XRPUSDT` `SOLUSDT` `DOGEUSDT` `ADAUSDT`
 
 ### 贵金属与商品
 
-常见代码：`GOLD`, `SILVER`, `USOIL`, `UKOIL`
+`GOLD` `SILVER` `USOIL` `UKOIL`
 
-### 港股
+### 美股热门
 
-代码格式：`{股票代码}.HK`
+`AAPL.US` `TSLA.US` `GOOGL.US` `MSFT.US` `AMZN.US` `NVDA.US` `META.US`
 
-示例：`700.HK`（腾讯）, `9988.HK`（阿里巴巴）, `1299.HK`（友邦保险）
+### 港股热门
 
-### 美股
+`700.HK` `9988.HK` `1299.HK` `388.HK` `5.HK` `941.HK`
 
-代码格式：`{股票代码}.US`
+### A 股热门
 
-示例：`AAPL.US`（苹果）, `GOOGL.US`（谷歌）, `TSLA.US`（特斯拉）
-
-### A股
-
-代码格式：`{股票代码}.SH` 或 `{股票代码}.SZ`
-
-示例：`600519.SH`（贵州茅台）, `000858.SZ`（五粮液）
+`600519.SH` `000858.SZ` `601318.SH` `000001.SZ` `600036.SH`
 
 <Note>
-完整的产品代码列表请访问 [AllTick 官网](https://alltick.co/) 获取。Code 值大小写必须与产品列表中的保持一致。
+完整的产品代码列表请登录 [AllTick 仪表盘](https://alltick.co) 查看。免费套餐仅支持 10 个演示品种。
 </Note>

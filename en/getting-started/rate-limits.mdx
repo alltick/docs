@@ -1,37 +1,43 @@
 ---
-title: 'AllTick Interface Restriction Description - Rate Limits & Usage Rules for HTTP and WebSocket APIs'
-description: 'This page summarizes interface restrictions for AllTick market data APIs, including HTTP and WebSocket rate limits, concurrent connection caps, response size constraints, and account-level limits, helping developers design request patterns that avoid throttling or rejections when pulling realtime data.'
-seo:
-  keywords: 'AllTick interface restrictions, API rate limits, HTTP request limits, WebSocket connection limits, throttling rules, realtime data usage guidelines'
+title: 'Rate Limits'
+description: 'API call frequency and quota limits by subscription plan'
 ---
 
-## HTTP Rate Limits
+AllTick enforces rate limits based on your subscription plan. Exceeding limits returns a 429 error code.
 
-| Plan | /kline | /batch-kline | /depth-tick | /trade-tick | Daily Limit |
-|------|--------|--------------|-------------|-------------|-------------|
-| Free | 1/10s | 1/10s | 1/10s | 1/10s | 1,000 |
-| Basic | 1/s | 1/3s | 1/s | 1/s | 86,400 |
-| Advanced | 10/s | 1/2s | 10/s | 10/s | 864,000 |
-| Pro | 20/s | 1/s | 20/s | 20/s | 1,728,000 |
+## REST API rate limits
 
-## K-Line Query Limits
+| Plan | /kline | /batch-kline | /depth-tick | /trade-tick | Daily cap |
+|------|--------|--------------|-------------|-------------|-----------|
+| Free | 1 per 10s | 1 per 10s | 1 per 10s | 1 per 10s | 1,000 |
+| Basic | 1 per 1s | 1 per 3s | 1 per 1s | 1 per 1s | 86,400 |
+| Advanced | 10 per 1s | 1 per 2s | 10 per 1s | 10 per 1s | 864,000 |
+| Professional | 20 per 1s | 1 per 1s | 20 per 1s | 20 per 1s | 1,728,000 |
 
-- `/kline`: Max 500 K-lines per request
-- `/batch-kline`: Max 2 K-lines per request, supports multiple products
+## K-line query limits
 
-| Plan | /batch-kline Max Groups |
-|------|------------------------|
+| Endpoint | Max per request |
+|----------|-----------------|
+| `/kline` | 500 bars |
+| `/batch-kline` | 2 bars × N products |
+
+`/batch-kline` max product groups:
+
+| Plan | Max groups |
+|------|------------|
 | Free | 5 |
 | Basic | 100 |
 | Advanced | 200 |
-| Pro | 500 |
+| Professional | 500 |
 
-## IP Limits
+## WebSocket limits
 
-HTTP API rate limits are based on Token only, with no IP restrictions.
+| Rule | Description |
+|------|-------------|
+| Heartbeat frequency | Send every 10 seconds |
+| Timeout disconnect | Connection closed after 30 seconds without heartbeat |
+| Reconnection | Clients should implement automatic reconnection logic |
 
-## WebSocket Limits
+## IP restrictions
 
-- Heartbeat must be sent every 10 seconds
-- Connection will be closed if no heartbeat received within 30 seconds
-- Clients should implement automatic reconnection logic
+REST API rate limits are enforced per token only. There are no IP-based restrictions.

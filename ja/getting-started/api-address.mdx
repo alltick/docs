@@ -1,62 +1,39 @@
 ---
-title: 'APIアドレス'
-description: 'HTTP および WebSocket API エンドポイントアドレス'
+title: 'API アドレス'
+description: '資産クラス別の REST・WebSocket エンドポイント URL'
 ---
 
-## 株式 HTTP API
+AllTick は資産クラスごとにエンドポイントを分けています。株式は専用の Base URL を使用し、その他の市場は共通の Base URL を共有します。
 
-ベースパス: `/quote-stock-b-api`
+## REST API エンドポイント
 
-完全URL: `https://quote.alltick.co/quote-stock-b-api`
+| 資産クラス | Base URL |
+|-----------|----------|
+| 米国株、香港株、A 株、指数 | `https://quote.alltick.co/quote-stock-b-api` |
+| 外国為替、暗号通貨、貴金属、コモディティ | `https://quote.alltick.co/quote-b-api` |
 
-リクエスト例：
+利用可能なパス：
 
-```
-https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-stock-b-api/batch-kline?token=YOUR_TOKEN
-https://quote.alltick.co/quote-stock-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-stock-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
-```
-
-## 外国為替/暗号通貨/コモディティ HTTP API
-
-ベースパス: `/quote-b-api`
-
-完全URL: `https://quote.alltick.co/quote-b-api`
+| パス | メソッド | 説明 |
+|------|---------|------|
+| `/kline` | GET | 単一製品の履歴 K ライン照会 |
+| `/batch-kline` | POST | 複数製品の最新 2 本 K ライン一括照会 |
+| `/trade-tick` | GET | 最新約定価格照会 |
+| `/depth-tick` | GET | 最新板情報照会 |
 
 リクエスト例：
 
 ```
-https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-b-api/batch-kline?token=YOUR_TOKEN
-https://quote.alltick.co/quote-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=URL_ENCODED_JSON
 ```
 
-## 株式 WebSocket API
+## WebSocket エンドポイント
 
-ベースパス: `/quote-stock-b-ws-api`
-
-完全URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
-
-接続例：
-
-```
-wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN
-```
-
-## 外国為替/暗号通貨/コモディティ WebSocket API
-
-ベースパス: `/quote-b-ws-api`
-
-完全URL: `wss://quote.alltick.co/quote-b-ws-api`
-
-接続例：
-
-```
-wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
-```
+| 資産クラス | 接続 URL |
+|-----------|----------|
+| 米国株、香港株、A 株、指数 | `wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN` |
+| 外国為替、暗号通貨、貴金属、コモディティ | `wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN` |
 
 <Note>
-アカウントのセキュリティのため、Token情報を安全に保管してください。
+外国為替や暗号通貨の銘柄を照会する場合は `/quote-b-api`（REST）または `/quote-b-ws-api`（WebSocket）を使用します。株式の場合は `-stock-` を含むパスを使用します。リクエストパラメータの構造は同一で、Base URL のみが異なります。
 </Note>

@@ -1,31 +1,40 @@
 ---
-title: 'Token申請'
-description: 'AllTick API Tokenの申請方法'
+title: '認証'
+description: 'アカウント登録と API Token の取得'
 ---
 
-## 申請フロー
+AllTick はすべての API リクエストを Token で認証します。各リクエストの URL クエリパラメータに有効な Token を含める必要があります。
 
-### ステップ1 - 登録
+## Token の取得
 
-<Info>
-登録URL：[https://alltick.co/register](https://alltick.co/register)
-</Info>
+<Steps>
+  <Step title="アカウント登録">
+    [alltick.co/register](https://alltick.co/register) にアクセスし、メールアドレスで登録します。
+  </Step>
+  <Step title="ダッシュボードを開く">
+    登録完了後、自動的にダッシュボードにリダイレクトされます。
+  </Step>
+  <Step title="Token をコピー">
+    **API Keys** セクションで Token を見つけてコピーします。
+  </Step>
+</Steps>
 
-1. **登録ページにアクセス**：[https://alltick.co/register](https://alltick.co/register) にアクセス
-2. **詳細を入力**：
-   - **メールアドレス**：有効なメールアドレスを入力
-   - **パスワード**：安全なパスワードを作成（大文字、小文字、特殊文字、数字を含む）
-   - **認証コード**：メールに送信されたコードを入力
-3. **登録完了**：「登録」ボタンをクリックし、ダッシュボードにリダイレクト
+## 使用方法
 
-### ステップ2 - API Tokenを取得
+**REST API** — `token` クエリパラメータとして渡す：
 
-1. **ダッシュボードに入る**：登録後、ダッシュボードに移動
-2. **Tokenを見つける**：「API keys」セクションに移動
-3. **Tokenを保存**：Tokenをコピーして安全に保存
+```
+https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=...
+```
 
-## 注意事項
+**WebSocket API** — 接続 URL のクエリパラメータとして渡す：
 
-- Tokenを安全に保管し、信頼できない第三者と共有しない
-- 登録中に問題が発生した場合は、すぐにサポートに連絡
-- 常に最新のTokenを使用してAPIを呼び出す
+```
+wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
+```
+
+## セキュリティに関する注意
+
+- クライアントサイドのコードや公開リポジトリに Token を公開しない
+- Token が漏洩した場合、ダッシュボードで直ちに再生成する
+- 再生成後、古い Token は即座に無効になる — すべての統合を更新すること

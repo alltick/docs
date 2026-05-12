@@ -1,35 +1,132 @@
 ---
-title: '接入流程'
-description: '接入 AllTick API 的完整流程说明'
+title: '快速开始'
+description: '5 分钟内完成注册、获取 Token、发起第一个 API 请求'
 ---
 
-## 第1步：熟悉接口地址和参数
+本指南带你完成从注册到成功调用 AllTick API 的全过程。最终你将获得一个可运行的代码示例，使用自己的 Token 查询 AAPL.US 的日 K 线数据。
 
-深入理解接口的 URL 结构及其期望的参数。仔细阅读[行情地址说明](/zh/getting-started/api-address)文档，掌握各接口的访问 URL 和必要参数。
+## 1. 注册账号
 
-## 第2步：申请属于你的 Token
+前往 [alltick.co/register](https://alltick.co/register) 完成注册：
 
-获得访问接口所需的凭证。按照[Token 申请](/zh/getting-started/token)指南申请专属的 Token。
+1. 输入有效邮箱地址
+2. 设置密码（需包含大小写字母、数字和特殊字符）
+3. 输入邮箱收到的验证码
+4. 点击注册，成功后自动跳转到仪表盘
 
-## 第3步：了解接口调用限制
+## 2. 获取 API Token
 
-避免因违反限制条件而导致请求失败。阅读[接口限制说明](/zh/getting-started/rate-limits)，注意请求频率、数据请求量等相关限制。
+进入仪表盘后，导航至 **API Keys** 部分，复制你的 Token。
 
-## 第4步：掌握请求与响应格式
+<Warning>
+Token 是你的唯一凭证，请妥善保管。如果重新生成 Token，旧 Token 立即失效。
+</Warning>
 
-确保能够正确构造请求并解析响应。查看[通用标准头文档](/zh/getting-started/standard-headers)，了解如何发送和接收 JSON 格式的数据。
+## 3. 选择 API 端点
 
-## 第5步：选择目标产品代码
+AllTick 按资产类别使用不同的 Base URL：
 
-确定您想查询的具体股票或金融产品代码。参照[产品 Code 列表](/zh/getting-started/product-codes)，选定您感兴趣的产品代码。
+| 资产类别 | Base URL |
+|----------|----------|
+| 美股、港股、A 股、指数 | `https://quote.alltick.co/quote-stock-b-api` |
+| 外汇、加密货币、贵金属、商品 | `https://quote.alltick.co/quote-b-api` |
 
-## 第6步：执行请求并获取数据
+## 4. 发起第一个请求
 
-结合之前的步骤，准备好请求的 URL 和参数，发送请求来获取您想要的数据。
+以查询 AAPL.US 最近 10 根日 K 线为例：
 
-## 实践建议
+<CodeGroup>
 
-- **保密**：小心保护您的 Token，避免泄露给未经授权的人员
-- **监控**：定期检查接口文档的更新，以便及时了解任何更改或新增的功能
-- **测试**：在生产环境中使用接口之前，先在测试环境中验证您的请求
-- **反馈**：遇到问题时，及时联系技术支持获取帮助
+```python Python
+import requests
+import json
+import urllib.parse
+
+token = "YOUR_TOKEN"
+query = json.dumps({
+    "trace": "test-001",
+    "data": {
+        "code": "AAPL.US",
+        "kline_type": 8,
+        "kline_timestamp_end": 0,
+        "query_kline_num": 10,
+        "adjust_type": 0
+    }
+})
+
+url = f"https://quote.alltick.co/quote-stock-b-api/kline?token={token}&query={urllib.parse.quote(query)}"
+response = requests.get(url)
+print(json.dumps(response.json(), indent=2))
+```
+
+```go Go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "net/url"
+)
+
+func main() {
+    token := "YOUR_TOKEN"
+    query := `{"trace":"test-001","data":{"code":"AAPL.US","kline_type":8,"kline_timestamp_end":0,"query_kline_num":10,"adjust_type":0}}`
+
+    reqURL := fmt.Sprintf("https://quote.alltick.co/quote-stock-b-api/kline?token=%s&query=%s",
+        token, url.QueryEscape(query))
+
+    resp, err := http.Get(reqURL)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
+}
+```
+
+</CodeGroup>
+
+将 `YOUR_TOKEN` 替换为你在仪表盘获取的实际 Token。
+
+## 5. 查看响应
+
+成功响应示例：
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "test-001",
+  "data": {
+    "kline_list": [
+      {
+        "timestamp": 1700000000,
+        "open_price": "189.50",
+        "close_price": "191.20",
+        "high_price": "192.00",
+        "low_price": "188.80",
+        "volume": "52000000"
+      }
+    ]
+  }
+}
+```
+
+## 下一步
+
+<CardGroup cols={2}>
+  <Card title="API 地址" icon="server" href="/zh/getting-started/api-address">
+    查看所有 REST 和 WebSocket 端点地址
+  </Card>
+  <Card title="产品代码" icon="list" href="/zh/getting-started/product-codes">
+    浏览支持的品种代码列表
+  </Card>
+  <Card title="频率限制" icon="gauge" href="/zh/getting-started/rate-limits">
+    了解各套餐的调用频率限制
+  </Card>
+  <Card title="WebSocket API" icon="bolt" href="/zh/websocket/introduction">
+    接入实时行情推送
+  </Card>
+</CardGroup>

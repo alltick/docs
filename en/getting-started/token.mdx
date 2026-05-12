@@ -1,33 +1,40 @@
 ---
-title: 'AllTick Token Application Guide - Register Account & Obtain API Access Token'
-description: 'This page explains how to register an AllTick account and apply for an API Token, including opening the token application entry, submitting email and password, finding API keys in the dashboard, securely saving your token, and key security notes, so developers can obtain valid credentials to access real-time forex, stock, crypto, and other market data APIs.'
-seo:
-  keywords: 'AllTick token application, get API token, AllTick account registration, API key instructions, market data API credentials, real-time financial data access'
+title: 'Authentication'
+description: 'Register and obtain your API token'
 ---
 
-## Application Process
+AllTick authenticates all API requests using a token. Every request must include a valid token as a URL query parameter.
 
-### Step 1 - Register
+## Get your token
 
-<Info>
-Registration URL: [https://alltick.co/register](https://alltick.co/register)
-</Info>
+<Steps>
+  <Step title="Register">
+    Go to [alltick.co/register](https://alltick.co/register) and sign up with your email.
+  </Step>
+  <Step title="Open dashboard">
+    After registration, you are automatically redirected to the dashboard.
+  </Step>
+  <Step title="Copy token">
+    Find your token in the **API Keys** section and copy it.
+  </Step>
+</Steps>
 
-1. **Visit registration page**: Go to [https://alltick.co/register](https://alltick.co/register)
-2. **Enter details**:
-   - **Email**: Enter a valid email address
-   - **Password**: Create a secure password (include uppercase, lowercase, special characters, and numbers)
-   - **Verification code**: Enter the code sent to your email
-3. **Complete registration**: Click "Register" and you'll be redirected to the dashboard
+## Usage
 
-### Step 2 - Get API Token
+**REST API** — pass as the `token` query parameter:
 
-1. **Enter dashboard**: After registration, navigate to the Dashboard
-2. **Find Token**: Go to the "API keys" section
-3. **Save Token**: Copy and securely store your Token
+```
+https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=...
+```
 
-## Important Notes
+**WebSocket API** — pass as a query parameter in the connection URL:
 
-- Keep your Token secure; do not share with untrusted third parties
-- Contact support immediately if you encounter any issues during registration
-- Always use the latest Token for API calls
+```
+wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
+```
+
+## Security best practices
+
+- Never expose your token in client-side code or public repositories
+- If your token is compromised, regenerate it immediately in the dashboard
+- After regeneration, the old token stops working — update all integrations

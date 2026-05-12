@@ -1,42 +1,49 @@
 ---
-title: 'AllTick Product Code List Overview - Symbols for Forex, US & HK Stocks, A-Shares, Futures & Crypto'
-description: 'This page serves as an entry point to product code lists for all markets supported by AllTick, including forex, US stocks, Hong Kong stocks, China A-shares, commodity futures, and cryptocurrencies, describing naming conventions and market identifiers so developers can quickly locate the correct symbols for multi-market tick and K-line APIs.'
-seo:
-  keywords: 'AllTick product code list, forex symbols, US HK stock codes, A-share symbols, futures contract codes, crypto symbols, multi-market data API codes'
+title: 'Product Codes'
+description: 'Supported symbol formats and examples'
 ---
 
-## Product Categories
+AllTick uses a unified code format to identify financial products. Codes are case-sensitive and must match the formats below exactly.
+
+## Code formats
+
+| Market | Format | Examples |
+|--------|--------|----------|
+| US stocks | `{TICKER}.US` | AAPL.US, TSLA.US, GOOGL.US |
+| HK stocks | `{CODE}.HK` | 700.HK, 9988.HK, 1299.HK |
+| A-shares (SSE) | `{CODE}.SH` | 600519.SH, 601318.SH |
+| A-shares (SZSE) | `{CODE}.SZ` | 000858.SZ, 000001.SZ |
+| Forex | `{BASE}{QUOTE}` | EURUSD, USDJPY, GBPUSD |
+| Crypto | `{BASE}{QUOTE}` | BTCUSDT, ETHUSDT, SOLUSDT |
+| Precious metals | Fixed codes | GOLD, SILVER |
+| Energy | Fixed codes | USOIL, UKOIL |
+
+## Popular symbols
 
 ### Forex
 
-Common codes: `EURUSD`, `USDJPY`, `GBPUSD`, `AUDUSD`, `USDCAD`, `USDCHF`
+`EURUSD` `USDJPY` `GBPUSD` `AUDUSD` `USDCAD` `USDCHF` `NZDUSD` `EURGBP`
 
-### Cryptocurrency
+### Crypto
 
-Common codes: `BTCUSDT`, `ETHUSDT`, `BNBUSDT`, `XRPUSDT`, `SOLUSDT`
+`BTCUSDT` `ETHUSDT` `BNBUSDT` `XRPUSDT` `SOLUSDT` `DOGEUSDT` `ADAUSDT`
 
-### Precious Metals & Commodities
+### Precious metals & commodities
 
-Common codes: `GOLD`, `SILVER`, `USOIL`, `UKOIL`
+`GOLD` `SILVER` `USOIL` `UKOIL`
 
-### Hong Kong Stocks
+### US stocks
 
-Format: `{code}.HK`
+`AAPL.US` `TSLA.US` `GOOGL.US` `MSFT.US` `AMZN.US` `NVDA.US` `META.US`
 
-Examples: `700.HK` (Tencent), `9988.HK` (Alibaba), `1299.HK` (AIA)
+### HK stocks
 
-### US Stocks
+`700.HK` `9988.HK` `1299.HK` `388.HK` `5.HK` `941.HK`
 
-Format: `{code}.US`
+### A-shares
 
-Examples: `AAPL.US` (Apple), `GOOGL.US` (Google), `TSLA.US` (Tesla)
-
-### A-Shares (China)
-
-Format: `{code}.SH` or `{code}.SZ`
-
-Examples: `600519.SH` (Kweichow Moutai), `000858.SZ` (Wuliangye)
+`600519.SH` `000858.SZ` `601318.SH` `000001.SZ` `600036.SH`
 
 <Note>
-For the complete product code list, visit [AllTick website](https://alltick.co/). Code values are case-sensitive and must match the product list exactly.
+For the complete product code list, log in to the [AllTick dashboard](https://alltick.co). The free plan supports only 10 demo symbols.
 </Note>

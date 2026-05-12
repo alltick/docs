@@ -1,35 +1,132 @@
 ---
-title: 'Getting Started'
-description: 'Step-by-step guide to integrate AllTick API'
+title: 'Quick Start'
+description: 'Register, get your token, and make your first API request in 5 minutes'
 ---
 
-## Step 1: Understand API Endpoints
+This guide walks you through everything you need to make your first successful AllTick API call. By the end, you will have a working code example that fetches 10 daily K-line bars for AAPL.US using your own API token.
 
-Learn the URL structure and expected parameters. Read the [API Address Guide](/en/getting-started/api-address) to understand access URLs and required parameters.
+## 1. Register an account
 
-## Step 2: Apply for Your Token
+Go to [alltick.co/register](https://alltick.co/register) and complete the sign-up form:
 
-Obtain the credentials needed to access the API. Follow the [Token Application](/en/getting-started/token) guide to get your token.
+1. Enter a valid email address
+2. Create a password (must include uppercase, lowercase, numbers, and special characters)
+3. Enter the verification code sent to your inbox
+4. Click Register — on success, you are redirected to your dashboard
 
-## Step 3: Understand Rate Limits
+## 2. Get your API token
 
-Avoid request failures due to limit violations. Read the [Rate Limits](/en/getting-started/rate-limits) documentation.
+In the dashboard, navigate to the **API Keys** section and copy your token.
 
-## Step 4: Learn Request/Response Format
+<Warning>
+Your token is your sole credential. If you regenerate it, the old token stops working immediately. Update all integrations.
+</Warning>
 
-Ensure you can correctly construct requests and parse responses. See the [Standard Headers](/en/getting-started/standard-headers) documentation.
+## 3. Choose the right endpoint
 
-## Step 5: Choose Product Codes
+AllTick uses separate base URLs by asset class:
 
-Determine the specific financial products you want to query. Refer to the [Product Code List](/en/getting-started/product-codes).
+| Asset class | Base URL |
+|-------------|----------|
+| US stocks, HK stocks, A-shares, indices | `https://quote.alltick.co/quote-stock-b-api` |
+| Forex, crypto, precious metals, commodities | `https://quote.alltick.co/quote-b-api` |
 
-## Step 6: Execute Requests
+## 4. Make your first request
 
-Combine the above steps to prepare your request URL and parameters, then send requests to get market data.
+Query the 10 most recent daily K-line bars for AAPL.US:
 
-## Best Practices
+<CodeGroup>
 
-- **Security**: Protect your Token from unauthorized access
-- **Monitoring**: Regularly check for API documentation updates
-- **Testing**: Validate requests in a test environment before production use
-- **Support**: Contact technical support promptly when encountering issues
+```python Python
+import requests
+import json
+import urllib.parse
+
+token = "YOUR_TOKEN"
+query = json.dumps({
+    "trace": "test-001",
+    "data": {
+        "code": "AAPL.US",
+        "kline_type": 8,
+        "kline_timestamp_end": 0,
+        "query_kline_num": 10,
+        "adjust_type": 0
+    }
+})
+
+url = f"https://quote.alltick.co/quote-stock-b-api/kline?token={token}&query={urllib.parse.quote(query)}"
+response = requests.get(url)
+print(json.dumps(response.json(), indent=2))
+```
+
+```go Go
+package main
+
+import (
+    "fmt"
+    "io"
+    "net/http"
+    "net/url"
+)
+
+func main() {
+    token := "YOUR_TOKEN"
+    query := `{"trace":"test-001","data":{"code":"AAPL.US","kline_type":8,"kline_timestamp_end":0,"query_kline_num":10,"adjust_type":0}}`
+
+    reqURL := fmt.Sprintf("https://quote.alltick.co/quote-stock-b-api/kline?token=%s&query=%s",
+        token, url.QueryEscape(query))
+
+    resp, err := http.Get(reqURL)
+    if err != nil {
+        panic(err)
+    }
+    defer resp.Body.Close()
+    body, _ := io.ReadAll(resp.Body)
+    fmt.Println(string(body))
+}
+```
+
+</CodeGroup>
+
+Replace `YOUR_TOKEN` with the actual token from your dashboard.
+
+## 5. Check the response
+
+A successful response looks like:
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "test-001",
+  "data": {
+    "kline_list": [
+      {
+        "timestamp": 1700000000,
+        "open_price": "189.50",
+        "close_price": "191.20",
+        "high_price": "192.00",
+        "low_price": "188.80",
+        "volume": "52000000"
+      }
+    ]
+  }
+}
+```
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="API Addresses" icon="server" href="/en/getting-started/api-address">
+    View all REST and WebSocket endpoint URLs
+  </Card>
+  <Card title="Product Codes" icon="list" href="/en/getting-started/product-codes">
+    Browse supported symbol codes
+  </Card>
+  <Card title="Rate Limits" icon="gauge" href="/en/getting-started/rate-limits">
+    Understand call frequency limits by plan
+  </Card>
+  <Card title="WebSocket API" icon="bolt" href="/en/websocket/introduction">
+    Connect to real-time market data streams
+  </Card>
+</CardGroup>

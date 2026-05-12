@@ -1,33 +1,40 @@
 ---
-title: 'AllTick Token申请指南 - 注册账号与获取API访问令牌流程说明'
-description: '本页面详细说明如何在AllTick完成注册并申请API Token，包括进入Token申请入口、填写邮箱和密码、登录Dashboard查看API Keys、复制并妥善保存Token，以及常见问题与安全注意事项，帮助开发者顺利获得访问外汇、股票、加密货币等实时行情数据API所需的凭证。'
-seo:
-  keywords: 'AllTick Token申请, AllTick注册账号, 获取API密钥, API访问令牌指南, 行情数据接口凭证, 实时金融数据API接入'
+title: '认证'
+description: '注册账号并获取 API Token'
 ---
 
-## 申请流程
+AllTick 使用 Token 认证所有 API 请求。每个请求必须在 URL 参数中携带有效的 Token。
 
-### 第一步 - 填写注册信息
+## 获取 Token
 
-<Info>
-Token 申请地址：[https://alltick.co/register](https://alltick.co/register)
-</Info>
+<Steps>
+  <Step title="注册账号">
+    前往 [alltick.co/register](https://alltick.co/register)，使用邮箱完成注册。
+  </Step>
+  <Step title="进入仪表盘">
+    注册成功后自动跳转到仪表盘页面。
+  </Step>
+  <Step title="复制 Token">
+    在仪表盘的 **API Keys** 部分找到并复制你的 Token。
+  </Step>
+</Steps>
 
-1. **访问注册页面**：前往 [Token 申请地址](https://alltick.co/register) 开始注册
-2. **输入注册详情**：
-   - **邮箱地址**：输入一个有效的邮箱地址
-   - **密码设置**：创建一个安全的密码（包含大小写字母、特殊字符和数字）
-   - **邮箱验证码**：输入发送到您邮箱的验证码
-3. **完成注册**：点击"注册"按钮，注册成功后自动跳转到仪表盘页面
+## 使用方式
 
-### 第二步 - 获取 API Token
+**REST API** — 作为 `token` 查询参数传递：
 
-1. **进入仪表盘**：注册完毕后，系统自动导航至仪表盘（Dashboard）
-2. **找到 Token**：在仪表盘界面，导航至"API keys"部分
-3. **记录 Token**：复制并安全地保存您的 Token
+```
+https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=...
+```
 
-## 注意事项
+**WebSocket API** — 作为连接 URL 的查询参数：
 
-- 保护您的 Token 安全，避免共享给不信任的第三方
-- 如果遇到注册或 Token 生成过程中的任何问题，立即联系客服支持
-- 始终确保使用最新的 Token 进行 API 调用
+```
+wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
+```
+
+## 安全建议
+
+- 不要在客户端代码或公开仓库中暴露 Token
+- 如果 Token 泄露，立即在仪表盘重新生成
+- 重新生成后旧 Token 立即失效，需更新所有集成

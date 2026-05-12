@@ -1,64 +1,39 @@
 ---
-title: 'AllTick Market Address Description - HTTP & WebSocket Endpoints for Realtime Data APIs'
-description: 'This page documents the market addresses used by AllTick, including HTTP quote API endpoints, WebSocket streaming endpoints, and base paths for different markets such as forex, stocks, crypto, and futures, so developers can configure domains and URLs correctly before integrating realtime data feeds.'
-seo:
-  keywords: 'AllTick market address, HTTP quote API endpoint, WebSocket market data endpoint, base path configuration, realtime data integration URLs'
+title: 'API Addresses'
+description: 'REST and WebSocket endpoint URLs by asset class'
 ---
 
-## Stock HTTP API
+AllTick separates endpoints by asset class. Stocks use a dedicated base URL; all other markets share a common one.
 
-Base path: `/quote-stock-b-api`
+## REST API endpoints
 
-Full URL: `https://quote.alltick.co/quote-stock-b-api`
+| Asset class | Base URL |
+|-------------|----------|
+| US stocks, HK stocks, A-shares, indices | `https://quote.alltick.co/quote-stock-b-api` |
+| Forex, crypto, precious metals, commodities | `https://quote.alltick.co/quote-b-api` |
 
-Examples:
+Available paths:
 
-```
-https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-stock-b-api/batch-kline?token=YOUR_TOKEN
-https://quote.alltick.co/quote-stock-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-stock-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
-```
+| Path | Method | Description |
+|------|--------|-------------|
+| `/kline` | GET | Single product historical K-line query |
+| `/batch-kline` | POST | Batch query latest 2 K-line bars |
+| `/trade-tick` | GET | Latest trade price query |
+| `/depth-tick` | GET | Latest order book depth query |
 
-## Forex/Crypto/Commodity HTTP API
-
-Base path: `/quote-b-api`
-
-Full URL: `https://quote.alltick.co/quote-b-api`
-
-Examples:
+Example request:
 
 ```
-https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-b-api/batch-kline?token=YOUR_TOKEN
-https://quote.alltick.co/quote-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
-https://quote.alltick.co/quote-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=URL_ENCODED_JSON
 ```
 
-## Stock WebSocket API
+## WebSocket endpoints
 
-Base path: `/quote-stock-b-ws-api`
-
-Full URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
-
-Connection example:
-
-```
-wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN
-```
-
-## Forex/Crypto/Commodity WebSocket API
-
-Base path: `/quote-b-ws-api`
-
-Full URL: `wss://quote.alltick.co/quote-b-ws-api`
-
-Connection example:
-
-```
-wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
-```
+| Asset class | Connection URL |
+|-------------|----------------|
+| US stocks, HK stocks, A-shares, indices | `wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN` |
+| Forex, crypto, precious metals, commodities | `wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN` |
 
 <Note>
-Keep your Token secure and never share it with unauthorized parties.
+When querying forex or crypto symbols, use `/quote-b-api` (REST) or `/quote-b-ws-api` (WebSocket). For stocks, use the paths containing `-stock-`. The request parameter structure is identical — only the base URL changes.
 </Note>
