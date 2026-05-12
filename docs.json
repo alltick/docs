@@ -50,6 +50,17 @@
                   "zh/getting-started/standard-headers",
                   "zh/getting-started/product-codes"
                 ]
+              },
+              {
+                "group": "产品 Code 列表",
+                "pages": [
+                  "zh/product-codes/a-shares",
+                  "zh/product-codes/hk-stocks",
+                  "zh/product-codes/us-stocks",
+                  "zh/product-codes/crypto",
+                  "zh/product-codes/commodities",
+                  "zh/product-codes/forex"
+                ]
               }
             ]
           },
@@ -127,6 +138,17 @@
                   "en/getting-started/standard-headers",
                   "en/getting-started/product-codes"
                 ]
+              },
+              {
+                "group": "Product Codes",
+                "pages": [
+                  "en/product-codes/a-shares",
+                  "en/product-codes/hk-stocks",
+                  "en/product-codes/us-stocks",
+                  "en/product-codes/crypto",
+                  "en/product-codes/commodities",
+                  "en/product-codes/forex"
+                ]
               }
             ]
           },
@@ -203,6 +225,17 @@
                   "ja/getting-started/rate-limits",
                   "ja/getting-started/standard-headers",
                   "ja/getting-started/product-codes"
+                ]
+              },
+              {
+                "group": "製品コード",
+                "pages": [
+                  "ja/product-codes/a-shares",
+                  "ja/product-codes/hk-stocks",
+                  "ja/product-codes/us-stocks",
+                  "ja/product-codes/crypto",
+                  "ja/product-codes/commodities",
+                  "ja/product-codes/forex"
                 ]
               }
             ]
