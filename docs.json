@@ -15,17 +15,14 @@
   "navbar": {
     "links": [
       {
-        "label": "alltick.co",
-        "href": "https://alltick.co"
-      },
-      {
         "label": "GitHub",
         "href": "https://github.com/alltick/realtime-forex-crypto-stock-tick-finance-websocket-api"
       }
     ],
     "primary": {
-      "type": "github",
-      "href": "https://github.com/alltick/realtime-forex-crypto-stock-tick-finance-websocket-api"
+      "type": "button",
+      "label": "alltick.co",
+      "href": "https://alltick.co"
     }
   },
   "api": {
