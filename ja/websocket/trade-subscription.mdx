@@ -1,0 +1,76 @@
+---
+title: '約定価格購読'
+description: 'リアルタイムティックデータの購読'
+---
+
+## 説明
+
+複数製品の最新約定価格（リアルタイムティックデータ）を一括購読します。各購読リクエストは前回の購読を上書きします。
+
+<Warning>
+既存の購読に製品を追加する場合は、完全な製品リストを再送信してください。例：A、B、Cを購読中にD、Eを追加する場合、A、B、C、D、Eを送信します。
+</Warning>
+
+## リクエスト - コマンドID：22004
+
+| フィールド | 型 | 必須 | 説明 |
+|-----------|------|------|------|
+| cmd_id | integer | はい | 固定値：22004 |
+| seq_id | integer | はい | リクエストシーケンスID |
+| trace | string | はい | トレースID（リクエストごとに一意） |
+| data.symbol_list | array | はい | 製品リスト |
+| data.symbol_list[].code | string | はい | 製品コード |
+
+```json
+{
+  "cmd_id": 22004,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {
+    "symbol_list": [
+      { "code": "BTCUSDT" },
+      { "code": "ETHUSDT" }
+    ]
+  }
+}
+```
+
+## レスポンス - コマンドID：22005
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "cmd_id": 22005,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {}
+}
+```
+
+## プッシュ - コマンドID：22998
+
+| フィールド | 型 | 説明 |
+|-----------|------|------|
+| code | string | 製品コード |
+| seq | string | 相場シーケンス番号 |
+| tick_time | string | タイムスタンプ（ミリ秒） |
+| price | string | 最新約定価格 |
+| volume | string | 約定数量 |
+| turnover | string | 約定金額 |
+| trade_direction | integer | 方向：0=中立、1=買い、2=売り |
+
+```json
+{
+  "cmd_id": 22998,
+  "data": {
+    "code": "BTCUSDT",
+    "seq": "1605509068000001",
+    "tick_time": "1605509068",
+    "price": "651.12",
+    "volume": "300",
+    "turnover": "12345.6",
+    "trade_direction": 1
+  }
+}
+```

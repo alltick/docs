@@ -1,0 +1,59 @@
+---
+title: 'REST API 概述'
+description: 'AllTick HTTP REST API 接口说明'
+---
+
+## 概述
+
+AllTick REST API 提供以下 HTTP 接口：
+
+| 接口 | 方法 | 说明 |
+|------|------|------|
+| /kline | GET | 单产品历史K线查询 |
+| /batch-kline | POST | 批量查询产品最新2根K线 |
+| /depth-tick | GET | 最新盘口（Order Book）查询 |
+| /trade-tick | GET | 最新成交价批量查询 |
+
+## 接口地址
+
+**股票类（美股、港股、A股）：**
+- 基础路径：`https://quote.alltick.co/quote-stock-b-api`
+
+**外汇、加密货币、贵金属、商品：**
+- 基础路径：`https://quote.alltick.co/quote-b-api`
+
+## 请求方式
+
+GET 请求的 `query` 参数需要将 JSON 进行 URL Encode 编码：
+
+```bash
+# 原始 JSON
+{
+  "trace": "unique-trace-id",
+  "data": {
+    "code": "700.HK",
+    "kline_type": 1,
+    "kline_timestamp_end": 0,
+    "query_kline_num": 2,
+    "adjust_type": 0
+  }
+}
+
+# URL Encode 后拼接到 query 参数
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=%7B%22trace%22...%7D
+```
+
+## K线类型
+
+| 值 | 类型 |
+|----|------|
+| 1 | 1分钟K |
+| 2 | 5分钟K |
+| 3 | 15分钟K |
+| 4 | 30分钟K |
+| 5 | 小时K |
+| 6 | 2小时K（股票不支持） |
+| 7 | 4小时K（股票不支持） |
+| 8 | 日K |
+| 9 | 周K |
+| 10 | 月K |

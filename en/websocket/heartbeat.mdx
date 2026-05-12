@@ -1,0 +1,32 @@
+---
+title: 'Heartbeat'
+description: 'WebSocket heartbeat keep-alive mechanism'
+---
+
+## Description
+
+Clients must send a heartbeat every 10 seconds. The server will disconnect the WebSocket connection if no heartbeat is received within 30 seconds.
+
+## Request - Command ID: 22000
+
+```json
+{
+  "cmd_id": 22000,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {}
+}
+```
+
+## Response - Command ID: 22001
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "cmd_id": 22001,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {}
+}
+```

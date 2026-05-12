@@ -1,92 +1,13 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "AllTick API",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#2563EB",
+    "light": "#3B82F6",
+    "dark": "#1D4ED8"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Customization",
-            "pages": [
-              "essentials/settings",
-              "essentials/navigation"
-            ]
-          },
-          {
-            "group": "Writing content",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/components",
-              "essentials/reusable-snippets"
-            ]
-          },
-          {
-            "group": "Agent ready",
-            "pages": [
-              "agent-ready/prompt",
-              "agent-ready/visibility",
-              "agent-ready/contextual",
-              "ai-tools/cursor",
-              "ai-tools/claude-code",
-              "ai-tools/windsurf"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API reference",
-        "groups": [
-          {
-            "group": "API documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
-      }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"
@@ -94,33 +15,237 @@
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "AllTick",
+        "href": "https://alltick.co"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+    ]
+  },
+  "api": {
+    "baseUrl": "https://quote.alltick.co",
+    "playground": {
+      "mode": "simple"
     }
   },
-  "contextual": {
-    "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+  "navigation": {
+    "languages": [
+      {
+        "language": "zh",
+        "tabs": [
+          {
+            "tab": "指南",
+            "groups": [
+              {
+                "group": "开始使用",
+                "pages": [
+                  "zh/index",
+                  "zh/getting-started/process",
+                  "zh/getting-started/api-address",
+                  "zh/getting-started/token",
+                  "zh/getting-started/rate-limits",
+                  "zh/getting-started/standard-headers",
+                  "zh/getting-started/product-codes"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "REST API",
+            "groups": [
+              {
+                "group": "概述",
+                "pages": [
+                  "zh/rest-api/introduction"
+                ]
+              },
+              {
+                "group": "股票接口",
+                "pages": [
+                  "api-reference/stock/kline",
+                  "api-reference/stock/batch-kline",
+                  "api-reference/stock/depth-tick",
+                  "api-reference/stock/trade-tick"
+                ]
+              },
+              {
+                "group": "外汇/加密货币接口",
+                "pages": [
+                  "api-reference/forex/kline",
+                  "api-reference/forex/batch-kline",
+                  "api-reference/forex/depth-tick",
+                  "api-reference/forex/trade-tick"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "WebSocket API",
+            "groups": [
+              {
+                "group": "概述",
+                "pages": [
+                  "zh/websocket/introduction"
+                ]
+              },
+              {
+                "group": "接口",
+                "pages": [
+                  "zh/websocket/heartbeat",
+                  "zh/websocket/trade-subscription",
+                  "zh/websocket/depth-subscription",
+                  "zh/websocket/cancel-subscription"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "en",
+        "tabs": [
+          {
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Getting Started",
+                "pages": [
+                  "en/index",
+                  "en/getting-started/process",
+                  "en/getting-started/api-address",
+                  "en/getting-started/token",
+                  "en/getting-started/rate-limits",
+                  "en/getting-started/standard-headers",
+                  "en/getting-started/product-codes"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "REST API",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "en/rest-api/introduction"
+                ]
+              },
+              {
+                "group": "Stock Endpoints",
+                "pages": [
+                  "api-reference/stock/kline",
+                  "api-reference/stock/batch-kline",
+                  "api-reference/stock/depth-tick",
+                  "api-reference/stock/trade-tick"
+                ]
+              },
+              {
+                "group": "Forex/Crypto Endpoints",
+                "pages": [
+                  "api-reference/forex/kline",
+                  "api-reference/forex/batch-kline",
+                  "api-reference/forex/depth-tick",
+                  "api-reference/forex/trade-tick"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "WebSocket API",
+            "groups": [
+              {
+                "group": "Overview",
+                "pages": [
+                  "en/websocket/introduction"
+                ]
+              },
+              {
+                "group": "Endpoints",
+                "pages": [
+                  "en/websocket/heartbeat",
+                  "en/websocket/trade-subscription",
+                  "en/websocket/depth-subscription",
+                  "en/websocket/cancel-subscription"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "language": "ja",
+        "tabs": [
+          {
+            "tab": "ガイド",
+            "groups": [
+              {
+                "group": "はじめに",
+                "pages": [
+                  "ja/index",
+                  "ja/getting-started/process",
+                  "ja/getting-started/api-address",
+                  "ja/getting-started/token",
+                  "ja/getting-started/rate-limits",
+                  "ja/getting-started/standard-headers",
+                  "ja/getting-started/product-codes"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "REST API",
+            "groups": [
+              {
+                "group": "概要",
+                "pages": [
+                  "ja/rest-api/introduction"
+                ]
+              },
+              {
+                "group": "株式エンドポイント",
+                "pages": [
+                  "api-reference/stock/kline",
+                  "api-reference/stock/batch-kline",
+                  "api-reference/stock/depth-tick",
+                  "api-reference/stock/trade-tick"
+                ]
+              },
+              {
+                "group": "外国為替/暗号通貨エンドポイント",
+                "pages": [
+                  "api-reference/forex/kline",
+                  "api-reference/forex/batch-kline",
+                  "api-reference/forex/depth-tick",
+                  "api-reference/forex/trade-tick"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "WebSocket API",
+            "groups": [
+              {
+                "group": "概要",
+                "pages": [
+                  "ja/websocket/introduction"
+                ]
+              },
+              {
+                "group": "エンドポイント",
+                "pages": [
+                  "ja/websocket/heartbeat",
+                  "ja/websocket/trade-subscription",
+                  "ja/websocket/depth-subscription",
+                  "ja/websocket/cancel-subscription"
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "website": "https://alltick.co"
     }
   }
 }

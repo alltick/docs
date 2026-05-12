@@ -1,0 +1,83 @@
+---
+title: 'Depth Subscription'
+description: 'Subscribe to real-time order book data'
+---
+
+## Description
+
+Subscribe to latest order book (market depth) data. Each subscription request overwrites the previous one.
+
+Maximum depth levels by product type:
+
+| Product Type | Max Depth |
+|--------------|-----------|
+| Forex, Precious Metals, Oil | 1 level |
+| Cryptocurrency | 5 levels |
+| HK Stocks | 10 levels |
+| US Stocks | 1 level |
+| A-Shares | 5 levels |
+
+## Request - Command ID: 22002
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| cmd_id | integer | Yes | Fixed: 22002 |
+| seq_id | integer | Yes | Request sequence ID |
+| trace | string | Yes | Trace ID |
+| data.symbol_list | array | Yes | Product list |
+| data.symbol_list[].code | string | Yes | Product code |
+| data.symbol_list[].depth_level | integer | No | Depth level (default: 1) |
+
+```json
+{
+  "cmd_id": 22002,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {
+    "symbol_list": [
+      { "code": "BTCUSDT", "depth_level": 5 },
+      { "code": "ETHUSDT", "depth_level": 5 }
+    ]
+  }
+}
+```
+
+## Response - Command ID: 22003
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "cmd_id": 22003,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {}
+}
+```
+
+## Push - Command ID: 22999
+
+| Field | Type | Description |
+|-------|------|-------------|
+| code | string | Product code |
+| seq | string | Quote sequence number |
+| tick_time | string | Timestamp (milliseconds) |
+| bids | array | Bid list [{price, volume}] |
+| asks | array | Ask list [{price, volume}] |
+
+```json
+{
+  "cmd_id": 22999,
+  "data": {
+    "code": "BTCUSDT",
+    "seq": "1605509068000001",
+    "tick_time": "1605509068",
+    "bids": [
+      { "price": "9.12", "volume": "100" }
+    ],
+    "asks": [
+      { "price": "9.13", "volume": "150" }
+    ]
+  }
+}
+```

@@ -1,0 +1,62 @@
+---
+title: 'APIアドレス'
+description: 'HTTP および WebSocket API エンドポイントアドレス'
+---
+
+## 株式 HTTP API
+
+ベースパス: `/quote-stock-b-api`
+
+完全URL: `https://quote.alltick.co/quote-stock-b-api`
+
+リクエスト例：
+
+```
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/batch-kline?token=YOUR_TOKEN
+https://quote.alltick.co/quote-stock-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+```
+
+## 外国為替/暗号通貨/コモディティ HTTP API
+
+ベースパス: `/quote-b-api`
+
+完全URL: `https://quote.alltick.co/quote-b-api`
+
+リクエスト例：
+
+```
+https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-b-api/batch-kline?token=YOUR_TOKEN
+https://quote.alltick.co/quote-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+```
+
+## 株式 WebSocket API
+
+ベースパス: `/quote-stock-b-ws-api`
+
+完全URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+接続例：
+
+```
+wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN
+```
+
+## 外国為替/暗号通貨/コモディティ WebSocket API
+
+ベースパス: `/quote-b-ws-api`
+
+完全URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+接続例：
+
+```
+wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
+```
+
+<Note>
+アカウントのセキュリティのため、Token情報を安全に保管してください。
+</Note>

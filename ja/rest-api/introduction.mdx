@@ -1,0 +1,59 @@
+---
+title: 'REST API 概要'
+description: 'AllTick HTTP REST API リファレンス'
+---
+
+## 概要
+
+AllTick REST API は以下のHTTPエンドポイントを提供します：
+
+| エンドポイント | メソッド | 説明 |
+|---------------|---------|------|
+| /kline | GET | 単一製品の履歴Kライン照会 |
+| /batch-kline | POST | 複数製品の最新2本Kライン一括照会 |
+| /depth-tick | GET | 最新オーダーブック照会 |
+| /trade-tick | GET | 最新約定価格一括照会 |
+
+## ベースURL
+
+**株式（米国株、香港株、A株）：**
+- `https://quote.alltick.co/quote-stock-b-api`
+
+**外国為替、暗号通貨、貴金属、コモディティ：**
+- `https://quote.alltick.co/quote-b-api`
+
+## リクエスト形式
+
+GETリクエストの `query` パラメータはURLエンコードされたJSON文字列です：
+
+```bash
+# 元のJSON
+{
+  "trace": "unique-trace-id",
+  "data": {
+    "code": "700.HK",
+    "kline_type": 1,
+    "kline_timestamp_end": 0,
+    "query_kline_num": 2,
+    "adjust_type": 0
+  }
+}
+
+# URLエンコードしてqueryパラメータに追加
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=%7B%22trace%22...%7D
+```
+
+## Kラインタイプ
+
+| 値 | タイプ |
+|----|--------|
+| 1 | 1分足 |
+| 2 | 5分足 |
+| 3 | 15分足 |
+| 4 | 30分足 |
+| 5 | 1時間足 |
+| 6 | 2時間足（株式非対応） |
+| 7 | 4時間足（株式非対応） |
+| 8 | 日足 |
+| 9 | 週足 |
+| 10 | 月足 |

@@ -1,0 +1,62 @@
+---
+title: 'API Addresses'
+description: 'HTTP and WebSocket API endpoint addresses'
+---
+
+## Stock HTTP API
+
+Base path: `/quote-stock-b-api`
+
+Full URL: `https://quote.alltick.co/quote-stock-b-api`
+
+Examples:
+
+```
+https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/batch-kline?token=YOUR_TOKEN
+https://quote.alltick.co/quote-stock-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-stock-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+```
+
+## Forex/Crypto/Commodity HTTP API
+
+Base path: `/quote-b-api`
+
+Full URL: `https://quote.alltick.co/quote-b-api`
+
+Examples:
+
+```
+https://quote.alltick.co/quote-b-api/kline?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-b-api/batch-kline?token=YOUR_TOKEN
+https://quote.alltick.co/quote-b-api/trade-tick?token=YOUR_TOKEN&query=queryData
+https://quote.alltick.co/quote-b-api/depth-tick?token=YOUR_TOKEN&query=queryData
+```
+
+## Stock WebSocket API
+
+Base path: `/quote-stock-b-ws-api`
+
+Full URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+Connection example:
+
+```
+wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN
+```
+
+## Forex/Crypto/Commodity WebSocket API
+
+Base path: `/quote-b-ws-api`
+
+Full URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+Connection example:
+
+```
+wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN
+```
+
+<Note>
+Keep your Token secure and never share it with unauthorized parties.
+</Note>

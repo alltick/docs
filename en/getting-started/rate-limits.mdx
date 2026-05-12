@@ -1,0 +1,35 @@
+---
+title: 'Rate Limits'
+description: 'HTTP and WebSocket API rate limits'
+---
+
+## HTTP Rate Limits
+
+| Plan | /kline | /batch-kline | /depth-tick | /trade-tick | Daily Limit |
+|------|--------|--------------|-------------|-------------|-------------|
+| Free | 1/10s | 1/10s | 1/10s | 1/10s | 1,000 |
+| Basic | 1/s | 1/3s | 1/s | 1/s | 86,400 |
+| Advanced | 10/s | 1/2s | 10/s | 10/s | 864,000 |
+| Pro | 20/s | 1/s | 20/s | 20/s | 1,728,000 |
+
+## K-Line Query Limits
+
+- `/kline`: Max 500 K-lines per request
+- `/batch-kline`: Max 2 K-lines per request, supports multiple products
+
+| Plan | /batch-kline Max Groups |
+|------|------------------------|
+| Free | 5 |
+| Basic | 100 |
+| Advanced | 200 |
+| Pro | 500 |
+
+## IP Limits
+
+HTTP API rate limits are based on Token only, with no IP restrictions.
+
+## WebSocket Limits
+
+- Heartbeat must be sent every 10 seconds
+- Connection will be closed if no heartbeat received within 30 seconds
+- Clients should implement automatic reconnection logic

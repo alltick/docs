@@ -1,0 +1,62 @@
+---
+title: '行情地址说明'
+description: 'HTTP 和 WebSocket API 地址说明'
+---
+
+## 股票 HTTP 接口 API 地址
+
+基本路径: `/quote-stock-b-api`
+
+完整 URL: `https://quote.alltick.co/quote-stock-b-api`
+
+请求示例：
+
+```
+https://quote.alltick.co/quote-stock-b-api/kline?token=您的token&query=queryData
+https://quote.alltick.co/quote-stock-b-api/batch-kline?token=您的token
+https://quote.alltick.co/quote-stock-b-api/trade-tick?token=您的token&query=queryData
+https://quote.alltick.co/quote-stock-b-api/depth-tick?token=您的token&query=queryData
+```
+
+## 外汇/加密货币/商品 HTTP 接口 API 地址
+
+基本路径: `/quote-b-api`
+
+完整 URL: `https://quote.alltick.co/quote-b-api`
+
+请求示例：
+
+```
+https://quote.alltick.co/quote-b-api/kline?token=您的token&query=queryData
+https://quote.alltick.co/quote-b-api/batch-kline?token=您的token
+https://quote.alltick.co/quote-b-api/trade-tick?token=您的token&query=queryData
+https://quote.alltick.co/quote-b-api/depth-tick?token=您的token&query=queryData
+```
+
+## 股票 WebSocket 接口地址
+
+基本路径: `/quote-stock-b-ws-api`
+
+完整 URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+连接示例：
+
+```
+wss://quote.alltick.co/quote-stock-b-ws-api?token=您的token
+```
+
+## 外汇/加密货币/商品 WebSocket 接口地址
+
+基本路径: `/quote-b-ws-api`
+
+完整 URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+连接示例：
+
+```
+wss://quote.alltick.co/quote-b-ws-api?token=您的token
+```
+
+<Note>
+为了您的账户安全，请确保妥善保管您的 Token 信息。
+</Note>

@@ -1,0 +1,76 @@
+---
+title: '最新成交价订阅'
+description: '订阅实时逐笔 Tick 数据'
+---
+
+## 接口说明
+
+该接口支持批量订阅产品的最新成交价（实时逐笔 Tick 数据）。每发送一次订阅请求，后台会覆盖上一次订阅。
+
+<Warning>
+追加订阅时需重新发送完整的产品列表。例如已订阅 A、B、C，想追加 D、E，需发送 A、B、C、D、E。
+</Warning>
+
+## 请求 - 协议号：22004
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| cmd_id | integer | 是 | 固定值：22004 |
+| seq_id | integer | 是 | 订阅请求标识，响应回传 |
+| trace | string | 是 | 请求追溯 ID（每次不可重复） |
+| data.symbol_list | array | 是 | 产品列表 |
+| data.symbol_list[].code | string | 是 | 产品代码 |
+
+```json
+{
+  "cmd_id": 22004,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {
+    "symbol_list": [
+      { "code": "BTCUSDT" },
+      { "code": "ETHUSDT" }
+    ]
+  }
+}
+```
+
+## 应答 - 协议号：22005
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "cmd_id": 22005,
+  "seq_id": 123,
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {}
+}
+```
+
+## 推送 - 协议号：22998
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| code | string | 产品代码 |
+| seq | string | 报价序号 |
+| tick_time | string | 报价时间戳（毫秒） |
+| price | string | 最新成交价 |
+| volume | string | 成交量 |
+| turnover | string | 成交额 |
+| trade_direction | integer | 交易方向：0=中性盘，1=主动买入，2=主动卖出 |
+
+```json
+{
+  "cmd_id": 22998,
+  "data": {
+    "code": "BTCUSDT",
+    "seq": "1605509068000001",
+    "tick_time": "1605509068",
+    "price": "651.12",
+    "volume": "300",
+    "turnover": "12345.6",
+    "trade_direction": 1
+  }
+}
+```
