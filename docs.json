@@ -15,7 +15,7 @@
   "navbar": {
     "links": [
       {
-        "label": "Website",
+        "label": "alltick.co",
         "href": "https://alltick.co"
       },
       {
@@ -24,9 +24,8 @@
       }
     ],
     "primary": {
-      "type": "button",
-      "label": "Get Started",
-      "href": "https://alltick.co/register"
+      "type": "github",
+      "href": "https://github.com/alltick/realtime-forex-crypto-stock-tick-finance-websocket-api"
     }
   },
   "api": {
@@ -69,19 +68,19 @@
               {
                 "group": "股票接口",
                 "pages": [
-                  "api-reference/stock/kline",
-                  "api-reference/stock/batch-kline",
-                  "api-reference/stock/depth-tick",
-                  "api-reference/stock/trade-tick"
+                  "zh/api-reference/stock/kline",
+                  "zh/api-reference/stock/batch-kline",
+                  "zh/api-reference/stock/depth-tick",
+                  "zh/api-reference/stock/trade-tick"
                 ]
               },
               {
                 "group": "外汇/加密货币接口",
                 "pages": [
-                  "api-reference/forex/kline",
-                  "api-reference/forex/batch-kline",
-                  "api-reference/forex/depth-tick",
-                  "api-reference/forex/trade-tick"
+                  "zh/api-reference/forex/kline",
+                  "zh/api-reference/forex/batch-kline",
+                  "zh/api-reference/forex/depth-tick",
+                  "zh/api-reference/forex/trade-tick"
                 ]
               }
             ]
@@ -140,19 +139,19 @@
               {
                 "group": "Stock Endpoints",
                 "pages": [
-                  "api-reference/stock/kline",
-                  "api-reference/stock/batch-kline",
-                  "api-reference/stock/depth-tick",
-                  "api-reference/stock/trade-tick"
+                  "en/api-reference/stock/kline",
+                  "en/api-reference/stock/batch-kline",
+                  "en/api-reference/stock/depth-tick",
+                  "en/api-reference/stock/trade-tick"
                 ]
               },
               {
                 "group": "Forex/Crypto Endpoints",
                 "pages": [
-                  "api-reference/forex/kline",
-                  "api-reference/forex/batch-kline",
-                  "api-reference/forex/depth-tick",
-                  "api-reference/forex/trade-tick"
+                  "en/api-reference/forex/kline",
+                  "en/api-reference/forex/batch-kline",
+                  "en/api-reference/forex/depth-tick",
+                  "en/api-reference/forex/trade-tick"
                 ]
               }
             ]
@@ -211,19 +210,19 @@
               {
                 "group": "株式エンドポイント",
                 "pages": [
-                  "api-reference/stock/kline",
-                  "api-reference/stock/batch-kline",
-                  "api-reference/stock/depth-tick",
-                  "api-reference/stock/trade-tick"
+                  "ja/api-reference/stock/kline",
+                  "ja/api-reference/stock/batch-kline",
+                  "ja/api-reference/stock/depth-tick",
+                  "ja/api-reference/stock/trade-tick"
                 ]
               },
               {
                 "group": "外国為替/暗号通貨エンドポイント",
                 "pages": [
-                  "api-reference/forex/kline",
-                  "api-reference/forex/batch-kline",
-                  "api-reference/forex/depth-tick",
-                  "api-reference/forex/trade-tick"
+                  "ja/api-reference/forex/kline",
+                  "ja/api-reference/forex/batch-kline",
+                  "ja/api-reference/forex/depth-tick",
+                  "ja/api-reference/forex/trade-tick"
                 ]
               }
             ]
