@@ -1,0 +1,74 @@
+---
+title: 'HTTP 相場 API アドレス説明'
+description: '株式、外国為替、暗号資産、商品の HTTP 相場 API アドレス説明。'
+---
+
+## APIアドレス説明
+
+### 株式HTTPインターフェースAPIアドレス
+
+`/quote-stock-b-api` 株式照会API
+
+照会APIはHTTPSプロトコルです。完全なURLは次のとおりです。
+
+[https://quote.alltick.co/quote-stock-b-api](https://quote.alltick.co/quote-stock-b-api)
+
+照会リクエストを送信するたびに、メソッド名とtoken情報を含める必要があります。
+
+単一商品のKラインリクエスト例:
+
+[https://quote.alltick.co/quote-stock-b-api/kline?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/kline?token=your_token&query=queryData)
+
+複数商品のKラインリクエスト例:
+
+[https://quote.alltick.co/quote-stock-b-api/batch-kline?token=your_token](https://quote.alltick.co/quote-stock-b-api/batch-kline?token=your_token)
+
+注意: 複数商品のKラインをリクエストする場合、リクエストパラメータはbodyに配置します。
+
+最新約定価格リクエスト例:
+
+[https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData)
+
+最新板情報リクエスト例:
+
+[https://quote.alltick.co/quote-stock-b-api/depth-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/depth-tick?token=your_token&query=queryData)
+
+具体的な呼び出し方法は、HTTPインターフェース一覧を確認してください。
+
+### 外国為替、暗号資産（デジタル通貨）、商品（貴金属）HTTPインターフェースAPIアドレス
+
+`/quote-b-api` 外国為替、暗号資産（デジタル通貨）、商品（貴金属）照会API
+
+照会APIはHTTPSプロトコルです。完全なURLは次のとおりです。
+
+[https://quote.alltick.co/quote-b-api](https://quote.alltick.co/quote-b-api)
+
+照会リクエストを送信するたびに、メソッド名とtoken情報を含める必要があります。
+
+単一商品のKラインリクエスト例:
+
+[https://quote.alltick.co/quote-b-api/kline?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/kline?token=your_token&query=queryData)
+
+複数商品のKラインリクエスト例:
+
+[https://quote.alltick.co/quote-b-api/batch-kline?token=your_token](https://quote.alltick.co/quote-b-api/batch-kline?token=your_token)
+
+注意: 複数商品のKラインをリクエストする場合、リクエストパラメータはbodyに配置します。
+
+最新約定価格リクエスト例:
+
+[https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData)
+
+最新板情報リクエスト例:
+
+[https://quote.alltick.co/quote-b-api/depth-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/depth-tick?token=your_token&query=queryData)
+
+具体的な呼び出し方法は、HTTPインターフェース一覧を確認してください。
+
+***
+
+#### 公式ウェブサイト
+
+<Note>
+公式サイト：<a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

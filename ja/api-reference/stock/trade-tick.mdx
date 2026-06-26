@@ -1,5 +1,144 @@
 ---
-title: 'GET 株式最新約定価格照会'
-description: '複数の株式製品の最新約定価格（ティックデータ）を一括照会します。'
-openapi: '/api-reference/openapi-ja.json GET /quote-stock-b-api/trade-tick'
+title: 'GET 最新約定価格（最新Tick / 現在値 / 最新価格）一括照会'
 ---
+
+## GET /trade-tick
+
+## インターフェース説明
+
+このインターフェースは商品の最新約定価格（最新Tickデータ、現在値または最新価格）の一括照会に対応しています。履歴約定価格（履歴Tickデータ）の照会には対応していません。
+
+## リクエスト頻度
+
+| プラン | 単独リクエスト | 複数HTTPインターフェースを同時にリクエスト |
+| --- | --- | --- |
+| 無料 | 1. 10秒ごとに1回リクエスト可能。<br />2. 1回の一括照会で最大5商品まで照会可能。 | 1. 10秒に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は10秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大10回（6秒に1回）。<br />4. 1日の最大リクエスト数は1,000回。超過した場合は翌日未明に利用が回復します。 |
+| ベーシック | 1. 1秒ごとに1回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. 同一秒内に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は3秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大60回（1秒に1回）。<br />4. 1日の最大リクエスト数は86,400回。超過した場合は翌日未明に利用が回復します。 |
+| アドバンス | 1. 1秒あたり最大10回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. すべてのインターフェース合計で1秒あたり10回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は2秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大600回（1秒に10回）。<br />4. 1日の最大リクエスト数は864,000回。超過した場合は翌日未明に利用が回復します。 |
+| プロフェッショナル | 1. 1秒あたり最大20回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+| 香港株すべて | 1. 1秒あたり最大20回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+| A株すべて | 1. 1秒あたり最大20回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+| 米国株すべて | 1. 1秒あたり最大20回リクエスト可能。<br />2. GET URL長の制限により、1回のリクエストでは最大50個のcodeを推奨します。 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline は1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+
+## インターフェース制限
+
+1. 必ずお読みください: [HTTPインターフェース制限](/ja/getting-started/http-interface-restrictions)
+2. 必ずお読みください: [エラーコード説明](/ja/getting-started/error-code-description)
+
+## インターフェースURL
+
+**1. 米国株、香港株、A株、主要指数データ:**
+
+* ベースパス: `/quote-stock-b-api/trade-tick`
+* 完全URL: <a href="https://quote.alltick.co/quote-stock-b-api/trade-tick">https://quote.alltick.co/quote-stock-b-api/trade-tick</a>
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品:**
+
+* ベースパス: `/quote-b-api/trade-tick`
+* 完全URL: <a href="https://quote.alltick.co/quote-b-api/trade-tick">https://quote.alltick.co/quote-b-api/trade-tick</a>
+
+## リクエスト例
+
+**1. 米国株、香港株、A株、主要指数データ:**
+
+照会リクエストを送信する際は、メソッド名とtoken情報を含めます。例:
+
+[https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData)
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品:**
+
+照会リクエストを送信する際は、メソッド名とtoken情報を含めます。例:
+
+[https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData)
+
+## リクエストパラメータ
+
+| 名称 | 位置 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| token | query | string | いいえ |  |
+| query | query | string | いいえ | queryリクエストパラメータ説明を参照してください。 |
+
+## queryリクエストパラメータ
+
+次のJSONをURLエンコードし、URLの `query` クエリ文字列に設定します。
+
+```json
+{
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "symbol_list": [
+      {
+        "code": "857.HK"
+      },
+      {
+        "code": "UNH.US"
+      }
+    ]
+  }
+}
+```
+
+| 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| trace | string | はい |  |
+| data | object | はい |  |
+| » symbol_list | [object] | はい |  |
+| »» code | string | いいえ | コード。<a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">codeリスト</a>から照会するcodeを選択してください。<br />**注意: code値は大文字・小文字を区別し、商品リスト内のcodeと一致させる必要があります。** |
+
+## レスポンス例
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "tick_list": [
+      {
+        "code": "857.HK",
+        "seq": "30841439",
+        "tick_time": "1677831545217",
+        "price": "136.302",
+        "volume": "0",
+        "turnover": "0",
+        "trade_direction": 0
+      }
+    ]
+  }
+}
+```
+
+## レスポンス結果
+
+| ステータスコード | ステータスの意味 | 説明 | データモデル |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+## レスポンスデータ構造
+
+| 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » ret | integer | true | 戻りコード |
+| » msg | string | true | 戻りコードに対応するメッセージ |
+| » trace | string | true | リクエストトレース |
+| » data | object | true |  |
+| »» tick_list | [object] | true |  |
+| »»» code | string | false | コード |
+| »»» seq | string | false | シーケンス番号 |
+| »»» tick_time | string | false | タイムスタンプ |
+| »»» price | string | false | 約定価格 |
+| »»» volume | string | false | 約定数量 |
+| »»» turnover | string | false | 約定金額 |
+| »»» trade_direction | integer | false | 取引方向:<br />1. 0はデフォルト値、1は買い、2は売りです。<br />2. 外国為替、貴金属、エネルギーはデフォルトで1のみ返します。<br />3. 株式と暗号資産は市場状況により0、1、2を返す場合があります。<br />4. 詳細:<br />0: 中立。最良買気配と最良売気配の間の価格で約定したことを示します。<br />1: アグレッシブ買い。売気配価格またはそれ以上の価格で約定したことを示します。<br />2: アグレッシブ売り。買気配価格またはそれ以下の価格で約定したことを示します。 |
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## インターフェースデバッグ
+
+<Card title="GET /trade-tick デバッグモジュールを開く" icon="play" href="/ja/api-reference/stock/debug/trade-tick">
+  デバッグ可能なモジュールでパラメータを入力し、リクエストを送信します。
+</Card>

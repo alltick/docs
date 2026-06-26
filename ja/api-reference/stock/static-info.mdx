@@ -1,0 +1,148 @@
+---
+title: 'GET 株式商品の基本情報一括照会'
+---
+
+## GET /static_info
+
+## インターフェース説明
+
+このインターフェースは、米国株、香港株、A株商品の一部基本情報の一括照会のみ対応しています。
+
+## **リクエスト頻度**
+
+| プラン | 単独リクエスト | 複数HTTPインターフェースを同時にリクエスト |
+| --- | --- | --- |
+| 無料 | 10秒ごとに1回リクエスト可能 | 1. 10秒に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは10秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大10回（6秒に1回）。<br />4. 1日の最大リクエスト数は1,000回。超過した場合は翌日未明に利用が回復します。 |
+| ベーシック | 1秒ごとに1回リクエスト可能 | 1. 同一秒内に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは3秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大60回（1秒に1回）。<br />4. 1日の最大リクエスト数は86,400回。超過した場合は翌日未明に利用が回復します。 |
+| アドバンス | 1秒あたり最大10回リクエスト可能 | 1. すべてのインターフェース合計で1秒あたり10回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは2秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大600回（1秒に10回）。<br />4. 1日の最大リクエスト数は864,000回。超過した場合は翌日未明に利用が回復します。 |
+| プロフェッショナル | 1秒あたり最大20回リクエスト可能 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+| 香港株すべて | 1秒あたり最大20回リクエスト可能 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+| A株すべて | 1秒あたり最大20回リクエスト可能 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+| 米国株すべて | 1秒あたり最大20回リクエスト可能 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+
+## インターフェース制限
+
+1. 必ずお読みください: [HTTPインターフェース制限](/ja/getting-started/http-interface-restrictions)
+
+2. 必ずお読みください: [エラーコード説明](/ja/getting-started/error-code-description)
+
+## **インターフェースURL**
+
+* **ベースパス**: `/quote-stock-b-api/static_info`
+* **完全URL**: `https://quote.alltick.co/quote-stock-b-api/static_info`
+
+## **リクエスト例**
+
+照会リクエストを送信する際は、メソッド名とtoken情報を含める必要があります。例:
+
+```text
+https://quote.alltick.co/quote-stock-b-api/static_info?token=your_token&query=queryData
+```
+
+## リクエストパラメータ
+
+| 名称 | 位置 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| token | query | string | いいえ |  |
+| query | query | string | いいえ | queryリクエストパラメータ説明を参照してください。 |
+
+**次のJSONをURLエンコードし、URLのクエリ文字列パラメータ `query` に設定します。**
+
+```json
+{
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "symbol_list": [
+      {
+        "code": "857.HK"
+      },
+      {
+        "code": "UNH.US"
+      }
+    ]
+  }
+}
+```
+
+## queryリクエストパラメータ
+
+| 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| trace | string | はい |  |
+| data | object | はい |  |
+| » symbol_list | [object] | はい |  |
+| »» code | string | いいえ | コード: <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">[codeリストを開く]</a><br />**注意: code値の大文字・小文字は商品リスト内のcodeと一致させる必要があります。** |
+
+## レスポンス例
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "static_info_list": [
+      {
+        "board": "HKEquity",
+        "bps": "101.7577888985738336",
+        "circulating_shares": "9267359712",
+        "currency": "HKD",
+        "dividend_yield": "3.4558141358352833",
+        "eps": "13.7190213011686429",
+        "eps_ttm": "18.0567016900844671",
+        "exchange": "SEHK",
+        "hk_shares": "9267359712",
+        "lot_size": "100",
+        "name_cn": "Tencent Holdings",
+        "name_en": "TENCENT",
+        "name_hk": "Tencent Holdings",
+        "symbol": "700.HK",
+        "total_shares": "9267359712"
+      }
+    ]
+  }
+}
+```
+
+## レスポンス結果
+
+| ステータスコード | ステータスの意味 | 説明 | データモデル |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+## レスポンスデータ構造
+
+| 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » ret | integer | true | 戻りコード |
+| » msg | string | true | 戻りコードに対応するメッセージ |
+| » trace | string | true | リクエストトレース |
+| » data | object | true |  |
+| »» static_info_list | [object] | true |  |
+| »»» board | string | false | 株式ボード |
+| »»» bps | string | false | 1株当たり純資産 |
+| »»» circulating_shares | string | false | 流通株式数 |
+| »»» currency | string | false | 取引通貨 |
+| »»» dividend_yield | string | false | 配当利回り |
+| »»» eps | string | false | 1株当たり利益 |
+| »»» eps_ttm | string | false | 1株当たり利益（TTM） |
+| »»» exchange | string | false | 商品が所属する取引所 |
+| »»» hk_shares | string | false | 香港株株式数（香港株のみ） |
+| »»» lot_size | string | false | 1ロットあたり株数 |
+| »»» name_cn | string | false | 商品の簡体字中国語名 |
+| »»» name_en | string | false | 商品の英語名 |
+| »»» name_hk | string | false | 商品の繁体字中国語名 |
+| »»» symbol | string | false | 商品コード |
+| »»» total_shares | string | false | 総株式数 |
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## インターフェースデバッグ
+
+<Card title="GET /static_info デバッグモジュールを開く" icon="play" href="/ja/api-reference/stock/debug/static-info">
+  デバッグ可能なモジュールでパラメータを入力し、リクエストを送信します。
+</Card>

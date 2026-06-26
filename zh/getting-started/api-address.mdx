@@ -20,6 +20,10 @@ AllTick 按资产类别划分端点。股票类使用独立的 Base URL，其他
 | `/batch-kline` | POST | 批量查询最新 2 根 K 线 |
 | `/trade-tick` | GET | 最新成交价查询 |
 | `/depth-tick` | GET | 最新盘口深度查询 |
+| `/static_info` | GET | 股票产品基础信息批量查询，仅股票类支持 |
+| `/api/suspension/sse` | GET | 上海证券交易所停复牌信息查询 |
+| `/api/suspension/nyse` | GET | 纽约证券交易所停复牌信息查询 |
+| `/api/suspension/nasdaq` | GET | 纳斯达克交易所停复牌信息查询 |
 
 请求示例：
 
@@ -36,4 +40,8 @@ https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=URL_ENCO
 
 <Note>
 查询外汇或加密货币品种时，使用 `/quote-b-api`（REST）或 `/quote-b-ws-api`（WebSocket）。查询股票时使用带 `-stock-` 的路径。请求参数结构完全相同，只需切换 Base URL。
+</Note>
+
+<Note>
+`/static_info` 和 `/api/suspension/*` 为股票相关接口。`/static_info` 使用 `https://quote.alltick.co/quote-stock-b-api/static_info`，停复牌接口使用 `https://quote.alltick.co/api/suspension/{sse|nyse|nasdaq}`。
 </Note>

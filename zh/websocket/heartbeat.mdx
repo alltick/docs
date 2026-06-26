@@ -1,30 +1,43 @@
 ---
 title: '心跳'
-description: '保持 WebSocket 连接的心跳机制'
 ---
 
-每 10 秒发送一次心跳消息。30 秒内未收到心跳，服务端将断开连接。
+## 接口说明
 
-## 请求（cmd_id: 22000）
+要求请求者每10秒发送一次，在30秒内如果没有收到心跳请求，就会认为超时，断开请求者的websocket连接
 
-```json
-{
-  "cmd_id": 22000,
-  "seq_id": 123,
-  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
-  "data": {}
-}
-```
+## 请求-协议号：22000
 
-## 响应（cmd_id: 22001）
+### 数据结构(json)
 
 ```json
 {
-  "ret": 200,
-  "msg": "ok",
-  "cmd_id": 22001,
-  "seq_id": 123,
-  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
-  "data": {}
+    "cmd_id":22000,
+    "seq_id":123,
+    "trace":"3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+    "data":{
+    }
 }
 ```
+
+## 应答-协议号：22001
+
+### 数据结构(json)
+
+```json
+{
+    "ret":200,
+    "msg":"ok",
+    "cmd_id":22001,
+    "seq_id":123,
+    "trace":"3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+    "data":{
+    }
+}
+```
+
+#### AllTick网站
+
+<Note>
+官方网站：<a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

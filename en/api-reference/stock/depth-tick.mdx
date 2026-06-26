@@ -1,7 +1,159 @@
+﻿---
+title: 'GET Order Book (Latest Depth / Order Book) Query'
 ---
-title: 'GET Latest Order Book Quotation API - Real-Time Stock Bid-Ask Depth HTTP Endpoint | AllTick'
-description: "This documentation describes AllTick's GET latest order book quotation API for stocks, which provides real-time bid-ask quotes and multi-level order book depth for US, Hong Kong, and China A-share markets, including full request URL, parameters, response fields, and frequency limits."
-seo:
-  keywords: 'AllTick latest order book API, stock bid-ask depth HTTP, realtime order book data, US HK CN stocks depth, depth-tick endpoint, market making data, quant trading orderbook feed'
-openapi: '/api-reference/openapi.json GET /quote-stock-b-api/depth-tick'
----
+
+## GET /depth-tick
+
+## Interface Description
+
+The following is the maximum order book depth for each product type:
+
+1. For inactive products, the available depth may be smaller than the maximum listed below. This is normal.
+2. One side of the order book may be empty. For example, when a stock reaches its limit up or limit down price, one side of the order book may be empty.
+
+| Item | Forex, Precious Metals, Crude Oil | Cryptocurrencies | Hong Kong Stocks | US Stocks | A Shares |
+| --- | --- | --- | --- | --- | --- |
+| Depth Description | Up to 1 level | Up to 5 levels | Up to 10 levels | Up to 1 level | Up to 5 levels |
+
+## Request Frequency
+
+| Plan | Individual Request | Multiple HTTP Interfaces Requested Together |
+| --- | --- | --- |
+| Free | One request every 10 seconds | 1. Only one interface request every 10 seconds.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 10-second interval.**<br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | One request per second | 1. Only one interface request in the same second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 3-second interval.**<br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | Up to 10 requests per second | 1. All interfaces combined: up to 10 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 2-second interval.**<br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All A Shares | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All US Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+
+## Interface Limitations
+
+1. Be sure to read: [HTTP Interface Restrictions](/en/getting-started/http-interface-restrictions)
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## API Endpoints
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+* Base Path: `/quote-stock-b-api/depth-tick`
+* Full URL: <a href="https://quote.alltick.co/quote-stock-b-api/depth-tick">https://quote.alltick.co/quote-stock-b-api/depth-tick</a>
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+* Base Path: `/quote-b-api/depth-tick`
+* Full URL: <a href="https://quote.alltick.co/quote-b-api/depth-tick">https://quote.alltick.co/quote-b-api/depth-tick</a>
+
+## Request Examples
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+When sending a query request, include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-stock-b-api/depth-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/depth-tick?token=your_token&query=queryData)
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+When sending a query request, include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-b-api/depth-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/depth-tick?token=your_token&query=queryData)
+
+## Request Parameters
+
+| Name | Position | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| token | query | string | No |  |
+| query | query | string | No | See the query request parameter description. |
+
+## Query Request Parameters
+
+URL-encode the following JSON and assign it to the `query` query string in the URL.
+
+```json
+{
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "symbol_list": [
+      {
+        "code": "857.HK"
+      },
+      {
+        "code": "UNH.US"
+      }
+    ]
+  }
+}
+```
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| trace | string | Yes |  |
+| data | object | Yes |  |
+| » symbol_list | [object] | Yes |  |
+| »» code | string | No | Code. Select the code you want to query from the <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">code list</a>.<br />**Note: The code value is case-sensitive and must match the code in the product list.** |
+
+## Response Example
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "tick_list": [
+      {
+        "code": "857.HK",
+        "seq": "30686349",
+        "tick_time": "1677830357227",
+        "bids": [
+          {
+            "price": "136.424",
+            "volume": "100000.00"
+          }
+        ],
+        "asks": [
+          {
+            "price": "136.427",
+            "volume": "400000.00"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## Response Result
+
+| Status Code | Status Meaning | Description | Data Model |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| » ret | integer | true | Return code |
+| » msg | string | true | Message corresponding to the return code |
+| » trace | string | true | Request trace |
+| » data | object | true |  |
+| »» tick_list | [object] | true |  |
+| »»» code | string | false | Code |
+| »»» seq | string | false | Quote sequence number |
+| »»» tick_time | string | false | Quote timestamp |
+| »»» bids | [object] | false | Bid list |
+| »»»» price | string | false | Price |
+| »»»» volume | string | false | Volume |
+| »»» asks | [object] | false | Ask list |
+| »»»» price | string | false | Price |
+| »»»» volume | string | false | Volume.<br />1. Some CFD indices do not provide volume.<br />2. Forex, precious metals, energy, stocks, and cryptocurrencies all provide volume. |
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## Interface Debug
+
+<Card title="Open GET /depth-tick Debug Module" icon="play" href="/en/api-reference/stock/debug/depth-tick">
+  Use the debuggable module to fill in parameters and send requests.
+</Card>

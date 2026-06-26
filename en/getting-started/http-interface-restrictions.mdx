@@ -1,0 +1,89 @@
+﻿---
+title: 'HTTP Interface Restrictions'
+description: 'Request frequency, IP, K-line, latest trade price, order book, and static information query limits for HTTP APIs.'
+---
+
+## HTTP Interface Restrictions
+
+### <strong>1. Frequency Limits</strong>
+
+| Plan | Individual Request | Multiple HTTP Interfaces Requested Together |
+| --- | --- | --- |
+| Free | **/kline:** one request every 10 seconds<br />**/batch-kline:** <mark style={{ color: 'red' }}>one request every 10 seconds</mark><br />**/depth-tick:** one request every 10 seconds<br />**/trade-tick:** one request every 10 seconds<br />**/static_info:** one request every 10 seconds<br /><br />**/api/suspension/sse:** one request every 1 minute<br />**/api/suspension/nyse:** one request every 1 minute<br />**/api/suspension/nasdaq:** one request every 1 minute | 1. Only one interface can be requested every 10 seconds.<br /><mark style={{ color: 'red' }}>2. Note that /batch-kline requires a 10-second interval.</mark><br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | **/kline:** one request per second<br />**/batch-kline:** <mark style={{ color: 'red' }}>one request every 3 seconds</mark><br />**/depth-tick:** one request per second<br />**/trade-tick:** one request per second<br />**/static_info:** one request per second<br /><br />**/api/suspension/sse:** one request every 1 minute<br />**/api/suspension/nyse:** one request every 1 minute<br />**/api/suspension/nasdaq:** one request every 1 minute | 1. Only one interface can be requested in the same second.<br /><mark style={{ color: 'red' }}>2. Note that /batch-kline requires a 3-second interval.</mark><br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | **/kline:** up to 10 requests per second<br />**/batch-kline:** <mark style={{ color: 'red' }}>one request every 2 seconds</mark><br />**/depth-tick:** up to 10 requests per second<br />**/trade-tick:** up to 10 requests per second<br />**/static_info:** up to 10 requests per second<br /><br />**/api/suspension/sse:** one request every 1 minute<br />**/api/suspension/nyse:** one request every 1 minute<br />**/api/suspension/nasdaq:** one request every 1 minute | 1. All interfaces combined: up to 10 requests per second.<br /><mark style={{ color: 'red' }}>2. Note that /batch-kline requires a 2-second interval.</mark><br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | **/kline:** up to 20 requests per second<br />**/batch-kline:** <mark style={{ color: 'red' }}>one request per second</mark><br />**/depth-tick:** up to 20 requests per second<br />**/trade-tick:** up to 20 requests per second<br />**/static_info:** up to 20 requests per second<br /><br />**/api/suspension/sse:** one request every 1 minute<br />**/api/suspension/nyse:** one request every 1 minute<br />**/api/suspension/nasdaq:** one request every 1 minute | 1. All interfaces combined: up to 20 requests per second.<br /><mark style={{ color: 'red' }}>2. Note that /batch-kline requires a 1-second interval.</mark><br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | Same as Professional | Same as Professional |
+| All A Shares | Same as Professional | Same as Professional |
+| All US Stocks | Same as Professional | Same as Professional |
+
+### <strong>2. IP Limits</strong>
+
+* HTTP interfaces limit request frequency only by Token and do not restrict IP addresses.
+* **Example**: the Basic plan allows one request per second. If a Token requests `/kline` once at 14:03:01 and calls `/trade-tick` once in the same minute, the backend service will respond normally. If the same Token sends two `/kline` requests within 14:03:01, the first request will be served normally and the second request will receive an error response.
+
+### <strong>3. K-line Query Limits</strong>
+
+* **/kline:** each query request can request K-line data for only one product code. Each query returns at most 500 K-lines. If more than 500 K-lines are requested, the system queries and returns 500.
+* **/batch-kline:** each query request can request K-line data for multiple product codes. The number of code/type groups allowed per batch varies by plan. Each query returns at most 2 K-lines. If more than 2 K-lines are requested, the system queries and returns 2.
+
+| Plan | Maximum code/type groups for /batch-kline |
+| --- | --- |
+| Free | Up to 5 groups per request. One group = one product + one K-line type. For example, requesting BTCUSDT 1-minute and 5-minute K-lines counts as 2 groups. |
+| Basic | Up to 100 groups per request. |
+| Premium | Up to 200 groups per request. |
+| Professional | Up to 500 groups per request. |
+| All Hong Kong Stocks | Up to 500 groups per request. |
+| All A Shares | Up to 500 groups per request. |
+| All US Stocks | Up to 500 groups per request. |
+
+### <strong>4. Latest Trade Price Query Limits</strong>
+
+* **/trade-tick:** each query request can request the latest trade price for multiple product codes. The number of codes allowed per batch varies by plan.
+* If the request exceeds the number of codes allowed by the plan, the system only queries and returns results for the first codes within the allowed number.
+
+| Plan | Maximum codes per request |
+| --- | --- |
+| Free | Up to 5 codes per request. |
+| Basic | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+| Premium | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+| Professional | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+| All Hong Kong Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+| All A Shares | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+| All US Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/trade-subscription) |
+
+### <strong>5. Order Book Query Limits</strong>
+
+* **/depth-tick:** each query request can request order book data for multiple product codes. The number of codes allowed per batch varies by plan.
+* If the request exceeds the number of codes allowed by the plan, the system only queries and returns results for the first codes within the allowed number.
+
+| Plan | Maximum codes per request |
+| --- | --- |
+| Free | Up to 5 codes per request. |
+| Basic | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+| Premium | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+| Professional | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+| All Hong Kong Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+| All A Shares | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+| All US Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. For more batch subscriptions, use the WebSocket interface: [Interface](/en/websocket/depth-subscription) |
+
+### <strong>6. Static Information Query Limits</strong>
+
+* **/static_info:** each query request can request static information for multiple product codes. The number of codes allowed per batch varies by plan.
+* If the request exceeds the number of codes allowed by the plan, the system only queries and returns results for the first codes within the allowed number.
+
+| Plan | Maximum codes per request |
+| --- | --- |
+| Free | Up to 5 codes per request. |
+| Basic | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+| Premium | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+| Professional | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+| All Hong Kong Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+| All A Shares | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+| All US Stocks | Due to GET URL length limits, a maximum of 50 codes per request is recommended. |
+
+#### Notes
+
+* Plan your request strategy according to these limits to avoid unnecessary service interruptions.
+* These limits ensure fair service access for all users and protect backend systems from excessive load.
+* If you have questions or need further help, contact customer support.

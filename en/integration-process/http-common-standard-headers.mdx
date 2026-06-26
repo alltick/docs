@@ -1,0 +1,44 @@
+﻿---
+title: 'HTTP Common Standard Header'
+description: 'Common standard headers for HTTP requests and responses.'
+---
+
+## Common Request Header Description
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| trace | Trace ID | string | Yes | Generated uniquely by the requester. The response keeps the same value as the request. Maximum length: 64. |
+| data | Data body | object | Yes | See each interface definition for the specific data format. |
+
+```json
+{
+  "trace": "c2a8a146-a647-4d6f-ac07-8c4805bf0b74",
+  "data": {}
+}
+```
+
+## Common Response Header Description
+
+| Field | Name | Type | Description |
+| --- | --- | --- | --- |
+| ret | Return value | int32 | [Error Code Description](/en/getting-started/error-code-description) |
+| msg | Message | string | Specific description of success or failure. |
+| trace | Trace ID | string | Generated uniquely by the requester. The response keeps the same value as the request. Maximum length: 64. |
+| data | Data body | object | See each interface definition for the specific data format. |
+
+```json
+{
+  "ret": 202,
+  "msg": "request data param invalid",
+  "trace": "c2a8a146-a647-4d6f-ac07-8c4805bf0b74",
+  "data": {}
+}
+```
+
+***
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

@@ -1,11 +1,14 @@
 ---
 title: 'ハートビート'
-description: 'WebSocket 接続維持のための Ping/Pong'
 ---
 
-10 秒ごとにハートビートを送信します。30 秒間ハートビートがないとサーバーが接続を切断します。
+## インターフェース説明
 
-## リクエスト（cmd_id: 22000）
+リクエスト元は10秒ごとにハートビートを送信する必要があります。30秒以内にハートビートリクエストを受信しない場合はタイムアウトとみなし、リクエスト元のWebSocket接続を切断します。
+
+## リクエスト - プロトコル番号: 22000
+
+### データ構造（JSON）
 
 ```json
 {
@@ -16,7 +19,9 @@ description: 'WebSocket 接続維持のための Ping/Pong'
 }
 ```
 
-## レスポンス（cmd_id: 22001）
+## レスポンス - プロトコル番号: 22001
+
+### データ構造（JSON）
 
 ```json
 {
@@ -28,3 +33,9 @@ description: 'WebSocket 接続維持のための Ping/Pong'
   "data": {}
 }
 ```
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

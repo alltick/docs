@@ -1,0 +1,73 @@
+﻿---
+title: 'WebSocket Interface Restrictions'
+description: 'IP, call frequency, connection count, and product code subscription limits for WebSocket APIs.'
+---
+
+## WebSocket Interface Restrictions
+
+## <strong>1. IP Limits</strong>
+
+#### 1.1 The number of WebSocket connections is limited by the number allowed for the Token, not by IP address.
+
+* Example: the Basic plan allows only one WebSocket connection per Token. If IP address A has already started one WebSocket connection, a second WebSocket connection using the same IP address A will be rejected, and a second WebSocket connection using IP address B will also be rejected. Both are rejected because the Basic plan allows only one WebSocket connection.
+* Example: the Premium plan allows three WebSocket connections per Token. You may start three WebSocket connections from IP address A, or start one connection each from IP addresses A, B, and C, as long as the total number of connections does not exceed three.
+
+#### 1.2 Stock/index data and forex/precious-metals/crude-oil data use different request URLs. Connecting to both data categories at the same time is counted as one WebSocket connection, and both categories can be requested simultaneously.
+
+* Example: the Basic plan allows only one WebSocket connection per Token. If IP address A has already started one WebSocket connection for stock data, you can still start one WebSocket connection for forex/precious-metals data from IP address A or IP address B.
+
+## <strong>2. Interface Call Frequency Limits</strong>
+
+#### 2.1 Frequency limits for each interface
+
+* <strong>Latest trade price (tick-by-tick) interface:</strong> one request per second.
+* <strong>Order Book interface:</strong> one request per second.
+
+#### 2.2 When requesting multiple interfaces in the same WebSocket connection, the interval between requests must be <strong>at least 1 second</strong>.
+
+* Example: if user A sends a WebSocket request for the latest trade price interface (request protocol number 22004) at 28:30 and tries to send another latest order book request (request protocol number 22002) in the same second, the second request will be rejected by the system.
+
+#### 2.3 When starting multiple WebSocket requests across multiple WebSocket connections, each WebSocket request must be spaced <strong>at least 3 seconds</strong> apart.
+
+* Example: user A has purchased the Premium plan, which supports three simultaneous WebSocket connections. If user A starts the first WebSocket connection at 28:30, they should wait 3 seconds and start the second subscription at 28:34. After both subscriptions succeed, keep sending a heartbeat every 10 seconds and the interface will push data in real time.
+
+#### 2.4 When the connection is disconnected and repeated reconnection is needed:
+
+* Free plan users: at least 10 seconds between two reconnection attempts.
+* Paid users, including Basic, Premium, Professional, All Hong Kong Stocks, All A Shares, and All US Stocks: at least 3 seconds between two reconnection attempts.
+
+## <strong>3. Connection Count Limits</strong>
+
+* Different plans have different connection count limits, as shown below.
+* If a connection attempt exceeds the specified limit, the excess connection attempt will be disconnected directly.
+
+| Plan | WebSocket Connections |
+| --- | --- |
+| Free | Only 1 WebSocket connection |
+| Basic | Only 1 WebSocket connection |
+| Premium | Up to 3 WebSocket connections |
+| Professional | Up to 10 WebSocket connections |
+| All Hong Kong Stocks | Up to 10 WebSocket connections |
+| All A Shares | Up to 10 WebSocket connections |
+| All US Stocks | Up to 10 WebSocket connections |
+
+## <strong>4. Product Code Subscription Limits</strong>
+
+* A single WebSocket connection can subscribe to only a limited number of product codes at one time.
+* If the subscription request exceeds the specified limit, the system will only process the first requests within the limit and ignore the rest.
+
+| Plan | Code Subscription Limit |
+| --- | --- |
+| Free | **Latest trade price (tick-by-tick):** up to 5 products at the same time<br />**Order Book:** up to 5 products at the same time |
+| Basic | **Latest trade price (tick-by-tick):** up to 100 products at the same time<br />**Order Book:** up to 100 products at the same time |
+| Premium | **Latest trade price (tick-by-tick):** up to 200 products at the same time<br />**Order Book:** up to 200 products at the same time |
+| Professional | **Latest trade price (tick-by-tick):** up to 3000 products at the same time<br />**Order Book:** up to 3000 products at the same time |
+| All Hong Kong Stocks | **Latest trade price (tick-by-tick):** up to 3000 products at the same time<br />**Order Book:** up to 3000 products at the same time |
+| All A Shares | **Latest trade price (tick-by-tick):** up to 3000 products at the same time<br />**Order Book:** up to 3000 products at the same time |
+| All US Stocks | **Latest trade price (tick-by-tick):** up to 3000 products at the same time<br />**Order Book:** up to 3000 products at the same time |
+
+#### Notes
+
+* Plan your WebSocket connections and request strategy according to these limits to avoid unnecessary service interruptions.
+* These limits ensure fair and efficient access for all users and protect backend services from improper load.
+* If you encounter any problem or need further help, contact the technical support team.

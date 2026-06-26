@@ -1,23 +1,73 @@
 ---
-title: '約定価格購読'
-description: 'リアルタイム Tick データの購読'
+title: '最新約定価格（リアルタイムTickデータ、現在値、最新価格）一括購読'
 ---
 
-製品の最新約定価格（リアルタイム Tick）を購読します。各購読リクエストは前回を上書きします。
+## インターフェース説明
 
-<Warning>
-銘柄を追加する場合は完全なリストを再送信してください。例：A、B、C を購読中に D を追加する場合、A、B、C、D を送信。
-</Warning>
+このインターフェースは、商品の最新約定価格（リアルタイムTickデータ、現在値および最新価格）の一括購読に対応しています。履歴約定価格（履歴Tickデータ）には対応していません。
 
-## リクエスト（cmd_id: 22004）
+各WebSocket接続では、このリクエストを送信するたびに、バックエンドはデフォルトで前回の購読リクエストを上書きします。たとえば、最初に商品A、B、Cを購読しており、E、F、Gを追加したい場合は、A、B、C、E、F、Gをまとめて再送信する必要があります。購読が成功するとデータがプッシュされます。
 
-| フィールド | 型 | 必須 | 説明 |
-|-----------|------|------|------|
-| cmd_id | integer | はい | 固定値 22004 |
-| seq_id | integer | はい | シーケンス番号 |
-| trace | string | はい | 追跡 ID（一意） |
-| data.symbol_list | array | はい | 銘柄リスト |
-| data.symbol_list[].code | string | はい | 製品コード |
+注意事項:
+
+1. 購読に一度成功した後は、頻繁に購読リクエストを再送信する必要はありません。10秒ごとにハートビートを送信する必要があり、インターフェースはリアルタイムでデータをプッシュします。30秒以内にハートビートリクエストを受信しない場合はタイムアウトとみなし、リクエスト元のWebSocket接続を切断します。
+
+2. 接続時には、ネットワークなどの原因で切断された後に自動再接続できるよう、自動再接続ロジックを追加できます。
+
+## インターフェース制限
+
+1. 必ずお読みください: [WebSocketインターフェース制限](/ja/getting-started/websocket-interface-limitations)
+
+2. 必ずお読みください: [エラーコード説明](/ja/getting-started/error-code-description)
+
+## インターフェースURL
+
+**1. 米国株、香港株、A株、主要指数データのインターフェースURL:**
+
+* ベースパス: `/quote-stock-b-ws-api`
+* 完全URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品のインターフェースURL:**
+
+* ベースパス: `/quote-b-ws-api`
+* 完全URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+## リクエスト例
+
+**1. 米国株、香港株、A株、主要指数データのリクエスト例:**
+
+接続を確立するたびに、認証tokenを次のようにURLへ付加する必要があります。
+
+`wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token`
+
+接続成功後、必要に応じて具体的な株式市場データを購読できます。詳細な呼び出し方法は以下のドキュメントを参照してください。
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品のリクエスト例:**
+
+接続を確立するたびに、認証tokenを次のようにURLへ付加する必要があります。
+
+`wss://quote.alltick.co/quote-b-ws-api?token=your_token`
+
+接続成功後、必要に応じて具体的な外国為替、暗号資産、貴金属、商品データを購読できます。詳細な呼び出し方法は以下のドキュメントを参照してください。
+
+## リクエスト - プロトコル番号: 22004
+
+#### JSON定義
+
+| フィールド | 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| cmd_id | プロトコル番号 | integer | はい | Tick購読リクエストのプロトコル番号は固定で22004です。 |
+| seq_id | レスポンスID | integer | はい | 購読リクエスト識別子。レスポンスで返却されます。任意値で、リクエストごとに重複しても構いません。 |
+| trace | 追跡ID | string | はい | リクエストログ情報用の追跡ID。任意値で、リクエストごとに重複させないでください。 |
+| symbol_list | 商品リスト | array | はい | 具体的な形式は下記のsymbol定義を参照してください。 |
+
+#### Symbol定義
+
+| フィールド | 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| code | コード | string | はい | 詳細はcodeリストを参照してください: [codeリストを開く](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863)<br />**注意: code値の大文字・小文字は商品リスト内のcodeと一致させる必要があります。** |
+
+### データ構造（JSON）
 
 ```json
 {
@@ -26,14 +76,20 @@ description: 'リアルタイム Tick データの購読'
   "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
   "data": {
     "symbol_list": [
-      { "code": "BTCUSDT" },
-      { "code": "ETHUSDT" }
+      {
+        "code": "BTCUSDT"
+      },
+      {
+        "code": "ETHUSDT"
+      }
     ]
   }
 }
 ```
 
-## レスポンス（cmd_id: 22005）
+## レスポンス - プロトコル番号: 22005
+
+### データ構造（JSON）
 
 ```json
 {
@@ -46,25 +102,29 @@ description: 'リアルタイム Tick データの購読'
 }
 ```
 
-## プッシュ（cmd_id: 22998）
+## プッシュ - プロトコル番号: 22998
 
-| フィールド | 型 | 説明 |
-|-----------|------|------|
-| code | string | 製品コード |
-| seq | string | 相場シーケンス番号 |
-| tick_time | string | タイムスタンプ（ミリ秒） |
-| price | string | 最新約定価格 |
-| volume | string | 出来高 |
-| turnover | string | 売買代金 |
-| trade_direction | integer | 0=中立、1=能動的買い、2=能動的売り |
+#### データ定義
+
+| フィールド | 名称 | 型 | 説明 |
+| --- | --- | --- | --- |
+| code | コード | string | 詳細はcodeリストを参照してください: [codeリストを開く](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863) |
+| seq | 相場シーケンス番号 | integer |  |
+| tick_time | 相場タイムスタンプ | integer | 単位: ミリ秒 |
+| price | 約定価格 | string | 最新約定価格 |
+| volume | 約定数量 | string | 最新約定価格に対応する約定数量 |
+| turnover | 約定金額 | string | 約定金額 |
+| trade_direction | 取引方向 | string | 取引方向:<br />1. 0はデフォルト値、1は買い、2は売りです。<br />2. 外国為替、貴金属、エネルギーはデフォルトで1のみ返します。<br />3. 株式と暗号資産は市場状況により0、1、2を返す場合があります。<br />4. 詳細説明:<br />0: 中立。最良買気配と最良売気配の間の価格で約定したことを示します。<br />1: アグレッシブ買い。売気配価格またはそれ以上の価格で約定したことを示します。<br />2: アグレッシブ売り。買気配価格またはそれ以下の価格で約定したことを示します。 |
+
+### データ構造（JSON）
 
 ```json
 {
   "cmd_id": 22998,
   "data": {
-    "code": "BTCUSDT",
-    "seq": "1605509068000001",
-    "tick_time": "1605509068",
+    "code": "1288.HK",
+    "seq": 1782180168224,
+    "tick_time": 1782180164000,
     "price": "651.12",
     "volume": "300",
     "turnover": "12345.6",
@@ -72,3 +132,9 @@ description: 'リアルタイム Tick データの購読'
   }
 }
 ```
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

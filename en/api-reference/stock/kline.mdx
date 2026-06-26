@@ -1,4 +1,163 @@
 ---
-title: 'Stock K-Line Query'
-openapi: '/api-reference/openapi.json GET /quote-stock-b-api/kline'
+title: 'GET Single-Product Historical K-Line Query (High, Low, Open, Close)'
 ---
+
+## GET /kline
+
+## **Interface Description**
+
+This interface can be used to query historical K-lines, but each request can query only one product. **It is recommended to cache the queried historical K-lines in a local database.**
+
+For customers using HTTP interfaces to obtain K-lines, we recommend using `/kline` together with `/batch-kline` as follows:
+
+* First, use the `/kline` interface to poll historical data and store it in a local database. Later historical data can be obtained directly from the customer's database without making another interface request.
+* Then, continuously use the `/batch-kline` interface to batch request the latest 2 K-lines for multiple products and update the database with the data.
+
+This approach can quickly update the latest K-lines while avoiding frequency restrictions caused by frequent historical K-line requests.
+
+## **Request Frequency**
+
+| Plan | Individual Request | Requesting Multiple HTTP Interfaces at the Same Time |
+| --- | --- | --- |
+| Free | One request every 10 seconds | 1. Only one interface can be requested every 10 seconds.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 10-second interval.**<br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | One request per second | 1. Only one interface can be requested in the same second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 3-second interval.**<br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | Up to 10 requests per second | 1. All interfaces combined: up to 10 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 2-second interval.**<br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All A Shares | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All US Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+
+## Interface Limitations
+
+1. Be sure to read: [HTTP Interface Restrictions](/en/getting-started/http-interface-restrictions)
+
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## API Endpoints
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data API Endpoint:**
+
+* Base Path: `/quote-stock-b-api/kline`
+* Full URL: <a href="https://quote.alltick.co/quote-stock-b-api/kline">https://quote.alltick.co/quote-stock-b-api/kline</a>
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities API Endpoint:**
+
+* Base Path: `/quote-b-api/kline`
+* Full URL: <a href="https://quote.alltick.co/quote-b-api/kline">https://quote.alltick.co/quote-b-api/kline</a>
+
+## Request Examples
+
+**1. Request example for US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+When sending a query request, you must include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-stock-b-api/kline?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/kline?token=your_token&query=queryData)
+
+**2. Request example for Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+When sending a query request, you must include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-b-api/kline?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/kline?token=your_token&query=queryData)
+
+## Request Parameters
+
+| Name | Position | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| token | query | string | No |  |
+| query | query | string | No | See the query request parameter description. |
+
+## Query Request Parameters
+
+```json
+{
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {
+    "code": "857.HK",
+    "kline_type": 1,
+    "kline_timestamp_end": 0,
+    "query_kline_num": 2,
+    "adjust_type": 0
+  }
+}
+```
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| trace | string | Yes | Trace code used for log lookup. Ensure it is unique for each request. |
+| data | object | Yes |  |
+| » code | string | Yes | View the code list and select the code you want to query: <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">[Click the code list]</a><br />**Note: The code value must match the case of the code in the product list.** |
+| » kline_type | integer | Yes | K-line type:<br />1. 1 is 1-minute K-line, 2 is 5-minute K-line, 3 is 15-minute K-line, 4 is 30-minute K-line, 5 is hourly K-line, 6 is 2-hour K-line (stocks do not support 2-hour K-line), 7 is 4-hour K-line (stocks do not support 4-hour K-line), 8 is daily K-line, 9 is weekly K-line, and 10 is monthly K-line. Note: stocks do not support 2-hour or 4-hour K-lines.<br />2. The shortest supported K-line is 1 minute.<br />3. To query **yesterday's closing price**, pass 8 for kline_type. |
+| » kline_timestamp_end | integer | Yes | Query K-lines backward from the specified time.<br />1. Pass 0 to query K-lines backward from the latest trading day.<br />2. Pass a timestamp to query K-lines backward from that timestamp.<br />3. Only forex, precious metals, and cryptocurrencies support timestamp input; stock codes do not. |
+| » query_kline_num | integer | Yes | 1. Indicates how many K-lines to query. Each request can query up to 500 K-lines, and you can loop backward by timestamp.<br />2. This field can be used to query **yesterday's closing price**: pass 8 for kline_type and 2 for query_kline_num. Of the 2 returned K-line records, the one with the smaller timestamp is yesterday's closing price. |
+| » adjust_type | integer | Yes | Adjustment type. Effective only for stock codes. For example: 0: ex-rights, 1: forward-adjusted. Currently only 0 is supported. |
+
+## Response Example
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
+  "data": {
+    "code": "857.HK",
+    "kline_type": 1,
+    "kline_list": [
+      {
+        "timestamp": "1677829200",
+        "open_price": "136.421",
+        "close_price": "136.412",
+        "high_price": "136.422",
+        "low_price": "136.407",
+        "volume": "0",
+        "turnover": "0"
+      },
+      {
+        "timestamp": "1677829260",
+        "open_price": "136.412",
+        "close_price": "136.401",
+        "high_price": "136.415",
+        "low_price": "136.397",
+        "volume": "0",
+        "turnover": "0"
+      }
+    ]
+  }
+}
+```
+
+## Response Result
+
+| Status Code | Status Meaning | Description | Data Model |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+## Response Data Structure
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| » ret | integer | true |  |
+| » msg | string | true |  |
+| » trace | string | true |  |
+| » data | object | true |  |
+| »» code | string | true | Code |
+| »» kline_type | integer | true | K-line type:<br />1. 1 is 1-minute K-line, 2 is 5-minute K-line, 3 is 15-minute K-line, 4 is 30-minute K-line, 5 is hourly K-line, 6 is 2-hour K-line (stocks do not support 2-hour K-line), 7 is 4-hour K-line (stocks do not support 4-hour K-line), 8 is daily K-line, 9 is weekly K-line, and 10 is monthly K-line. Note: stocks do not support 2-hour or 4-hour K-lines.<br />2. The shortest supported K-line is 1 minute. |
+| »» kline_list | [object] | true |  |
+| »»» timestamp | string | true | Timestamp of the K-line |
+| »»» open_price | string | true | Opening price of the K-line |
+| »»» close_price | string | true | Closing price of the K-line:<br />1. During trading hours, for the latest K-line, this price is also the latest trade price.<br />2. During market closure, for the latest K-line, this price is the closing price. |
+| »»» high_price | string | true | Highest price of the K-line |
+| »»» low_price | string | true | Lowest price of the K-line |
+| »»» volume | string | true | Trading quantity of the K-line |
+| »»» turnover | string | true | Trading amount of the K-line |
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## Interface Debug
+
+<Card title="Open GET /kline Debug Module" icon="play" href="/en/api-reference/stock/debug/kline">
+  Use the debuggable module to fill in parameters and send requests.
+</Card>

@@ -1,7 +1,144 @@
+﻿---
+title: 'GET Latest Trade Price (Latest Tick / Current Price / Latest Price) Batch Query'
 ---
-title: 'GET Latest Transaction Price Batch Query API - Realtime Stock Latest Tick HTTP Endpoint | AllTick'
-description: "This documentation describes AllTick's GET latest transaction price batch query API for stocks, which returns the latest trade price (latest tick, latest price) for multiple symbols in a single HTTP request, including request URL, parameters, JSON response fields, and rate limits."
-seo:
-  keywords: 'AllTick latest transaction price API, batch latest tick query, stock latest price HTTP endpoint, realtime stock quote data, US HK CN stock markets, batch quote API'
-openapi: '/api-reference/openapi.json GET /quote-stock-b-api/trade-tick'
----
+
+## GET /trade-tick
+
+## Interface Description
+
+This interface supports batch requests for the latest trade price of products (latest tick data, also the current price or latest price). It does not support requests for historical trade prices (historical tick data).
+
+## Request Frequency
+
+| Plan | Individual Request | Multiple HTTP Interfaces Requested Together |
+| --- | --- | --- |
+| Free | 1. One request every 10 seconds.<br />2. Up to 5 products can be queried in one batch. | 1. Only one interface request every 10 seconds.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 10-second interval.**<br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | 1. One request per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. Only one interface request in the same second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 3-second interval.**<br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | 1. Up to 10 requests per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. All interfaces combined: up to 10 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 2-second interval.**<br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | 1. Up to 20 requests per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | 1. Up to 20 requests per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All A Shares | 1. Up to 20 requests per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All US Stocks | 1. Up to 20 requests per second.<br />2. Due to GET URL length limits, a maximum of 50 codes per request is recommended. | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that /batch-kline requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+
+## Interface Limitations
+
+1. Be sure to read: [HTTP Interface Restrictions](/en/getting-started/http-interface-restrictions)
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## API Endpoints
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+* Base Path: `/quote-stock-b-api/trade-tick`
+* Full URL: <a href="https://quote.alltick.co/quote-stock-b-api/trade-tick">https://quote.alltick.co/quote-stock-b-api/trade-tick</a>
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+* Base Path: `/quote-b-api/trade-tick`
+* Full URL: <a href="https://quote.alltick.co/quote-b-api/trade-tick">https://quote.alltick.co/quote-b-api/trade-tick</a>
+
+## Request Examples
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+When sending a query request, include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-stock-b-api/trade-tick?token=your_token&query=queryData)
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+When sending a query request, include the method name and token information. Example:
+
+[https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData](https://quote.alltick.co/quote-b-api/trade-tick?token=your_token&query=queryData)
+
+## Request Parameters
+
+| Name | Position | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| token | query | string | No |  |
+| query | query | string | No | See the query request parameter description. |
+
+## Query Request Parameters
+
+URL-encode the following JSON and assign it to the `query` query string in the URL.
+
+```json
+{
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "symbol_list": [
+      {
+        "code": "857.HK"
+      },
+      {
+        "code": "UNH.US"
+      }
+    ]
+  }
+}
+```
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| trace | string | Yes |  |
+| data | object | Yes |  |
+| » symbol_list | [object] | Yes |  |
+| »» code | string | No | Code. Select the code you want to query from the <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">code list</a>.<br />**Note: The code value is case-sensitive and must match the code in the product list.** |
+
+## Response Example
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "tick_list": [
+      {
+        "code": "857.HK",
+        "seq": "30841439",
+        "tick_time": "1677831545217",
+        "price": "136.302",
+        "volume": "0",
+        "turnover": "0",
+        "trade_direction": 0
+      }
+    ]
+  }
+}
+```
+
+## Response Result
+
+| Status Code | Status Meaning | Description | Data Model |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+## Response Data Structure
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| » ret | integer | true | Return code |
+| » msg | string | true | Message corresponding to the return code |
+| » trace | string | true | Request trace |
+| » data | object | true |  |
+| »» tick_list | [object] | true |  |
+| »»» code | string | false | Code |
+| »»» seq | string | false | Sequence number |
+| »»» tick_time | string | false | Timestamp |
+| »»» price | string | false | Trade price |
+| »»» volume | string | false | Trade volume |
+| »»» turnover | string | false | Turnover |
+| »»» trade_direction | integer | false | Trade direction:<br />1. 0 is the default value, 1 is Buy, and 2 is Sell.<br />2. Forex, precious metals, and energy return 1 by default.<br />3. Stocks and cryptocurrencies may return 0, 1, or 2 depending on market conditions.<br />4. Details:<br />0: Neutral, meaning the trade was matched at a price between the best bid and best ask.<br />1: Aggressive buy, meaning the trade was executed at the ask price or higher.<br />2: Aggressive sell, meaning the trade was executed at the bid price or lower. |
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## Interface Debug
+
+<Card title="Open GET /trade-tick Debug Module" icon="play" href="/en/api-reference/stock/debug/trade-tick">
+  Use the debuggable module to fill in parameters and send requests.
+</Card>

@@ -1,0 +1,29 @@
+﻿---
+title: 'エラーコード説明'
+description: 'AllTick API のエラーコード、エラー内容、調査の推奨事項。'
+---
+
+# エラーコード説明
+
+| エラーコード | エラー内容 | 意味 |
+| --- | --- | --- |
+| 200 | ok | 成功 |
+| 400 | request header param invalid | リクエスト JSON の第 1 階層パラメータが不正です。<br /><br />調査の推奨事項：<br />1. JSON 構造が完全か確認してください。<br />2. すべての必須フィールドが正しく含まれているか確認してください。<br />3. data フィールドが有効な object 型か確認してください。<br />4. trace などの重要フィールドが存在するか確認してください。 |
+| 400 | request data param invalid | リクエスト JSON 内の data フィールドパラメータが不正です。<br /><br />調査の推奨事項：<br />1. data フィールドが有効な object か確認してください。<br />2. data 内のすべての必須フィールドが正しく入力されているか確認してください。<br />3. 該当インターフェースのドキュメントと照合し、data フィールドの内容を確認してください。<br />4. POST リクエストでは、body 内の JSON パラメータが完全かつ正しいことに特に注意してください。 |
+| 401 | token invalid | Token が無効です。<br /><br />考えられる原因：<br />1. Token 形式が正しくありません。<br />2. Token アカウントの有効期限が切れています。 |
+| 402 | query invalid | リクエストの query パラメータが不正です。<br /><br />調査の推奨事項：<br />1. GET リクエストの query パラメータを確認してください。<br />2. query パラメータを URL エンコードしてください。<br />3. パラメータ形式がインターフェース要件に合っていることを確認してください。<br />4. 特殊文字が正しくエスケープされているか確認してください。 |
+| 429 | Too Many Requests | プランで規定されたリクエスト頻度を超過しました。<br /><br />推奨事項：<br />1. リクエスト頻度とロジックを最適化してください。<br />2. より高いリクエスト頻度が必要な場合は、プランのアップグレードを検討してください。<br /><br />インターフェース制限説明：<br /><a href="/ja/getting-started/http-interface-restrictions">HTTP インターフェース制限</a><br /><a href="/ja/getting-started/websocket-interface-limitations">WebSocket インターフェース制限</a><br /><br /><mark style={{ color: 'red' }}>よくあるケース：</mark><br />例：ベーシックプランで `/kline` インターフェースに 1 秒以内で少なくとも 2 回リクエストした場合、1 回目は成功し、2 回目は 429 Too Many Requests を返します。ベーシックプランの `/kline` インターフェースは 1 秒に 1 回のみ許可されているためです。 |
+| 600 | code invalid | リクエストされた code 商品が無効です。<br /><br />調査の推奨事項：<br />1. リクエスト URL を確認してください。株式系データと外国為替・貴金属系データではリクエスト URL が異なります。<br />2. 商品 code を確認してください。商品一覧と照合し、code が有効かつ正確であることを確認してください：<a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">商品一覧</a> |
+| 601 | body empty | リクエスト body データが空です。<br /><br />調査の推奨事項：<br />1. POST リクエストの body を確認してください。<br />2. body に完全な JSON パラメータが含まれていることを確認してください。<br />3. `/batch-kline` などの一括取得インターフェースに特に注意してください。<br />4. すべての必須フィールドが正しく入力されているか確認してください。 |
+| 603 | token level not enough | リクエストされた商品数または K ライン本数が、インターフェースドキュメントで規定された制限を超えています。<br /><br />調査の推奨事項：<br />1. 商品数を確認してください。K ラインインターフェースでは、同時にリクエストする「商品数」と「K ライン種別」の合計がプラン制限を超えていないか確認してください。非 K ラインインターフェースでは、リクエストした商品数がプラン制限を超えていないか確認してください。<br />2. K ラインリクエストを確認してください。K ライン本数がインターフェース規定に合っているか確認してください。一括商品 K ラインインターフェースでは、1 回あたり 2 本のみ許可されます。<br /><br />インターフェース制限説明：<a href="/ja/getting-started/http-interface-restrictions">HTTP インターフェース制限</a> |
+| 604 | code unauthorized | ご利用の token には、この code をリクエストする権限がありません。 |
+| 605 | too many requests | リクエスト頻度制限です。<br /><br />推奨事項：<br />1. リクエスト頻度とロジックを最適化してください。<br />2. より高いリクエスト頻度が必要な場合は、プランのアップグレードを検討してください。<br /><br />インターフェース制限説明：<br /><a href="/ja/getting-started/http-interface-restrictions">HTTP インターフェース制限</a><br /><a href="/ja/getting-started/websocket-interface-limitations">WebSocket インターフェース制限</a> |
+| 606 | too many requests and connection will be closed | 通常は WebSocket インターフェースのリクエスト頻度制限です。<br /><br />調査の推奨事項：<br />1. WebSocket 接続数を確認し、プランで規定された最大接続数を超えていないか確認してください。<br />2. リクエスト頻度を制御し、複数の WebSocket リクエストの間隔を少なくとも 3 秒空けてください。<br /><br />インターフェース制限説明：<a href="/ja/getting-started/websocket-interface-limitations">WebSocket インターフェース制限</a> |
+
+***
+
+#### AllTick 公式サイト
+
+<Note>
+公式サイト：<a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

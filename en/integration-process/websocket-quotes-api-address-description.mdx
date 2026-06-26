@@ -1,0 +1,56 @@
+---
+title: 'WebSocket Quotes API Address Description'
+description: 'WebSocket quotes API address description for stocks, forex, cryptocurrencies, and commodities.'
+---
+
+## Stock Market Data WebSocket Subscription
+
+**Interface Address**
+
+* **Base Path**: `/quote-stock-b-ws-api`
+* **Full URL**: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+**Authentication Information**
+
+Each time you establish a connection, you must append your authentication token to the URL as shown below:
+
+```arduino
+wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token
+```
+
+**Subscription Description**
+
+After the connection succeeds, you can subscribe to specific stock market data as needed. For detailed calling methods, please refer to our WebSocket interface list.
+
+***
+
+## Forex, Cryptocurrency, and Commodity Market Data WebSocket Subscription
+
+**Interface Address**
+
+* **Base Path**: `/quote-b-ws-api`
+* **Full URL**: `wss://quote.alltick.co/quote-b-ws-api`
+
+**Authentication Information**
+
+When establishing a connection, you also need to append your authentication token to the URL to ensure data transmission security. The correct format is as follows:
+
+```arduino
+wss://quote.alltick.co/quote-b-ws-api?token=your_token
+```
+
+**Subscription Description**
+
+Once the connection is established, you can subscribe to market data for forex, cryptocurrencies (digital currencies), and commodities (precious metals) as needed. For specific interface calling methods, please see our WebSocket interface list.
+
+***
+
+**Notes**: For the security of your account, please keep your token information safe. If you need further assistance or have any questions, please feel free to contact our technical support team.
+
+***
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

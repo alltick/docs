@@ -1,23 +1,73 @@
 ---
-title: 'Trade Subscription'
-description: 'Subscribe to real-time trade tick data'
+title: 'Latest Trade Price (Real-time Tick Data, Current Price, Latest Price) Batch Subscription'
 ---
 
-Subscribe to latest trade prices (real-time tick data). Each subscription request overwrites the previous one.
+## Interface Description
 
-<Warning>
-To add symbols, resend the full list. For example, if subscribed to A, B, C and you want to add D, send A, B, C, D.
-</Warning>
+This interface supports batch subscription to the latest trade price of products (real-time tick-by-tick data, also the current price and latest price). It does not support historical trade prices (historical tick-by-tick data).
 
-## Request (cmd_id: 22004)
+For each WebSocket connection, every time this request is sent, the backend overwrites the previous subscription request by default. For example, if you initially subscribed to products A, B, and C, and want to add E, F, and G, you need to resend A, B, C, E, F, and G together. After the subscription succeeds, data will be pushed.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| cmd_id | integer | Yes | Fixed: 22004 |
-| seq_id | integer | Yes | Sequence number, returned in response |
-| trace | string | Yes | Correlation ID, must be unique |
-| data.symbol_list | array | Yes | Symbol list |
-| data.symbol_list[].code | string | Yes | Product code |
+Notes:
+
+1. After a subscription succeeds once, you do not need to frequently initiate subscription requests again. You must send a heartbeat every 10 seconds, and the interface will push data in real time. If no heartbeat request is received within 30 seconds, it will be considered timed out and the requester’s WebSocket connection will be disconnected.
+
+2. During integration, customers can add automatic reconnection logic to ensure the connection can automatically reconnect after disconnection caused by network or other reasons.
+
+## Interface Limitations
+
+1. Be sure to read: [WebSocket Interface Limitations](/en/getting-started/websocket-interface-limitations)
+
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## API Endpoints
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data API Endpoint:**
+
+* Base Path: `/quote-stock-b-ws-api`
+* Full URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities API Endpoint:**
+
+* Base Path: `/quote-b-ws-api`
+* Full URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+## Request Examples
+
+**1. Request example for US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+Each time a connection is established, your authentication token must be appended to the URL as follows:
+
+`wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token`
+
+After the connection succeeds, you can subscribe to specific stock market data as needed. For detailed calling methods, refer to the documentation below.
+
+**2. Request example for Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+Each time a connection is established, your authentication token must be appended to the URL as follows:
+
+`wss://quote.alltick.co/quote-b-ws-api?token=your_token`
+
+After the connection succeeds, you can subscribe to specific forex, cryptocurrency, precious metals, and commodity data as needed. For detailed calling methods, refer to the documentation below.
+
+## Request - Protocol Number: 22004
+
+#### JSON Definition
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cmd_id | Protocol number | integer | Yes | The tick subscription request protocol number is fixed: 22004 |
+| seq_id | Response ID | integer | Yes | Subscription request identifier, returned in the response. Custom value; can be repeated for each request. |
+| trace | Traceable ID | string | Yes | Traceable ID for request log information. Custom value; must not be repeated for each request. |
+| symbol_list | Product list | array | Yes | See the symbol definition below for the specific format. |
+
+#### Symbol Definition
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | Code | string | Yes | For details, view the code list: [Click the code list](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863)<br />**Note: The code value must match the case of the code in the product list.** |
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -26,14 +76,20 @@ To add symbols, resend the full list. For example, if subscribed to A, B, C and 
   "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
   "data": {
     "symbol_list": [
-      { "code": "BTCUSDT" },
-      { "code": "ETHUSDT" }
+      {
+        "code": "BTCUSDT"
+      },
+      {
+        "code": "ETHUSDT"
+      }
     ]
   }
 }
 ```
 
-## Response (cmd_id: 22005)
+## Response - Protocol Number: 22005
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -46,25 +102,29 @@ To add symbols, resend the full list. For example, if subscribed to A, B, C and 
 }
 ```
 
-## Push (cmd_id: 22998)
+## Push - Protocol Number: 22998
 
-| Field | Type | Description |
-|-------|------|-------------|
-| code | string | Product code |
-| seq | string | Quote sequence number |
-| tick_time | string | Timestamp (milliseconds) |
-| price | string | Latest trade price |
-| volume | string | Trade volume |
-| turnover | string | Trade turnover |
-| trade_direction | integer | 0=neutral, 1=active buy, 2=active sell |
+#### Data Definition
+
+| Field | Name | Type | Description |
+| --- | --- | --- | --- |
+| code | Code | string | For details, view the code list: [Click the code list](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863) |
+| seq | Quote sequence number | integer |  |
+| tick_time | Quote timestamp | integer | Unit: milliseconds |
+| price | Trade price | string | Latest trade price |
+| volume | Trade volume | string | Trade volume corresponding to the latest trade price |
+| turnover | Turnover | string | Turnover |
+| trade_direction | Trade direction | string | Trade direction:<br />1. 0 is the default value, 1 is Buy, and 2 is Sell.<br />2. Forex, precious metals, and energy return only 1 by default.<br />3. Stocks and cryptocurrencies may return 0, 1, or 2 depending on market conditions.<br />4. Detailed description:<br />0: Neutral, meaning the trade was matched at a price between the best bid and best ask.<br />1: Aggressive buy, meaning the stock was traded at the ask price or a higher price.<br />2: Aggressive sell, meaning the stock was traded at the bid price or a lower price. |
+
+### Data Structure (JSON)
 
 ```json
 {
   "cmd_id": 22998,
   "data": {
-    "code": "BTCUSDT",
-    "seq": "1605509068000001",
-    "tick_time": "1605509068",
+    "code": "1288.HK",
+    "seq": 1782180168224,
+    "tick_time": 1782180164000,
     "price": "651.12",
     "volume": "300",
     "turnover": "12345.6",
@@ -72,3 +132,9 @@ To add symbols, resend the full list. For example, if subscribed to A, B, C and 
   }
 }
 ```
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

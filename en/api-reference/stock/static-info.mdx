@@ -1,0 +1,148 @@
+﻿---
+title: 'GET Batch Query Stock Product Basic Information'
+---
+
+## GET /static_info
+
+## Interface Description
+
+This interface only supports batch requests for partial basic information of US stocks, Hong Kong stocks, and A-share products.
+
+## **Request Frequency**
+
+| Plan | Individual Request | Requesting Multiple HTTP Interfaces at the Same Time |
+| --- | --- | --- |
+| Free | One request every 10 seconds | 1. Only one interface can be requested every 10 seconds.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 10-second interval.**<br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | One request per second | 1. Only one interface can be requested in the same second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 3-second interval.**<br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | Up to 10 requests per second | 1. All interfaces combined: up to 10 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 2-second interval.**<br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All A Shares | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All US Stocks | Up to 20 requests per second | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+
+## Interface Limitations
+
+1. Be sure to read: [HTTP Interface Restrictions](/en/getting-started/http-interface-restrictions)
+
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## **API Endpoint**
+
+* **Base Path**: `/quote-stock-b-api/static_info`
+* **Full URL**: `https://quote.alltick.co/quote-stock-b-api/static_info`
+
+## **Request Example**
+
+When sending a query request, you must include the method name and token information. Example:
+
+```text
+https://quote.alltick.co/quote-stock-b-api/static_info?token=your_token&query=queryData
+```
+
+## Request Parameters
+
+| Name | Position | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| token | query | string | No |  |
+| query | query | string | No | See the query request parameter description. |
+
+**URL-encode the following JSON and assign it to the query string parameter `query` in the URL.**
+
+```json
+{
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "symbol_list": [
+      {
+        "code": "857.HK"
+      },
+      {
+        "code": "UNH.US"
+      }
+    ]
+  }
+}
+```
+
+## Query Request Parameters
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| trace | string | Yes |  |
+| data | object | Yes |  |
+| » symbol_list | [object] | Yes |  |
+| »» code | string | No | Code: <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">[Click the code list]</a><br />**Note: The code value must match the case of the code in the product list.** |
+
+## Response Example
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "edd5df80-df7f-4acf-8f67-68fd2f096426",
+  "data": {
+    "static_info_list": [
+      {
+        "board": "HKEquity",
+        "bps": "101.7577888985738336",
+        "circulating_shares": "9267359712",
+        "currency": "HKD",
+        "dividend_yield": "3.4558141358352833",
+        "eps": "13.7190213011686429",
+        "eps_ttm": "18.0567016900844671",
+        "exchange": "SEHK",
+        "hk_shares": "9267359712",
+        "lot_size": "100",
+        "name_cn": "Tencent Holdings",
+        "name_en": "TENCENT",
+        "name_hk": "Tencent Holdings",
+        "symbol": "700.HK",
+        "total_shares": "9267359712"
+      }
+    ]
+  }
+}
+```
+
+## Response Result
+
+| Status Code | Status Meaning | Description | Data Model |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+## Response Data Structure
+
+| Name | Type | Required | Description |
+| --- | --- | --- | --- |
+| » ret | integer | true | Return code |
+| » msg | string | true | Message corresponding to the return code |
+| » trace | string | true | Request trace |
+| » data | object | true |  |
+| »» static_info_list | [object] | true |  |
+| »»» board | string | false | Stock board |
+| »»» bps | string | false | Book value per share |
+| »»» circulating_shares | string | false | Circulating shares |
+| »»» currency | string | false | Trading currency |
+| »»» dividend_yield | string | false | Dividend yield |
+| »»» eps | string | false | Earnings per share |
+| »»» eps_ttm | string | false | Earnings per share (TTM) |
+| »»» exchange | string | false | Exchange to which the product belongs |
+| »»» hk_shares | string | false | Hong Kong stock shares (Hong Kong stocks only) |
+| »»» lot_size | string | false | Shares per lot |
+| »»» name_cn | string | false | Simplified Chinese product name |
+| »»» name_en | string | false | English product name |
+| »»» name_hk | string | false | Traditional Chinese product name |
+| »»» symbol | string | false | Product code |
+| »»» total_shares | string | false | Total shares |
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## Interface Debug
+
+<Card title="Open GET /static_info Debug Module" icon="play" href="/en/api-reference/stock/debug/static-info">
+  Use the debuggable module to fill in parameters and send requests.
+</Card>

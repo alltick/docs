@@ -1,32 +1,61 @@
 ---
 title: 'WebSocket API 概述'
-description: '实时行情数据推送接口概述'
 ---
 
-AllTick WebSocket API 提供实时行情数据推送服务。连接后订阅感兴趣的品种，即可持续接收最新成交价和盘口深度数据。
+AllTick WebSocket API 用于实时接收行情推送。建立连接后，客户端发送订阅请求，服务端在订阅成功后持续推送最新成交价和最新盘口数据；连接期间需要按要求发送心跳，避免连接超时断开。
+
+## 接入地址
+
+| 数据类型 | WebSocket地址 |
+| --- | --- |
+| 美股、港股、A股、大盘数据 | `wss://quote.alltick.co/quote-stock-b-ws-api?token=您的token` |
+| 外汇、贵金属、加密货币、原油、CFD指数、商品 | `wss://quote.alltick.co/quote-b-ws-api?token=您的token` |
+
+每次建立连接时，都需要在URL中附加您的认证token。连接成功后，根据需要发送最新成交价或最新盘口订阅请求。
+
+## 接口列表
+
+<CardGroup cols={2}>
+  <Card title="最新成交价(实时逐笔Tick数据、当前价、最新价)批量订阅" href="/zh/websocket/trade-subscription">
+    订阅产品最新成交价，订阅成功后通过协议号 22998 推送成交数据。
+  </Card>
+  <Card title="最新盘口(实时逐笔深度、Order Book)订阅" href="/zh/websocket/depth-subscription">
+    订阅产品最新盘口深度，订阅成功后通过协议号 22999 推送盘口数据。
+  </Card>
+  <Card title="心跳" href="/zh/websocket/heartbeat">
+    每10秒发送一次心跳，30秒内未收到心跳请求会断开WebSocket连接。
+  </Card>
+  <Card title="取消报价订阅" href="/zh/websocket/cancel-subscription">
+    取消全部报价订阅，或按类型取消盘口、成交、汇率订阅。
+  </Card>
+  <Card title="K线推送(不支持)" href="/zh/websocket/kline-push-not-supported">
+    WebSocket不支持K线推送，可通过HTTP接口轮询或批量查询K线。
+  </Card>
+  <Card title="Websocket 请求示例" href="/zh/websocket/websocket-request-example">
+    查看 Go、Java、PHP、Python 的WebSocket请求示例。
+  </Card>
+</CardGroup>
 
 ## 协议号一览
 
 | 协议号 | 说明 |
-|--------|------|
-| 22000/22001 | 心跳（Ping/Pong） |
-| 22002/22003 | 盘口订阅 |
-| 22004/22005 | 成交价订阅 |
-| 22006/22007 | 取消订阅 |
-| 22998 | 成交价推送 |
-| 22999 | 盘口推送 |
+| --- | --- |
+| 22004 / 22005 | 最新成交价订阅请求 / 应答 |
+| 22998 | 最新成交价推送 |
+| 22002 / 22003 | 最新盘口订阅请求 / 应答 |
+| 22999 | 最新盘口推送 |
+| 22000 / 22001 | 心跳请求 / 应答 |
+| 22006 / 22007 | 取消报价订阅请求 / 应答 |
 
-## 接口地址
+## 使用流程
 
-| 资产类别 | 连接地址 |
-|----------|----------|
-| 美股、港股、A 股、指数 | `wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN` |
-| 外汇、加密货币、贵金属、商品 | `wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN` |
+1. 根据产品类型选择股票或非股票WebSocket地址。
+2. 在连接URL中附加token并建立WebSocket连接。
+3. 发送最新成交价或最新盘口订阅请求。
+4. 每10秒发送一次心跳请求，保持连接有效。
+5. 接收服务端推送的数据，并根据业务需要处理自动重连。
+6. 不再需要推送时，发送取消报价订阅请求。
 
-## 使用说明
-
-1. 建立连接时在 URL 中附加 Token 参数
-2. 连接成功后，每 **10 秒**发送一次心跳
-3. **30 秒**内未收到心跳，服务端将断开连接
-4. 每次订阅请求会覆盖上一次（追加品种需重新发送完整列表）
-5. 客户端应实现自动重连逻辑
+<Note>
+对于每一个WebSocket连接，每发送一次订阅请求，后台会默认覆盖上一次订阅请求。追加产品时，需要重新发送完整的产品列表。
+</Note>

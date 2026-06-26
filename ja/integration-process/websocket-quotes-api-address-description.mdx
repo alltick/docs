@@ -1,0 +1,56 @@
+---
+title: 'WebSocket 相場 API アドレス説明'
+description: '株式、外国為替、暗号資産、商品の WebSocket 相場 API アドレス説明。'
+---
+
+## 株式市場データWebSocket購読
+
+**インターフェースアドレス**
+
+* **ベースパス**: `/quote-stock-b-ws-api`
+* **完全URL**: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+**認証情報**
+
+接続を確立するたびに、次のようにURLへ認証tokenを付加する必要があります。
+
+```arduino
+wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token
+```
+
+**購読説明**
+
+接続成功後、必要に応じて特定の株式市場データを購読できます。詳細な呼び出し方法は、WebSocketインターフェース一覧を参照してください。
+
+***
+
+## 外国為替、暗号資産、商品市場データWebSocket購読
+
+**インターフェースアドレス**
+
+* **ベースパス**: `/quote-b-ws-api`
+* **完全URL**: `wss://quote.alltick.co/quote-b-ws-api`
+
+**認証情報**
+
+接続を確立する際も、データ転送の安全性を確保するため、URLへ認証tokenを付加する必要があります。正しい形式は次のとおりです。
+
+```arduino
+wss://quote.alltick.co/quote-b-ws-api?token=your_token
+```
+
+**購読説明**
+
+接続が確立されると、必要に応じて外国為替、暗号資産（デジタル通貨）、商品（貴金属）の市場データを購読できます。具体的なインターフェース呼び出し方法は、WebSocketインターフェース一覧を確認してください。
+
+***
+
+**注意事項**: アカウントの安全のため、token情報は適切に保管してください。さらにサポートが必要な場合やご不明点がある場合は、いつでもテクニカルサポートチームまでお問い合わせください。
+
+***
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト：<a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

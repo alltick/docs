@@ -1,18 +1,20 @@
 ---
-title: 'Cancel Subscription'
-description: 'Unsubscribe from market data push'
+title: 'Cancel Quote Subscription'
 ---
 
-Cancel active quote subscriptions.
+## Interface Description
 
-## Request (cmd_id: 22006)
+Cancel quote subscription.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| cmd_id | integer | Yes | Fixed: 22006 |
-| seq_id | integer | Yes | Sequence number |
-| trace | string | Yes | Correlation ID |
-| data.cancel_type | integer | Yes | 0=all, 1=depth, 2=trade, 3=forex |
+## Request - Protocol Number: 22006
+
+#### Data Definition
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cancel_type | Cancel type | uint32 | Yes | 0: cancel all quote subscriptions, 1: cancel order book quote subscription, 2: cancel trade quote subscription, 3: cancel exchange rate subscription |
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -25,7 +27,9 @@ Cancel active quote subscriptions.
 }
 ```
 
-## Response (cmd_id: 22007)
+## Response - Protocol Number: 22007
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -37,3 +41,9 @@ Cancel active quote subscriptions.
   "data": {}
 }
 ```
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

@@ -1,0 +1,319 @@
+---
+title: 'GET 売買停止・再開情報照会インターフェース'
+---
+
+## GET /api/suspension
+
+## インターフェース説明
+
+このインターフェースは、世界主要取引所（SSE、NYSE、NASDAQ）の売買停止・再開情報照会を提供します。すべてのインターフェースはJSONデータを返し、公告時刻の降順で並びます。
+
+## **リクエスト頻度**
+
+| プラン | 単一インターフェースの単独リクエスト | 複数HTTPインターフェースを同時にリクエスト |
+| --- | --- | --- |
+| 無料 | 1分に1回 | 1. 10秒に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは10秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大10回（6秒に1回）。<br />4. 1日の最大リクエスト数は1,000回。超過した場合は翌日未明に利用が回復します。 |
+| ベーシック | 1分に1回 | 1. 同一秒内に1つのインターフェースのみリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは3秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大60回（1秒に1回）。<br />4. 1日の最大リクエスト数は86,400回。超過した場合は翌日未明に利用が回復します。 |
+| アドバンス | 1分に1回 | 1. すべてのインターフェース合計で1秒あたり10回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは2秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大600回（1秒に10回）。<br />4. 1日の最大リクエスト数は864,000回。 |
+| プロフェッショナル | 1分に1回 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+| 香港株すべて | 1分に1回 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+| A株すべて | 1分に1回 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+| 米国株すべて | 1分に1回 | 1. すべてのインターフェース合計で1秒あたり20回までリクエスト可能。<br />**2. 複数インターフェースをリクエストする場合、/batch-kline インターフェースは1秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />4. 1日の最大リクエスト数は1,728,000回。 |
+
+## インターフェース制限
+
+1. 必ずお読みください: [HTTPインターフェース制限](/ja/getting-started/http-interface-restrictions)
+2. 必ずお読みください: [エラーコード説明](/ja/getting-started/error-code-description)
+
+## **インターフェースURL**
+
+**1. 上海証券取引所の売買停止・再開情報を照会:**
+
+* ベースパス: `/api/suspension/sse`
+* 完全URL: <a href="https://quote.alltick.co/api/suspension/sse">https://quote.alltick.co/api/suspension/sse</a>
+
+**2. ニューヨーク証券取引所の売買停止・再開情報を照会:**
+
+* ベースパス: `/api/suspension/nyse`
+* 完全URL: <a href="https://quote.alltick.co/api/suspension/nyse">https://quote.alltick.co/api/suspension/nyse</a>
+
+**3. NASDAQの売買停止・再開情報を照会:**
+
+* ベースパス: `/api/suspension/nasdaq`
+* 完全URL: <a href="https://quote.alltick.co/api/suspension/nasdaq">https://quote.alltick.co/api/suspension/nasdaq</a>
+
+## **リクエスト例**
+
+### 1. SSEデータ取得インターフェース
+
+#### インターフェース情報
+
+* **URL**: `/api/suspension/sse`
+* **Method**: GET
+* **説明**: 上海証券取引所（SSE）のすべての売買停止・再開情報を取得します。
+
+#### リクエストパラメータ
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| token | string | はい | ユーザー購読token |
+| page | integer | いいえ | 照会ページ番号 |
+| size | integer | いいえ | ページサイズ |
+
+#### レスポンス例
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 125,
+  "data": [
+    {
+      "symbol": "600000",
+      "symbolName": "Shanghai Pudong Development Bank",
+      "haltReason": "Trading halt due to major matters",
+      "haltDate": "2024-01-15",
+      "haltTime": "09:30:00",
+      "haltPeriod": "Full-day trading halt",
+      "resumeDate": "2024-01-16",
+      "resumeTime": "09:30:00",
+      "publishDate": "2024-01-14 18:00:00"
+    }
+  ]
+}
+```
+
+#### レスポンスフィールド説明
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » success | boolean | はい | リクエストが成功したかどうか |
+| » timestamp | string | はい | レスポンスタイムスタンプ（形式: yyyy-MM-dd'T'HH:mm:ss） |
+| » totalCount | integer | はい | レコード総数 |
+| » data | array | はい | 売買停止・再開情報リスト |
+| » totalPages | integer | いいえ | 総ページ数（ページング照会時に返却） |
+| » currentPage | integer | いいえ | 現在ページ（ページング照会時に返却） |
+| » currentSize | integer | いいえ | 現在ページのレコード数（ページング照会時に返却） |
+
+#### dataフィールド（売買停止・再開情報リスト内のオブジェクト）
+
+| フィールド | 型 | Null可 | 説明 |
+| --- | --- | --- | --- |
+| » symbol | string | いいえ | 株式コード |
+| » symbolName | string | はい | 株式名 |
+| » haltReason | string | はい | 売買停止理由 |
+| » haltDate | string | はい | 売買停止日 |
+| » haltTime | string | はい | 売買停止時刻 |
+| » haltPeriod | string | はい | 売買停止期間 |
+| » resumeDate | string | はい | 売買再開日 |
+| » resumeTime | string | はい | 売買再開時刻 |
+| » publishDate | string | いいえ | 公告時刻 |
+
+#### 呼び出し例
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/sse?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### 2. NYSEデータ取得インターフェース
+
+#### インターフェース情報
+
+* **URL**: `/api/suspension/nyse`
+* **Method**: GET
+* **説明**: ニューヨーク証券取引所（NYSE）のすべての売買停止・再開情報を取得します。
+
+#### リクエストパラメータ
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| token | string | はい | ユーザー購読token |
+| page | integer | いいえ | 照会ページ番号 |
+| size | integer | いいえ | ページサイズ |
+
+#### レスポンス例
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 89,
+  "data": [
+    {
+      "symbol": "AAPL",
+      "haltReason": "News pending",
+      "haltDate": "2024-01-15",
+      "haltTime": "10:15:00",
+      "haltDateTime": "2024-01-15 10:15:00",
+      "resumeDate": "2024-01-15",
+      "resumeTime": "11:00:00",
+      "resumeDateTime": "2024-01-15 11:00:00",
+      "sourceExchange": "NYSE",
+      "publishDate": "2024-01-15 10:10:00"
+    }
+  ]
+}
+```
+
+#### レスポンスフィールド説明
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » success | boolean | はい | リクエストが成功したかどうか |
+| » timestamp | string | はい | レスポンスタイムスタンプ（形式: yyyy-MM-dd'T'HH:mm:ss） |
+| » totalCount | integer | はい | レコード総数 |
+| » data | array | はい | 売買停止・再開情報リスト |
+| » totalPages | integer | いいえ | 総ページ数（ページング照会時に返却） |
+| » currentPage | integer | いいえ | 現在ページ（ページング照会時に返却） |
+| » currentSize | integer | いいえ | 現在ページのレコード数（ページング照会時に返却） |
+
+#### dataフィールド（売買停止・再開情報リスト内のオブジェクト）
+
+| フィールド | 型 | Null可 | 説明 |
+| --- | --- | --- | --- |
+| » symbol | string | いいえ | 株式コード |
+| » symbolName | string | はい | 株式名 |
+| » haltReason | string | はい | 売買停止理由 |
+| » haltTime | string | はい | 売買停止時刻 |
+| » haltDateTime | string | はい | 売買停止日時 |
+| » resumeDate | string | はい | 売買再開日 |
+| » resumeTime | string | はい | 売買再開時刻 |
+| » resumeDateTime | string | はい | 売買再開日時 |
+| » sourceExchange | string | はい | 取引所コード |
+| » publishDate | string | いいえ | 公告時刻 |
+
+#### 呼び出し例
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/nyse?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### 3. NASDAQデータ取得インターフェース
+
+#### インターフェース情報
+
+* **URL**: `/api/suspension/nasdaq`
+* **Method**: GET
+* **説明**: NASDAQのすべての売買停止・再開情報を取得します。
+
+#### リクエストパラメータ
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| token | string | はい | ユーザー購読token |
+| page | integer | いいえ | 照会ページ番号 |
+| size | integer | いいえ | ページサイズ |
+
+#### レスポンス例
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 156,
+  "data": [
+    {
+      "symbol": "GOOGL",
+      "haltDate": "2024-01-15",
+      "haltTime": "13:45:00",
+      "haltDateTime": "2024-01-15 13:45:00",
+      "sourceExchange": "NASDAQ",
+      "haltReason": "Volatility halt",
+      "pauseThresholdPrice": "145.50",
+      "resumeDate": "2024-01-15",
+      "resumeTime": "14:00:00",
+      "resumeDateTime": "2024-01-15 14:00:00",
+      "publishDate": "2024-01-15 13:44:30"
+    }
+  ]
+}
+```
+
+#### レスポンスフィールド説明
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » success | boolean | はい | リクエストが成功したかどうか |
+| » timestamp | string | はい | レスポンスタイムスタンプ（形式: yyyy-MM-dd'T'HH:mm:ss） |
+| » totalCount | integer | はい | レコード総数 |
+| » data | array | はい | 売買停止・再開情報リスト |
+| » totalPages | integer | いいえ | 総ページ数（ページング照会時に返却） |
+| » currentPage | integer | いいえ | 現在ページ（ページング照会時に返却） |
+| » currentSize | integer | いいえ | 現在ページのレコード数（ページング照会時に返却） |
+
+#### dataフィールド（売買停止・再開情報リスト内のオブジェクト）
+
+| フィールド | 型 | Null可 | 説明 |
+| --- | --- | --- | --- |
+| » symbol | string | いいえ | 株式コード |
+| » symbolName | string | はい | 株式名 |
+| » haltDate | string | はい | 売買停止日 |
+| » haltTime | string | はい | 売買停止時刻 |
+| » haltDateTime | string | はい | 売買停止日時 |
+| » sourceExchange | string | はい | 取引所コード |
+| » haltReason | string | はい | 売買停止理由 |
+| » pauseThresholdPrice | string | はい | 停止しきい値価格 |
+| » resumeDate | string | はい | 売買再開日 |
+| » resumeTime | string | はい | 気配再開時刻 |
+| » resumeDateTime | string | はい | 取引再開時刻 |
+| » publishDate | string | いいえ | 公告時刻 |
+
+#### 呼び出し例
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/nasdaq?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### エラーレスポンス
+
+すべてのインターフェースでエラーが発生した場合、次の形式を返します。
+
+```json
+{
+  "success": false,
+  "error": "Error description information"
+}
+```
+
+**HTTPステータスコード**: 500
+
+#### エラーレスポンスフィールド説明
+
+| フィールド | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| success | boolean | はい | リクエストが成功したかどうか。false固定です。 |
+| error | string | はい | エラー説明情報 |
+
+***
+
+### 注意事項
+
+1. すべてのインターフェースはページングに対応しておらず、直近1年の全データを返します。
+2. データは公告時刻の降順（最新が先）で並びます。
+3. レスポンス内の時刻形式:
+   * timestampフィールド: ISO形式（**yyyy-MM-dd'T'HH:mm:ss**）
+   * その他の時刻フィールド: **yyyy-MM-dd HH:mm:ss**
+4. 適切なタイムアウトを設定することを推奨します。データ量が大きい場合はより長い時間が必要になることがあります。
+5. 空フィールドの説明:
+   * **「いいえ」: フィールドには必ず値があり、nullにはなりません。**
+   * **「はい」: フィールドはnullまたは空文字列の場合があります。呼び出し側で空値を処理してください。**
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## インターフェースデバッグ
+
+<CardGroup cols={3}>
+  <Card title="SSE 売買停止・再開インターフェースをデバッグ" icon="play" href="/ja/api-reference/stock/debug/suspension-sse" />
+  <Card title="NYSE 売買停止・再開インターフェースをデバッグ" icon="play" href="/ja/api-reference/stock/debug/suspension-nyse" />
+  <Card title="NASDAQ 売買停止・再開インターフェースをデバッグ" icon="play" href="/ja/api-reference/stock/debug/suspension-nasdaq" />
+</CardGroup>

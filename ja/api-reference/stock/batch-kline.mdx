@@ -1,5 +1,182 @@
 ---
-title: 'POST 株式バッチKライン照会'
-description: '複数の株式製品の最新2本のKラインデータを一括照会します。'
-openapi: '/api-reference/openapi-ja.json POST /quote-stock-b-api/batch-kline'
+title: 'POST 複数商品の最新2本Kライン一括照会（高値・安値・始値・終値）'
 ---
+
+## POST /batch-kline
+
+## **インターフェース説明**
+
+このインターフェースは複数商品を一括照会でき、複数のKラインタイプ（1分、15分、30分など）も一括照会できます。**ただし、一括照会できるのは最新2本のKラインのみです。**
+
+HTTPインターフェースでKラインを取得する場合は、`/kline` と `/batch-kline` を組み合わせて使用することを推奨します。
+
+* まず、`/kline` インターフェースで履歴データをポーリング取得し、ローカルデータベースに保存します。
+* その後、`/batch-kline` インターフェースで複数商品の最新2本Kラインを継続的に一括取得し、データベースを更新します。
+
+この方法により最新Kラインをすばやく更新でき、履歴Kラインを頻繁にリクエストすることで頻度制限を受けることを避けられます。
+
+## リクエスト頻度
+
+| プラン | 単独リクエスト | 複数HTTPインターフェースを同時にリクエスト |
+| --- | --- | --- |
+| 無料 | 1. 10秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで10グループのデータを一括照会できます。1グループ = 1商品 + 1つのKラインタイプ。例: BTCUSDTの1分Kと5分Kを同時取得する場合は2グループです。 | 1. 10秒に1つのインターフェースのみリクエスト可能。<br />**2. /batch-kline インターフェースは10秒間隔が必要です。**<br />3. すべてのインターフェース合計で1分あたり最大10回（6秒に1回）。<br />4. 1日の最大リクエスト数は1,000回。超過した場合は翌日未明に利用が回復します。 |
+| ベーシック | 1. 3秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで100グループのデータを一括照会できます。1グループ = 1商品 + 1つのKラインタイプ。 | 1. 同一秒内に1つのインターフェースのみリクエスト可能。<br />2. すべてのインターフェース合計で1分あたり最大60回（1秒に1回）。<br />**3. /batch-kline インターフェースは3秒間隔が必要です。**<br />4. 1日の最大リクエスト数は86,400回。超過した場合は翌日未明に利用が回復します。 |
+| アドバンス | 1. 2秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで200グループのデータを一括照会できます。1グループ = 1商品 + 1つのKラインタイプ。 | 1. すべてのインターフェース合計で1分あたり最大600回（1秒に10回）。<br />**2. /batch-kline インターフェースは2秒間隔が必要です。**<br />3. 1日の最大リクエスト数は864,000回。超過した場合は翌日未明に利用が回復します。 |
+| プロフェッショナル | 1. 1秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで500グループのデータを一括照会できます。1グループ = 1商品 + 1つのKラインタイプ。 | 1. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />**2. /batch-kline インターフェースは1秒間隔が必要です。**<br />3. 1日の最大リクエスト数は1,728,000回。超過した場合は翌日未明に利用が回復します。 |
+| 香港株すべて | 1. 1秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで500グループのデータを一括照会できます。 | 1. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />**2. /batch-kline インターフェースは1秒間隔が必要です。**<br />3. 1日の最大リクエスト数は1,728,000回。 |
+| A株すべて | 1. 1秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで500グループのデータを一括照会できます。 | 1. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />**2. /batch-kline インターフェースは1秒間隔が必要です。**<br />3. 1日の最大リクエスト数は1,728,000回。 |
+| 米国株すべて | 1. 1秒ごとに1回リクエスト可能。<br />2. 1回のリクエストで500グループのデータを一括照会できます。 | 1. すべてのインターフェース合計で1分あたり最大1,200回（1秒に20回）。<br />**2. /batch-kline インターフェースは1秒間隔が必要です。**<br />3. 1日の最大リクエスト数は1,728,000回。 |
+
+## インターフェース制限
+
+1. 必ずお読みください: [HTTPインターフェース制限](/ja/getting-started/http-interface-restrictions)
+2. 必ずお読みください: [エラーコード説明](/ja/getting-started/error-code-description)
+
+## インターフェースURL
+
+**1. 米国株、香港株、A株、主要指数データのインターフェースURL:**
+
+* ベースパス: `/quote-stock-b-api/batch-kline`
+* 完全URL: <a href="https://quote.alltick.co/quote-stock-b-api/batch-kline">https://quote.alltick.co/quote-stock-b-api/batch-kline</a>
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品のインターフェースURL:**
+
+* ベースパス: `/quote-b-api/batch-kline`
+* 完全URL: <a href="https://quote.alltick.co/quote-b-api/batch-kline">https://quote.alltick.co/quote-b-api/batch-kline</a>
+
+## リクエスト例
+
+**1. 米国株、香港株、A株、主要指数データのリクエスト例:**
+
+商品の最新Kラインを一括照会する場合、一括照会パラメータが多いためbodyに配置します。URLパラメータにはtokenのみを保持します。
+
+[https://quote.alltick.co/quote-stock-b-api/batch-kline?token=your_token](https://quote.alltick.co/quote-stock-b-api/batch-kline?token=your_token)
+
+**2. 外国為替、貴金属、暗号資産、原油、CFD指数、商品のリクエスト例:**
+
+商品の最新Kラインを一括照会する場合、一括照会パラメータが多いためbodyに配置します。URLパラメータにはtokenのみを保持します。
+
+[https://quote.alltick.co/quote-b-api/batch-kline?token=your_token](https://quote.alltick.co/quote-b-api/batch-kline?token=your_token)
+
+## **商品の最新Kラインを一括照会する場合、一括照会パラメータが多いためbodyに配置します。URLパラメータにはtokenのみを保持します。**
+
+## Bodyリクエストパラメータ
+
+```json
+{
+  "trace": "c2a8a146-a647-4d6f-ac07-8c4805bf0b74",
+  "data": {
+    "data_list": [
+      {
+        "code": "700.HK",
+        "kline_type": 1,
+        "kline_timestamp_end": 0,
+        "query_kline_num": 1,
+        "adjust_type": 0
+      },
+      {
+        "code": "GOOGL.US",
+        "kline_type": 1,
+        "kline_timestamp_end": 0,
+        "query_kline_num": 1,
+        "adjust_type": 0
+      }
+    ]
+  }
+}
+```
+
+## リクエストパラメータ
+
+| 名称 | 位置 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- | --- |
+| token | query | string | はい | tokenが不明な場合は、担当者へお問い合わせください。 |
+| body | body | object | いいえ |  |
+| » trace | body | string | はい | ログ照会に使用するトレースコードです。リクエストごとに一意にしてください。 |
+| » data | body | object | はい |  |
+| »» data_list | body | [object] | はい |  |
+| »»» code | body | string | はい | codeリストを確認し、照会するcodeを選択してください: <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">[codeリストを開く]</a><br />**注意: code値の大文字・小文字は商品リスト内のcodeと一致させる必要があります。** |
+| »»» kline_type | body | integer | はい | Kラインタイプ:<br />1. 1は1分K、2は5分K、3は15分K、4は30分K、5は時間足、6は2時間K（株式は2時間K非対応）、7は4時間K（株式は4時間K非対応）、8は日足、9は週足、10は月足です。注: 株式は2時間K、4時間Kに対応していません。<br />2. 最短のKラインは1分のみ対応しています。<br />3. **前日終値**を照会する場合、kline_type に8を渡します。 |
+| »»» kline_timestamp_end | body | integer | はい | 指定時刻から過去に向かってKラインを照会します。<br />1. 0を渡すと最新取引日から過去に向かって照会します。<br />2. タイムスタンプを渡すと、そのタイムスタンプから過去に向かって照会します。<br />3. タイムスタンプ指定に対応しているのは外国為替、貴金属、暗号資産のみで、株式系codeは対応していません。 |
+| »»» query_kline_num | body | integer | はい | 1. 照会するKライン本数を示します。**このインターフェースでは最大2本のKラインのみ照会できます。**<br />2. このフィールドで**前日終値**を照会できます。kline_type に8、query_kline_num に2を渡すと、返却された2本のKラインのうちタイムスタンプが小さいデータが前日終値です。 |
+| »»» adjust_type | body | integer | はい | 復権タイプです。株式系codeの場合のみ有効です。例: 0: 除権、1: 前方復権。現在は0のみ対応しています。 |
+
+## レスポンス例
+
+```json
+{
+  "ret": 200,
+  "msg": "ok",
+  "trace": "c2a8a146-a647-4d6f-ac07-8c4805bf0b74",
+  "data": {
+    "kline_list": [
+      {
+        "code": "700.HK",
+        "kline_type": 1,
+        "kline_data": [
+          {
+            "timestamp": "1677829200",
+            "open_price": "136.421",
+            "close_price": "136.412",
+            "high_price": "136.422",
+            "low_price": "136.407",
+            "volume": "0",
+            "turnover": "0"
+          }
+        ]
+      },
+      {
+        "code": "GOOGL.US",
+        "kline_type": 1,
+        "kline_data": [
+          {
+            "timestamp": "1677829200",
+            "open_price": "136.421",
+            "close_price": "136.412",
+            "high_price": "136.422",
+            "low_price": "136.407",
+            "volume": "0",
+            "turnover": "0"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+## レスポンス結果
+
+| ステータスコード | ステータスの意味 | 説明 | データモデル |
+| --- | --- | --- | --- |
+| 200 | OK | OK | Inline |
+
+| 名称 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| » ret | integer | true |  |
+| » msg | string | true |  |
+| » trace | string | true |  |
+| » data | object | true |  |
+| »» kline_list | [array] | true |  |
+| »»» code | string | true | 商品コード |
+| »»» kline_type | integer | true | Kラインタイプ:<br />1. 1は1分K、2は5分K、3は15分K、4は30分K、5は時間足、6は2時間K（株式は2時間K非対応）、7は4時間K（株式は4時間K非対応）、8は日足、9は週足、10は月足です。注: 株式は2時間K、4時間Kに対応していません。<br />2. 最短のKラインは1分のみ対応しています。 |
+| »»» kline_data | [array] | true |  |
+| »»»» timestamp | string | true | Kラインのタイムスタンプ |
+| »»»» open_price | string | true | Kラインの始値 |
+| »»»» close_price | string | true | Kラインの終値:<br />1. 取引時間中、最新の1本ではこの価格は最新約定価格でもあります。<br />2. 休場中、最新の1本ではこの価格は終値です。 |
+| »»»» high_price | string | true | Kラインの高値 |
+| »»»» low_price | string | true | Kラインの安値 |
+| »»»» volume | string | true | Kラインの約定数量 |
+| »»»» turnover | string | true | Kラインの約定金額 |
+
+#### AllTickウェブサイト
+
+<Note>
+公式サイト: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## インターフェースデバッグ
+
+<Card title="POST /batch-kline デバッグモジュールを開く" icon="play" href="/ja/api-reference/stock/debug/batch-kline">
+  デバッグ可能なモジュールでパラメータを入力し、リクエストを送信します。
+</Card>

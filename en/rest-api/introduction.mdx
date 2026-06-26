@@ -1,61 +1,24 @@
 ---
-title: 'AllTick HTTP Request Example - Go/Python/Java/PHP Code Samples for Real-Time Market Data REST API'
-description: 'This page provides HTTP request examples for the AllTick REST API in Go, Python, Java, and PHP, showing how to build request URLs, set token and query parameters, send HTTP requests, and parse responses, making it easy for developers to integrate and test real-time tick data feeds for forex, stocks, crypto, and more via REST.'
-seo:
-  keywords: 'AllTick HTTP request example, REST API code sample, Go Python Java PHP demo, realtime tick data HTTP, market data API integration example, AllTick request tutorial'
+title: 'REST API Overview'
+description: 'AllTick REST API provides HTTP request examples and HTTP Interface APIs based on the official documentation.'
 ---
 
 ## Overview
 
-AllTick REST API provides the following HTTP endpoints:
+The AllTick REST API documentation includes HTTP request examples and HTTP Interface APIs. The HTTP Interface API pages are organized according to the official API documentation and include K-lines, batch K-lines, latest order book, latest trade price, stock product basic information, suspension and resumption information query, and descriptions for price changes, market closure, holidays, and more.
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| /kline | GET | Single product historical K-line query |
-| /batch-kline | POST | Batch query latest 2 K-lines for multiple products |
-| /depth-tick | GET | Latest order book (market depth) query |
-| /trade-tick | GET | Latest trade price batch query |
+<CardGroup cols={2}>
+  <Card title="HTTP Request Example" href="/en/rest-api/http-request-example">
+    View REST API request examples for Go, Java, PHP, and Python.
+  </Card>
+  <Card title="HTTP Interface API" href="/en/rest-api/stock-http-interface-api">
+    View official-documentation-consistent HTTP interface descriptions and debuggable interface pages.
+  </Card>
+</CardGroup>
 
-## Base URLs
+## Interface Addresses
 
-**Stocks (US, HK, A-shares):**
-- `https://quote.alltick.co/quote-stock-b-api`
-
-**Forex, Crypto, Precious Metals, Commodities:**
-- `https://quote.alltick.co/quote-b-api`
-
-## Request Format
-
-The `query` parameter for GET requests must be a URL-encoded JSON string:
-
-```bash
-# Original JSON
-{
-  "trace": "unique-trace-id",
-  "data": {
-    "code": "700.HK",
-    "kline_type": 1,
-    "kline_timestamp_end": 0,
-    "query_kline_num": 2,
-    "adjust_type": 0
-  }
-}
-
-# URL-encode and append to query parameter
-https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=%7B%22trace%22...%7D
-```
-
-## K-Line Types
-
-| Value | Type |
-|-------|------|
-| 1 | 1 minute |
-| 2 | 5 minutes |
-| 3 | 15 minutes |
-| 4 | 30 minutes |
-| 5 | 1 hour |
-| 6 | 2 hours (stocks not supported) |
-| 7 | 4 hours (stocks not supported) |
-| 8 | Daily |
-| 9 | Weekly |
-| 10 | Monthly |
+| Product Type | Base URL |
+| --- | --- |
+| US stocks, Hong Kong stocks, A shares, and major index data | `https://quote.alltick.co/quote-stock-b-api` |
+| Forex, precious metals, cryptocurrencies, crude oil, CFD indices, and commodities | `https://quote.alltick.co/quote-b-api` |

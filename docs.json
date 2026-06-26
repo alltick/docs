@@ -40,25 +40,53 @@
             "tab": "指南",
             "groups": [
               {
-                "group": "开始使用",
+                "group": "欢迎",
                 "pages": [
-                  "zh/index",
-                  "zh/getting-started/process",
-                  "zh/getting-started/api-address",
-                  "zh/getting-started/token",
-                  "zh/getting-started/rate-limits",
-                  "zh/getting-started/standard-headers"
+                  "zh/welcome"
                 ]
               },
               {
-                "group": "产品 Code 列表",
+                "group": "接入流程",
                 "pages": [
-                  "zh/product-codes/a-shares",
-                  "zh/product-codes/hk-stocks",
-                  "zh/product-codes/us-stocks",
-                  "zh/product-codes/crypto",
-                  "zh/product-codes/commodities",
-                  "zh/product-codes/forex"
+                  "zh/integration-process/process",
+                  {
+                    "group": "行情地址说明",
+                    "root": "zh/integration-process/market-address-description",
+                    "pages": [
+                      "zh/integration-process/http-quotes-api-address-description",
+                      "zh/integration-process/websocket-quotes-api-address-description"
+                    ]
+                  },
+                  "zh/integration-process/token-application",
+                  {
+                    "group": "接口限制说明",
+                    "root": "zh/integration-process/interface-restriction-description",
+                    "pages": [
+                      "zh/getting-started/http-interface-restrictions",
+                      "zh/getting-started/websocket-interface-limitations",
+                      "zh/getting-started/error-code-description"
+                    ]
+                  },
+                  {
+                    "group": "通用标准头说明",
+                    "root": "zh/integration-process/universal-standard-header-description",
+                    "pages": [
+                      "zh/integration-process/http-common-standard-headers",
+                      "zh/integration-process/websocket-common-standard-header"
+                    ]
+                  },
+                  {
+                    "group": "产品 Code 列表",
+                    "root": "zh/integration-process/product-code-list",
+                    "pages": [
+                      "zh/product-codes/a-shares",
+                      "zh/product-codes/hk-stocks",
+                      "zh/product-codes/us-stocks",
+                      "zh/product-codes/crypto",
+                      "zh/product-codes/commodities",
+                      "zh/product-codes/forex"
+                    ]
+                  }
                 ]
               }
             ]
@@ -69,25 +97,21 @@
               {
                 "group": "概述",
                 "pages": [
-                  "zh/rest-api/introduction"
+                  "zh/rest-api/introduction",
+                  "zh/rest-api/http-request-example"
                 ]
               },
               {
-                "group": "股票接口",
+                "group": "HTTP接口API",
+                "root": "zh/rest-api/stock-http-interface-api",
                 "pages": [
                   "zh/api-reference/stock/kline",
                   "zh/api-reference/stock/batch-kline",
+                  "zh/api-reference/stock/trade-tick",
                   "zh/api-reference/stock/depth-tick",
-                  "zh/api-reference/stock/trade-tick"
-                ]
-              },
-              {
-                "group": "外汇/加密货币接口",
-                "pages": [
-                  "zh/api-reference/forex/kline",
-                  "zh/api-reference/forex/batch-kline",
-                  "zh/api-reference/forex/depth-tick",
-                  "zh/api-reference/forex/trade-tick"
+                  "zh/api-reference/stock/static-info",
+                  "zh/api-reference/stock/suspension",
+                  "zh/api-reference/stock/price-change-trading-status"
                 ]
               }
             ]
@@ -98,16 +122,72 @@
               {
                 "group": "概述",
                 "pages": [
-                  "zh/websocket/introduction"
+                  "zh/websocket/introduction",
+                  "zh/websocket/websocket-request-example"
                 ]
               },
               {
-                "group": "接口",
+                "group": "Websocket接口API",
+                "root": "zh/websocket/stock-websocket-interface-api",
                 "pages": [
-                  "zh/websocket/heartbeat",
                   "zh/websocket/trade-subscription",
                   "zh/websocket/depth-subscription",
-                  "zh/websocket/cancel-subscription"
+                  "zh/websocket/heartbeat",
+                  "zh/websocket/cancel-subscription",
+                  "zh/websocket/kline-push-not-supported"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "FAQS",
+            "groups": [
+              {
+                "group": "基础使用",
+                "root": "zh/faqs/basic-usage",
+                "pages": [
+                  "zh/faqs/basic-usage/what-types-of-financial-data-does-alltick-provide",
+                  "zh/faqs/basic-usage/how-to-obtain-an-api-key-from-alltick",
+                  "zh/faqs/basic-usage/what-is-the-data-update-frequency-of-alltick",
+                  "zh/faqs/basic-usage/how-to-integrate-alltick-data-into-my-application",
+                  "zh/faqs/basic-usage/what-programming-languages-does-alltick-support-for-api-calls",
+                  "zh/faqs/basic-usage/can-i-use-allticks-data-for-commercial-purposes",
+                  "zh/faqs/basic-usage/how-to-contact-alltick-customer-support",
+                  "zh/faqs/basic-usage/does-allticks-api-have-request-limitations",
+                  "zh/faqs/basic-usage/how-to-report-data-issues-or-api-malfunctions",
+                  "zh/faqs/basic-usage/does-alltick-provide-real-time-or-delayed-data"
+                ]
+              },
+              {
+                "group": "订阅与账户管理",
+                "root": "zh/faqs/subscription-and-account-management",
+                "pages": [
+                  "zh/faqs/subscription-and-account-management/how-to-register-an-alltick-account",
+                  "zh/faqs/subscription-and-account-management/does-alltick-offer-a-free-trial-period",
+                  "zh/faqs/subscription-and-account-management/how-to-cancel-allticks-subscription-service",
+                  "zh/faqs/subscription-and-account-management/what-services-does-my-subscription-include",
+                  "zh/faqs/subscription-and-account-management/how-to-upgrade-my-alltick-subscription-plan",
+                  "zh/faqs/subscription-and-account-management/how-to-change-my-account-information",
+                  "zh/faqs/subscription-and-account-management/i-forgot-my-login-password-what-should-i-do",
+                  "zh/faqs/subscription-and-account-management/how-to-secure-my-alltick-account",
+                  "zh/faqs/subscription-and-account-management/can-multiple-people-share-one-alltick-account",
+                  "zh/faqs/subscription-and-account-management/can-my-subscription-be-refunded"
+                ]
+              },
+              {
+                "group": "数据使用与技术问题",
+                "root": "zh/faqs/data-usage-and-technical-issues",
+                "pages": [
+                  "zh/faqs/data-usage-and-technical-issues/how-to-use-allticks-websocket-service",
+                  "zh/faqs/data-usage-and-technical-issues/what-data-formats-does-allticks-api-support",
+                  "zh/faqs/data-usage-and-technical-issues/how-to-handle-high-frequency-updates-of-alltick-data",
+                  "zh/faqs/data-usage-and-technical-issues/i-encountered-a-technical-problem-when-using-the-api-how-can-i-solve-it",
+                  "zh/faqs/data-usage-and-technical-issues/how-to-ensure-the-accuracy-of-data-received-from-alltick",
+                  "zh/faqs/data-usage-and-technical-issues/does-alltick-provide-historical-data-query",
+                  "zh/faqs/data-usage-and-technical-issues/how-do-i-limit-my-data-usage-to-avoid-exceeding-my-subscription-limits",
+                  "zh/faqs/data-usage-and-technical-issues/does-allticks-api-support-batch-requests",
+                  "zh/faqs/data-usage-and-technical-issues/how-can-i-get-real-time-notifications-and-alerts-on-specific-financial-markets",
+                  "zh/faqs/data-usage-and-technical-issues/does-alltick-provide-data-analysis-and-visualization-tools"
                 ]
               }
             ]
@@ -121,25 +201,53 @@
             "tab": "Guides",
             "groups": [
               {
-                "group": "Getting Started",
+                "group": "Welcome",
                 "pages": [
-                  "en/index",
-                  "en/getting-started/process",
-                  "en/getting-started/api-address",
-                  "en/getting-started/token",
-                  "en/getting-started/rate-limits",
-                  "en/getting-started/standard-headers"
+                  "en/welcome"
                 ]
               },
               {
-                "group": "Product Codes",
+                "group": "Integration Process",
                 "pages": [
-                  "en/product-codes/a-shares",
-                  "en/product-codes/hk-stocks",
-                  "en/product-codes/us-stocks",
-                  "en/product-codes/crypto",
-                  "en/product-codes/commodities",
-                  "en/product-codes/forex"
+                  "en/integration-process/process",
+                  {
+                    "group": "Market API Address Description",
+                    "root": "en/integration-process/market-address-description",
+                    "pages": [
+                      "en/integration-process/http-quotes-api-address-description",
+                      "en/integration-process/websocket-quotes-api-address-description"
+                    ]
+                  },
+                  "en/integration-process/token-application",
+                  {
+                    "group": "Interface Restriction Description",
+                    "root": "en/integration-process/interface-restriction-description",
+                    "pages": [
+                      "en/getting-started/http-interface-restrictions",
+                      "en/getting-started/websocket-interface-limitations",
+                      "en/getting-started/error-code-description"
+                    ]
+                  },
+                  {
+                    "group": "Common Standard Header Description",
+                    "root": "en/integration-process/universal-standard-header-description",
+                    "pages": [
+                      "en/integration-process/http-common-standard-headers",
+                      "en/integration-process/websocket-common-standard-header"
+                    ]
+                  },
+                  {
+                    "group": "Product Code List",
+                    "root": "en/integration-process/product-code-list",
+                    "pages": [
+                      "en/product-codes/a-shares",
+                      "en/product-codes/hk-stocks",
+                      "en/product-codes/us-stocks",
+                      "en/product-codes/crypto",
+                      "en/product-codes/commodities",
+                      "en/product-codes/forex"
+                    ]
+                  }
                 ]
               }
             ]
@@ -150,25 +258,21 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "en/rest-api/introduction"
+                  "en/rest-api/introduction",
+                  "en/rest-api/http-request-example"
                 ]
               },
               {
-                "group": "Stock Endpoints",
+                "group": "HTTP Interface API",
+                "root": "en/rest-api/stock-http-interface-api",
                 "pages": [
                   "en/api-reference/stock/kline",
                   "en/api-reference/stock/batch-kline",
+                  "en/api-reference/stock/trade-tick",
                   "en/api-reference/stock/depth-tick",
-                  "en/api-reference/stock/trade-tick"
-                ]
-              },
-              {
-                "group": "Forex/Crypto Endpoints",
-                "pages": [
-                  "en/api-reference/forex/kline",
-                  "en/api-reference/forex/batch-kline",
-                  "en/api-reference/forex/depth-tick",
-                  "en/api-reference/forex/trade-tick"
+                  "en/api-reference/stock/static-info",
+                  "en/api-reference/stock/suspension",
+                  "en/api-reference/stock/price-change-trading-status"
                 ]
               }
             ]
@@ -179,16 +283,72 @@
               {
                 "group": "Overview",
                 "pages": [
-                  "en/websocket/introduction"
+                  "en/websocket/introduction",
+                  "en/websocket/websocket-request-example"
                 ]
               },
               {
-                "group": "Endpoints",
+                "group": "WebSocket Interface API",
+                "root": "en/websocket/stock-websocket-interface-api",
                 "pages": [
-                  "en/websocket/heartbeat",
                   "en/websocket/trade-subscription",
                   "en/websocket/depth-subscription",
-                  "en/websocket/cancel-subscription"
+                  "en/websocket/heartbeat",
+                  "en/websocket/cancel-subscription",
+                  "en/websocket/kline-push-not-supported"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "FAQS",
+            "groups": [
+              {
+                "group": "Basic Usage",
+                "root": "en/faqs/basic-usage",
+                "pages": [
+                  "en/faqs/basic-usage/what-types-of-financial-data-does-alltick-provide",
+                  "en/faqs/basic-usage/how-to-obtain-an-api-key-from-alltick",
+                  "en/faqs/basic-usage/what-is-the-data-update-frequency-of-alltick",
+                  "en/faqs/basic-usage/how-to-integrate-alltick-data-into-my-application",
+                  "en/faqs/basic-usage/what-programming-languages-does-alltick-support-for-api-calls",
+                  "en/faqs/basic-usage/can-i-use-allticks-data-for-commercial-purposes",
+                  "en/faqs/basic-usage/how-to-contact-alltick-customer-support",
+                  "en/faqs/basic-usage/does-allticks-api-have-request-limitations",
+                  "en/faqs/basic-usage/how-to-report-data-issues-or-api-malfunctions",
+                  "en/faqs/basic-usage/does-alltick-provide-real-time-or-delayed-data"
+                ]
+              },
+              {
+                "group": "Subscription and Account Management",
+                "root": "en/faqs/subscription-and-account-management",
+                "pages": [
+                  "en/faqs/subscription-and-account-management/how-to-register-an-alltick-account",
+                  "en/faqs/subscription-and-account-management/does-alltick-offer-a-free-trial-period",
+                  "en/faqs/subscription-and-account-management/how-to-cancel-allticks-subscription-service",
+                  "en/faqs/subscription-and-account-management/what-services-does-my-subscription-include",
+                  "en/faqs/subscription-and-account-management/how-to-upgrade-my-alltick-subscription-plan",
+                  "en/faqs/subscription-and-account-management/how-to-change-my-account-information",
+                  "en/faqs/subscription-and-account-management/i-forgot-my-login-password-what-should-i-do",
+                  "en/faqs/subscription-and-account-management/how-to-secure-my-alltick-account",
+                  "en/faqs/subscription-and-account-management/can-multiple-people-share-one-alltick-account",
+                  "en/faqs/subscription-and-account-management/can-my-subscription-be-refunded"
+                ]
+              },
+              {
+                "group": "Data Usage and Technical Issues",
+                "root": "en/faqs/data-usage-and-technical-issues",
+                "pages": [
+                  "en/faqs/data-usage-and-technical-issues/how-to-use-allticks-websocket-service",
+                  "en/faqs/data-usage-and-technical-issues/what-data-formats-does-allticks-api-support",
+                  "en/faqs/data-usage-and-technical-issues/how-to-handle-high-frequency-updates-of-alltick-data",
+                  "en/faqs/data-usage-and-technical-issues/i-encountered-a-technical-problem-when-using-the-api-how-can-i-solve-it",
+                  "en/faqs/data-usage-and-technical-issues/how-to-ensure-the-accuracy-of-data-received-from-alltick",
+                  "en/faqs/data-usage-and-technical-issues/does-alltick-provide-historical-data-query",
+                  "en/faqs/data-usage-and-technical-issues/how-do-i-limit-my-data-usage-to-avoid-exceeding-my-subscription-limits",
+                  "en/faqs/data-usage-and-technical-issues/does-allticks-api-support-batch-requests",
+                  "en/faqs/data-usage-and-technical-issues/how-can-i-get-real-time-notifications-and-alerts-on-specific-financial-markets",
+                  "en/faqs/data-usage-and-technical-issues/does-alltick-provide-data-analysis-and-visualization-tools"
                 ]
               }
             ]
@@ -202,25 +362,53 @@
             "tab": "ガイド",
             "groups": [
               {
-                "group": "はじめに",
+                "group": "ようこそ",
                 "pages": [
-                  "ja/index",
-                  "ja/getting-started/process",
-                  "ja/getting-started/api-address",
-                  "ja/getting-started/token",
-                  "ja/getting-started/rate-limits",
-                  "ja/getting-started/standard-headers"
+                  "ja/welcome"
                 ]
               },
               {
-                "group": "製品コード",
+                "group": "接続フロー",
                 "pages": [
-                  "ja/product-codes/a-shares",
-                  "ja/product-codes/hk-stocks",
-                  "ja/product-codes/us-stocks",
-                  "ja/product-codes/crypto",
-                  "ja/product-codes/commodities",
-                  "ja/product-codes/forex"
+                  "ja/integration-process/process",
+                  {
+                    "group": "マーケット API アドレス説明",
+                    "root": "ja/integration-process/market-address-description",
+                    "pages": [
+                      "ja/integration-process/http-quotes-api-address-description",
+                      "ja/integration-process/websocket-quotes-api-address-description"
+                    ]
+                  },
+                  "ja/integration-process/token-application",
+                  {
+                    "group": "インターフェース制限説明",
+                    "root": "ja/integration-process/interface-restriction-description",
+                    "pages": [
+                      "ja/getting-started/http-interface-restrictions",
+                      "ja/getting-started/websocket-interface-limitations",
+                      "ja/getting-started/error-code-description"
+                    ]
+                  },
+                  {
+                    "group": "共通標準ヘッダー説明",
+                    "root": "ja/integration-process/universal-standard-header-description",
+                    "pages": [
+                      "ja/integration-process/http-common-standard-headers",
+                      "ja/integration-process/websocket-common-standard-header"
+                    ]
+                  },
+                  {
+                    "group": "商品 Code 一覧",
+                    "root": "ja/integration-process/product-code-list",
+                    "pages": [
+                      "ja/product-codes/a-shares",
+                      "ja/product-codes/hk-stocks",
+                      "ja/product-codes/us-stocks",
+                      "ja/product-codes/crypto",
+                      "ja/product-codes/commodities",
+                      "ja/product-codes/forex"
+                    ]
+                  }
                 ]
               }
             ]
@@ -231,25 +419,21 @@
               {
                 "group": "概要",
                 "pages": [
-                  "ja/rest-api/introduction"
+                  "ja/rest-api/introduction",
+                  "ja/rest-api/http-request-example"
                 ]
               },
               {
-                "group": "株式エンドポイント",
+                "group": "HTTP インターフェース API",
+                "root": "ja/rest-api/stock-http-interface-api",
                 "pages": [
                   "ja/api-reference/stock/kline",
                   "ja/api-reference/stock/batch-kline",
+                  "ja/api-reference/stock/trade-tick",
                   "ja/api-reference/stock/depth-tick",
-                  "ja/api-reference/stock/trade-tick"
-                ]
-              },
-              {
-                "group": "外国為替/暗号通貨エンドポイント",
-                "pages": [
-                  "ja/api-reference/forex/kline",
-                  "ja/api-reference/forex/batch-kline",
-                  "ja/api-reference/forex/depth-tick",
-                  "ja/api-reference/forex/trade-tick"
+                  "ja/api-reference/stock/static-info",
+                  "ja/api-reference/stock/suspension",
+                  "ja/api-reference/stock/price-change-trading-status"
                 ]
               }
             ]
@@ -260,16 +444,72 @@
               {
                 "group": "概要",
                 "pages": [
-                  "ja/websocket/introduction"
+                  "ja/websocket/introduction",
+                  "ja/websocket/websocket-request-example"
                 ]
               },
               {
-                "group": "エンドポイント",
+                "group": "WebSocket インターフェース API",
+                "root": "ja/websocket/stock-websocket-interface-api",
                 "pages": [
-                  "ja/websocket/heartbeat",
                   "ja/websocket/trade-subscription",
                   "ja/websocket/depth-subscription",
-                  "ja/websocket/cancel-subscription"
+                  "ja/websocket/heartbeat",
+                  "ja/websocket/cancel-subscription",
+                  "ja/websocket/kline-push-not-supported"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "FAQS",
+            "groups": [
+              {
+                "group": "基本的な使い方",
+                "root": "ja/faqs/basic-usage",
+                "pages": [
+                  "ja/faqs/basic-usage/what-types-of-financial-data-does-alltick-provide",
+                  "ja/faqs/basic-usage/how-to-obtain-an-api-key-from-alltick",
+                  "ja/faqs/basic-usage/what-is-the-data-update-frequency-of-alltick",
+                  "ja/faqs/basic-usage/how-to-integrate-alltick-data-into-my-application",
+                  "ja/faqs/basic-usage/what-programming-languages-does-alltick-support-for-api-calls",
+                  "ja/faqs/basic-usage/can-i-use-allticks-data-for-commercial-purposes",
+                  "ja/faqs/basic-usage/how-to-contact-alltick-customer-support",
+                  "ja/faqs/basic-usage/does-allticks-api-have-request-limitations",
+                  "ja/faqs/basic-usage/how-to-report-data-issues-or-api-malfunctions",
+                  "ja/faqs/basic-usage/does-alltick-provide-real-time-or-delayed-data"
+                ]
+              },
+              {
+                "group": "購読とアカウント管理",
+                "root": "ja/faqs/subscription-and-account-management",
+                "pages": [
+                  "ja/faqs/subscription-and-account-management/how-to-register-an-alltick-account",
+                  "ja/faqs/subscription-and-account-management/does-alltick-offer-a-free-trial-period",
+                  "ja/faqs/subscription-and-account-management/how-to-cancel-allticks-subscription-service",
+                  "ja/faqs/subscription-and-account-management/what-services-does-my-subscription-include",
+                  "ja/faqs/subscription-and-account-management/how-to-upgrade-my-alltick-subscription-plan",
+                  "ja/faqs/subscription-and-account-management/how-to-change-my-account-information",
+                  "ja/faqs/subscription-and-account-management/i-forgot-my-login-password-what-should-i-do",
+                  "ja/faqs/subscription-and-account-management/how-to-secure-my-alltick-account",
+                  "ja/faqs/subscription-and-account-management/can-multiple-people-share-one-alltick-account",
+                  "ja/faqs/subscription-and-account-management/can-my-subscription-be-refunded"
+                ]
+              },
+              {
+                "group": "データ利用と技術的な問題",
+                "root": "ja/faqs/data-usage-and-technical-issues",
+                "pages": [
+                  "ja/faqs/data-usage-and-technical-issues/how-to-use-allticks-websocket-service",
+                  "ja/faqs/data-usage-and-technical-issues/what-data-formats-does-allticks-api-support",
+                  "ja/faqs/data-usage-and-technical-issues/how-to-handle-high-frequency-updates-of-alltick-data",
+                  "ja/faqs/data-usage-and-technical-issues/i-encountered-a-technical-problem-when-using-the-api-how-can-i-solve-it",
+                  "ja/faqs/data-usage-and-technical-issues/how-to-ensure-the-accuracy-of-data-received-from-alltick",
+                  "ja/faqs/data-usage-and-technical-issues/does-alltick-provide-historical-data-query",
+                  "ja/faqs/data-usage-and-technical-issues/how-do-i-limit-my-data-usage-to-avoid-exceeding-my-subscription-limits",
+                  "ja/faqs/data-usage-and-technical-issues/does-allticks-api-support-batch-requests",
+                  "ja/faqs/data-usage-and-technical-issues/how-can-i-get-real-time-notifications-and-alerts-on-specific-financial-markets",
+                  "ja/faqs/data-usage-and-technical-issues/does-alltick-provide-data-analysis-and-visualization-tools"
                 ]
               }
             ]

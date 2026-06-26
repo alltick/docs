@@ -1,0 +1,46 @@
+---
+title: 'K-Line Push (Not Supported)'
+---
+
+## K-Line Push Description
+
+**AllTick WebSocket interfaces do not support K-line data push.** Because many customers have questions about this, this document explains that both historical K-lines and real-time K-lines are currently supported only through direct HTTP interface retrieval. The recommended implementation is as follows:
+
+**Implementation suggestions (for reference only):**
+
+**1. Periodically pull K-lines**: To quickly update K-lines, **it is recommended to purchase a plan with a higher request frequency to increase the pull frequency.**
+
+**2. Use HTTP interfaces together**: We recommend using `/kline` and `/batch-kline` together as follows:
+
+* First, use the `/kline` interface to poll historical data and store it in a local database. Later historical data can be obtained directly from the customer's database without requesting the interface again.
+* Then, continuously use the `/batch-kline` interface to batch request the latest two K-lines for multiple products and update the database with the data.
+
+This approach can quickly update the latest K-lines while avoiding request frequency restrictions caused by frequent historical K-line requests.
+
+## Price Change Description
+
+**AllTick interfaces do not provide a price change or 24-hour price change field.** Customers can calculate price changes themselves by obtaining AllTick data.
+
+**1. Daily price change calculation methods**:
+
+* **Method 1**: Use the HTTP interface to obtain today's daily K-line closing price and the previous day's daily K-line closing price. The formula is:
+
+Price change = (today's closing price - previous day's closing price) / previous day's closing price * 100%
+
+* **Method 2**: Use the WebSocket interface to obtain the latest price, and use the HTTP interface to obtain today's daily K-line closing price. The formula is:
+
+Price change = (latest price - previous day's closing price) / previous day's closing price * 100%
+
+**2. 24-hour price change calculation method**:
+
+* Use the WebSocket latest trade price interface (request protocol number: 22004) to receive tick-by-tick trade prices in real time.
+* You need to store the latest price from 24 hours ago pushed by the WebSocket interface for subsequent calculation.
+* Formula:
+
+24-hour price change = (latest price - latest price 24 hours ago) / latest price 24 hours ago * 100%
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

@@ -353,6 +353,49 @@
         }
       }
     },
+    "/quote-stock-b-api/static_info": {
+      "get": {
+        "operationId": "getStockStaticInfo",
+        "summary": "Stock Static Info Query",
+        "description": "Batch query basic product information for US stocks, HK stocks, and A-shares.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "您的API认证Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "URL编码的JSON字符串，包含trace和symbol_list字段。",
+            "schema": {
+              "type": "string",
+              "default": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+            },
+            "example": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/quote-b-api/trade-tick": {
       "get": {
         "operationId": "getForexTradeTick",
@@ -389,6 +432,168 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TradeTickResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/sse": {
+      "get": {
+        "operationId": "getSseSuspension",
+        "summary": "SSE Suspension Query",
+        "description": "获取上海证券交易所（SSE）全部停复牌信息。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "用户套餐Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "查询页码",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "每页数据大小",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nyse": {
+      "get": {
+        "operationId": "getNyseSuspension",
+        "summary": "NYSE Suspension Query",
+        "description": "获取纽约证券交易所（NYSE）全部停复牌信息。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "用户套餐Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "查询页码",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "每页数据大小",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nasdaq": {
+      "get": {
+        "operationId": "getNasdaqSuspension",
+        "summary": "NASDAQ Suspension Query",
+        "description": "获取纳斯达克交易所（NASDAQ）全部停复牌信息。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "用户套餐Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "查询页码",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "每页数据大小",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功响应",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
                 }
               }
             }
@@ -644,6 +849,167 @@
                       }
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "StaticInfoResponse": {
+        "type": "object",
+        "properties": {
+          "ret": {
+            "type": "integer",
+            "description": "返回码（200 = 成功）"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应消息"
+          },
+          "trace": {
+            "type": "string",
+            "description": "请求追踪ID"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "static_info_list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "board": {
+                      "type": "string",
+                      "description": "股票所属板块"
+                    },
+                    "bps": {
+                      "type": "string",
+                      "description": "每股净资产"
+                    },
+                    "circulating_shares": {
+                      "type": "string",
+                      "description": "流通股本"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "交易币种"
+                    },
+                    "dividend_yield": {
+                      "type": "string",
+                      "description": "股息"
+                    },
+                    "eps": {
+                      "type": "string",
+                      "description": "每股盈利"
+                    },
+                    "eps_ttm": {
+                      "type": "string",
+                      "description": "每股盈利 (TTM)"
+                    },
+                    "exchange": {
+                      "type": "string",
+                      "description": "产品所属交易所"
+                    },
+                    "hk_shares": {
+                      "type": "string",
+                      "description": "港股股本（仅港股）"
+                    },
+                    "lot_size": {
+                      "type": "string",
+                      "description": "每手股数"
+                    },
+                    "name_cn": {
+                      "type": "string",
+                      "description": "中文简体产品名称"
+                    },
+                    "name_en": {
+                      "type": "string",
+                      "description": "英文产品名称"
+                    },
+                    "name_hk": {
+                      "type": "string",
+                      "description": "中文繁体产品名称"
+                    },
+                    "symbol": {
+                      "type": "string",
+                      "description": "产品代码"
+                    },
+                    "total_shares": {
+                      "type": "string",
+                      "description": "总股本"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuspensionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "请求是否成功"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "响应时间戳"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "数据总条数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "数据总页数（分页查询时返回）"
+          },
+          "currentPage": {
+            "type": "integer",
+            "description": "当前页（分页查询时返回）"
+          },
+          "currentSize": {
+            "type": "integer",
+            "description": "当前页的数据条数（分页查询时返回）"
+          },
+          "data": {
+            "type": "array",
+            "description": "停复牌信息列表",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "description": "股票代码"
+                },
+                "symbolName": {
+                  "type": "string",
+                  "description": "股票名称"
+                },
+                "haltReason": {
+                  "type": "string",
+                  "description": "停牌原因"
+                },
+                "haltDate": {
+                  "type": "string",
+                  "description": "停牌日期"
+                },
+                "haltTime": {
+                  "type": "string",
+                  "description": "停牌时间"
+                },
+                "resumeDate": {
+                  "type": "string",
+                  "description": "复牌日期"
+                },
+                "resumeTime": {
+                  "type": "string",
+                  "description": "复牌时间"
+                },
+                "publishDate": {
+                  "type": "string",
+                  "description": "公告时间"
                 }
               }
             }

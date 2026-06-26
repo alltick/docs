@@ -1,0 +1,320 @@
+﻿---
+title: 'GET Suspension and Resumption Information Query Interface'
+---
+
+## GET /api/suspension
+
+## Interface Description
+
+This interface provides suspension and resumption information queries for major global exchanges (SSE, NYSE, NASDAQ). All interfaces return JSON data, sorted by announcement time in descending order.
+
+## **Request Frequency**
+
+| Plan | Individual Request for a Single Interface | Requesting Multiple HTTP Interfaces at the Same Time |
+| --- | --- | --- |
+| Free | One request per minute | 1. Only one interface can be requested every 10 seconds.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 10-second interval.**<br />3. All interfaces combined: maximum 10 requests per minute (one every 6 seconds).<br />4. Maximum 1,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Basic | One request per minute | 1. Only one interface can be requested in the same second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 3-second interval.**<br />3. All interfaces combined: maximum 60 requests per minute (one per second).<br />4. Maximum 86,400 requests per day; usage resumes after midnight the next day if exceeded. |
+| Premium | One request per minute | 1. All interfaces combined: up to 10 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 2-second interval.**<br />3. All interfaces combined: maximum 600 requests per minute (10 per second).<br />4. Maximum 864,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| Professional | One request per minute | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All Hong Kong Stocks | One request per minute | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All A Shares | One request per minute | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+| All US Stocks | One request per minute | 1. All interfaces combined: up to 20 requests per second.<br />**2. When requesting multiple interfaces, note that the /batch-kline interface requires a 1-second interval.**<br />3. All interfaces combined: maximum 1,200 requests per minute (20 per second).<br />4. Maximum 1,728,000 requests per day; usage resumes after midnight the next day if exceeded. |
+
+## Interface Limitations
+
+1. Be sure to read: [HTTP Interface Restrictions](/en/getting-started/http-interface-restrictions)
+
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## **API Endpoints**
+
+**1. Query Shanghai Stock Exchange suspension and resumption information:**
+
+* Base Path: `/api/suspension/sse`
+* Full URL: <a href="https://quote.alltick.co/api/suspension/sse">https://quote.alltick.co/api/suspension/sse</a>
+
+**2. Query New York Stock Exchange suspension and resumption information:**
+
+* Base Path: `/api/suspension/nyse`
+* Full URL: <a href="https://quote.alltick.co/api/suspension/nyse">https://quote.alltick.co/api/suspension/nyse</a>
+
+**3. Query NASDAQ suspension and resumption information:**
+
+* Base Path: `/api/suspension/nasdaq`
+* Full URL: <a href="https://quote.alltick.co/api/suspension/nasdaq">https://quote.alltick.co/api/suspension/nasdaq</a>
+
+## **Request Examples**
+
+### 1. Get SSE Data Interface
+
+#### Interface Information
+
+* **URL**: `/api/suspension/sse`
+* **Method**: GET
+* **Description**: Get all suspension and resumption information from the Shanghai Stock Exchange (SSE)
+
+#### Request Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| token | string | Yes | User subscription token |
+| page | integer | No | Query page number |
+| size | integer | No | Page size |
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 125,
+  "data": [
+    {
+      "symbol": "600000",
+      "symbolName": "Shanghai Pudong Development Bank",
+      "haltReason": "Trading halt due to major matters",
+      "haltDate": "2024-01-15",
+      "haltTime": "09:30:00",
+      "haltPeriod": "Full-day trading halt",
+      "resumeDate": "2024-01-16",
+      "resumeTime": "09:30:00",
+      "publishDate": "2024-01-14 18:00:00"
+    }
+  ]
+}
+```
+
+#### Response Field Description
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| » success | boolean | Yes | Whether the request was successful |
+| » timestamp | string | Yes | Response timestamp (format: yyyy-MM-dd'T'HH:mm:ss) |
+| » totalCount | integer | Yes | Total number of records |
+| » data | array | Yes | Suspension and resumption information list |
+| » totalPages | integer | No | Total number of pages (returned for paginated queries) |
+| » currentPage | integer | No | Current page (returned for paginated queries) |
+| » currentSize | integer | No | Number of records on the current page (returned for paginated queries) |
+
+#### data Field (Object in the Suspension and Resumption Information List)
+
+| Field | Type | Nullable | Description |
+| --- | --- | --- | --- |
+| » symbol | string | No | Stock code |
+| » symbolName | string | Yes | Stock name |
+| » haltReason | string | Yes | Suspension reason |
+| » haltDate | string | Yes | Suspension date |
+| » haltTime | string | Yes | Suspension time |
+| » haltPeriod | string | Yes | Suspension period |
+| » resumeDate | string | Yes | Resumption date |
+| » resumeTime | string | Yes | Resumption time |
+| » publishDate | string | No | Announcement time |
+
+#### Call Example
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/sse?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### 2. Get NYSE Data Interface
+
+#### Interface Information
+
+* **URL**: `/api/suspension/nyse`
+* **Method**: GET
+* **Description**: Get all suspension and resumption information from the New York Stock Exchange (NYSE)
+
+#### Request Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| token | string | Yes | User subscription token |
+| page | integer | No | Query page number |
+| size | integer | No | Page size |
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 89,
+  "data": [
+    {
+      "symbol": "AAPL",
+      "haltReason": "News pending",
+      "haltDate": "2024-01-15",
+      "haltTime": "10:15:00",
+      "haltDateTime": "2024-01-15 10:15:00",
+      "resumeDate": "2024-01-15",
+      "resumeTime": "11:00:00",
+      "resumeDateTime": "2024-01-15 11:00:00",
+      "sourceExchange": "NYSE",
+      "publishDate": "2024-01-15 10:10:00"
+    }
+  ]
+}
+```
+
+#### Response Field Description
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| » success | boolean | Yes | Whether the request was successful |
+| » timestamp | string | Yes | Response timestamp (format: yyyy-MM-dd'T'HH:mm:ss) |
+| » totalCount | integer | Yes | Total number of records |
+| » data | array | Yes | Suspension and resumption information list |
+| » totalPages | integer | No | Total number of pages (returned for paginated queries) |
+| » currentPage | integer | No | Current page (returned for paginated queries) |
+| » currentSize | integer | No | Number of records on the current page (returned for paginated queries) |
+
+#### data Field (Object in the Suspension and Resumption Information List)
+
+| Field | Type | Nullable | Description |
+| --- | --- | --- | --- |
+| » symbol | string | No | Stock code |
+| » symbolName | string | Yes | Stock name |
+| » haltReason | string | Yes | Suspension reason |
+| » haltTime | string | Yes | Suspension time |
+| » haltDateTime | string | Yes | Suspension date and time |
+| » resumeDate | string | Yes | Resumption date |
+| » resumeTime | string | Yes | Resumption time |
+| » resumeDateTime | string | Yes | Resumption date and time |
+| » sourceExchange | string | Yes | Exchange code |
+| » publishDate | string | No | Announcement time |
+
+#### Call Example
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/nyse?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### 3. Get NASDAQ Data Interface
+
+#### Interface Information
+
+* **URL**: `/api/suspension/nasdaq`
+* **Method**: GET
+* **Description**: Get all suspension and resumption information from NASDAQ
+
+#### Request Parameters
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| token | string | Yes | User subscription token |
+| page | integer | No | Query page number |
+| size | integer | No | Page size |
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "timestamp": "2024-01-15T10:30:00",
+  "totalCount": 156,
+  "data": [
+    {
+      "symbol": "GOOGL",
+      "haltDate": "2024-01-15",
+      "haltTime": "13:45:00",
+      "haltDateTime": "2024-01-15 13:45:00",
+      "sourceExchange": "NASDAQ",
+      "haltReason": "Volatility halt",
+      "pauseThresholdPrice": "145.50",
+      "resumeDate": "2024-01-15",
+      "resumeTime": "14:00:00",
+      "resumeDateTime": "2024-01-15 14:00:00",
+      "publishDate": "2024-01-15 13:44:30"
+    }
+  ]
+}
+```
+
+#### Response Field Description
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| » success | boolean | Yes | Whether the request was successful |
+| » timestamp | string | Yes | Response timestamp (format: yyyy-MM-dd'T'HH:mm:ss) |
+| » totalCount | integer | Yes | Total number of records |
+| » data | array | Yes | Suspension and resumption information list |
+| » totalPages | integer | No | Total number of pages (returned for paginated queries) |
+| » currentPage | integer | No | Current page (returned for paginated queries) |
+| » currentSize | integer | No | Number of records on the current page (returned for paginated queries) |
+
+#### data Field (Object in the Suspension and Resumption Information List)
+
+| Field | Type | Nullable | Description |
+| --- | --- | --- | --- |
+| » symbol | string | No | Stock code |
+| » symbolName | string | Yes | Stock name |
+| » haltDate | string | Yes | Suspension date |
+| » haltTime | string | Yes | Suspension time |
+| » haltDateTime | string | Yes | Suspension date and time |
+| » sourceExchange | string | Yes | Exchange code |
+| » haltReason | string | Yes | Suspension reason |
+| » pauseThresholdPrice | string | Yes | Pause threshold price |
+| » resumeDate | string | Yes | Resumption date |
+| » resumeTime | string | Yes | Quote resumption time |
+| » resumeDateTime | string | Yes | Trading resumption time |
+| » publishDate | string | No | Announcement time |
+
+#### Call Example
+
+```bash
+curl -X GET "https://quote.alltick.co/api/suspension/nasdaq?token=your_token&page=1&size=10" -H "Accept: application/json"
+```
+
+***
+
+### Error Response
+
+All interfaces return the following format when an error occurs:
+
+```json
+{
+  "success": false,
+  "error": "Error description information"
+}
+```
+
+**HTTP Status Code**: 500
+
+#### Error Response Field Description
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| success | boolean | Yes | Whether the request was successful. Fixed as false. |
+| error | string | Yes | Error description information |
+
+***
+
+### Notes
+
+1. All interfaces do not support pagination and return the full data for the most recent year.
+2. Data is sorted by announcement time in descending order (latest first).
+3. Time formats in the response:
+   * timestamp field: ISO format (**yyyy-MM-dd'T'HH:mm:ss**)
+   * Other time fields: **yyyy-MM-dd HH:mm:ss**
+4. It is recommended to set an appropriate timeout. Large data volumes may require more time.
+5. Empty field descriptions:
+   * **"No": the field always has a value and will not be null.**
+   * **"Yes": the field may be null or an empty string. The caller must handle empty values.**
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>
+
+## Interface Debug
+
+<CardGroup cols={3}>
+  <Card title="Debug SSE Suspension Interface" icon="play" href="/en/api-reference/stock/debug/suspension-sse" />
+  <Card title="Debug NYSE Suspension Interface" icon="play" href="/en/api-reference/stock/debug/suspension-nyse" />
+  <Card title="Debug NASDAQ Suspension Interface" icon="play" href="/en/api-reference/stock/debug/suspension-nasdaq" />
+</CardGroup>

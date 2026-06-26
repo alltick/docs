@@ -1,30 +1,84 @@
 ---
-title: 'Depth Subscription'
-description: 'Subscribe to real-time order book data'
+title: 'Latest Order Book (Real-time Tick-by-Tick Depth, Order Book) Subscription'
 ---
 
-Subscribe to latest order book (depth) data. Each subscription request overwrites the previous one.
+## Interface Description
 
-Maximum depth levels by market:
+This interface supports subscription to the latest order book (real-time tick-by-tick depth, Order Book) data of products. It does not support historical order book data or historical tick-by-tick data.
 
-| Market | Max depth |
-|--------|-----------|
-| Forex, precious metals, oil | 1 level |
-| Crypto | 5 levels |
-| HK stocks | 10 levels |
-| US stocks | 1 level |
-| A-shares | 5 levels |
+Interface behavior: for each WebSocket connection, every time this request is sent, the backend overwrites the previous subscription request by default. For example, if you initially subscribed to products A, B, and C, and want to add E, F, and G, you need to resend A, B, C, E, F, and G together. After the subscription succeeds, data will be pushed.
 
-## Request (cmd_id: 22002)
+Notes:
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| cmd_id | integer | Yes | Fixed: 22002 |
-| seq_id | integer | Yes | Sequence number |
-| trace | string | Yes | Correlation ID |
-| data.symbol_list | array | Yes | Symbol list |
-| data.symbol_list[].code | string | Yes | Product code |
-| data.symbol_list[].depth_level | integer | No | Depth level (default: 1) |
+1. After a subscription succeeds once, you do not need to frequently initiate subscription requests again. You must send a heartbeat every 10 seconds, and the interface will push data in real time. If no heartbeat request is received within 30 seconds, it will be considered timed out and the requester’s WebSocket connection will be disconnected.
+
+2. During integration, customers can add automatic reconnection logic to ensure the connection can automatically reconnect after disconnection caused by network or other reasons.
+
+3. The following is the maximum order book depth for each product type:
+
+3.1 For inactive products, the available depth may be smaller than the maximum levels listed below. This is normal.
+
+3.2 One side of the order book may be empty. For example, when a stock reaches limit up or limit down, one side of the order book may be empty.
+
+|  | Forex, Precious Metals, Crude Oil | Cryptocurrencies | Hong Kong Stocks | US Stocks | A Shares |
+| --- | --- | --- | --- | --- | --- |
+| Depth description | Up to 1 level | Up to 5 levels | Up to 10 levels | Up to 1 level | Up to 5 levels |
+
+## Interface Limitations
+
+1. Be sure to read: [WebSocket Interface Limitations](/en/getting-started/websocket-interface-limitations)
+
+2. Be sure to read: [Error Code Description](/en/getting-started/error-code-description)
+
+## API Endpoints
+
+**1. US Stocks, Hong Kong Stocks, A Shares, and Major Index Data API Endpoint:**
+
+* Base Path: `/quote-stock-b-ws-api`
+* Full URL: `wss://quote.alltick.co/quote-stock-b-ws-api`
+
+**2. Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities API Endpoint:**
+
+* Base Path: `/quote-b-ws-api`
+* Full URL: `wss://quote.alltick.co/quote-b-ws-api`
+
+## Request Examples
+
+**1. Request example for US Stocks, Hong Kong Stocks, A Shares, and Major Index Data:**
+
+Each time a connection is established, your authentication token must be appended to the URL as follows:
+
+`wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token`
+
+After the connection succeeds, you can subscribe to specific stock market data as needed. For detailed calling methods, refer to the documentation below.
+
+**2. Request example for Forex, Precious Metals, Cryptocurrencies, Crude Oil, CFD Indices, and Commodities:**
+
+Each time a connection is established, your authentication token must be appended to the URL as follows:
+
+`wss://quote.alltick.co/quote-b-ws-api?token=your_token`
+
+After the connection succeeds, you can subscribe to specific forex, cryptocurrency, precious metals, and commodity data as needed. For detailed calling methods, refer to the documentation below.
+
+## Request - Protocol Number: 22002
+
+#### JSON Definition
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| cmd_id | Protocol number | integer | Yes | The latest order book request protocol number is fixed: 22002 |
+| seq_id | Response ID | integer | Yes | Subscription request identifier, returned in the response. Custom value; can be repeated for each request. |
+| trace | Traceable ID | string | Yes | Traceable ID for request log information. Custom value; must not be repeated for each request. |
+| symbol_list | Product list | array | Yes | See the symbol definition below for the specific format. |
+
+#### Symbol Definition
+
+| Field | Name | Type | Required | Description |
+| --- | --- | --- | --- | --- |
+| code | Code | string | Yes | For details, view the code list: [Click the code list](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863)<br />**Note: The code value must match the case of the code in the product list.** |
+| depth_level | Depth level | uint32 | No | If the depth_level field is not provided, the backend provides only one level of quotes. If the requested level is greater than the actual quote depth, or if depth_level is not provided, the backend returns as many levels as are actually available. |
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -33,14 +87,22 @@ Maximum depth levels by market:
   "trace": "3baaa938-f92c-4a74-a228-fd49d5e2f8bc-1678419657806",
   "data": {
     "symbol_list": [
-      { "code": "BTCUSDT", "depth_level": 5 },
-      { "code": "ETHUSDT", "depth_level": 5 }
+      {
+        "code": "BTCUSDT",
+        "depth_level": 5
+      },
+      {
+        "code": "ETHUSDT",
+        "depth_level": 5
+      }
     ]
   }
 }
 ```
 
-## Response (cmd_id: 22003)
+## Response - Protocol Number: 22003
+
+### Data Structure (JSON)
 
 ```json
 {
@@ -53,29 +115,59 @@ Maximum depth levels by market:
 }
 ```
 
-## Push (cmd_id: 22999)
+## Push - Protocol Number: 22999
 
-| Field | Type | Description |
-|-------|------|-------------|
-| code | string | Product code |
-| seq | string | Quote sequence number |
-| tick_time | string | Timestamp (milliseconds) |
-| bids | array | Bid list [{price, volume}] |
-| asks | array | Ask list [{price, volume}] |
+#### Data Definition
+
+| Field | Name | Type | Description |
+| --- | --- | --- | --- |
+| code | Code | string | For details, view the code list: [Click the code list](https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863) |
+| seq | Quote sequence number | integer |  |
+| tick_time | Quote timestamp | integer | Unit: milliseconds |
+| bids | Bid depth | string | See the bids definition below. |
+| asks | Ask depth | string | See the asks definition below. |
+
+#### Bids Definition
+
+| Field | Name | Type | Description |
+| --- | --- | --- | --- |
+| price | Best bid price, bid-side price | string |  |
+| volume | Best bid volume, bid-side volume | string | 1. Some CFD indices do not provide volume.<br />2. Forex, precious metals, energy, stocks, and cryptocurrencies all provide volume. |
+
+#### Asks Definition
+
+| Field | Name | Type | Description |
+| --- | --- | --- | --- |
+| price | Best ask price, ask-side price | string |  |
+| volume | Best ask volume, ask-side volume | string | 1. Some CFD indices do not provide volume.<br />2. Forex, precious metals, energy, stocks, and cryptocurrencies all provide volume. |
+
+### Data Structure (JSON)
 
 ```json
 {
   "cmd_id": 22999,
   "data": {
-    "code": "BTCUSDT",
-    "seq": "1605509068000001",
-    "tick_time": "1605509068",
+    "code": "HK-1288",
+    "seq": 1605509068000001,
+    "tick_time": 1605509068,
     "bids": [
-      { "price": "9.12", "volume": "100" }
+      {
+        "price": "9.12",
+        "volume": "9.12"
+      }
     ],
     "asks": [
-      { "price": "9.13", "volume": "150" }
+      {
+        "price": "147.12",
+        "volume": "147.12"
+      }
     ]
   }
 }
 ```
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

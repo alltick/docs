@@ -1,32 +1,61 @@
 ---
 title: 'WebSocket API Overview'
-description: 'Real-time market data streaming API overview'
 ---
 
-AllTick WebSocket API provides real-time market data push services. Subscribe to symbols after connecting to continuously receive latest trade prices and order book depth.
+The AllTick WebSocket API is used to receive real-time quote pushes. After a connection is established, the client sends a subscription request, and after the subscription succeeds, the server continuously pushes latest trade price and latest order book data. During the connection, heartbeats must be sent as required to avoid timeout disconnection.
 
-## Protocol commands
+## Connection Addresses
 
-| Command ID | Description |
-|------------|-------------|
-| 22000/22001 | Heartbeat (Ping/Pong) |
-| 22002/22003 | Depth subscription |
-| 22004/22005 | Trade subscription |
-| 22006/22007 | Cancel subscription |
-| 22998 | Trade price push |
-| 22999 | Order book push |
+| Data Type | WebSocket Address |
+| --- | --- |
+| US stocks, Hong Kong stocks, A shares, and major index data | `wss://quote.alltick.co/quote-stock-b-ws-api?token=your_token` |
+| Forex, precious metals, cryptocurrencies, crude oil, CFD indices, and commodities | `wss://quote.alltick.co/quote-b-ws-api?token=your_token` |
 
-## Endpoints
+Each time a connection is established, your authentication token must be appended to the URL. After the connection succeeds, send latest trade price or latest order book subscription requests as needed.
 
-| Asset class | Connection URL |
-|-------------|----------------|
-| US stocks, HK stocks, A-shares, indices | `wss://quote.alltick.co/quote-stock-b-ws-api?token=YOUR_TOKEN` |
-| Forex, crypto, precious metals, commodities | `wss://quote.alltick.co/quote-b-ws-api?token=YOUR_TOKEN` |
+## Interface List
 
-## Usage guide
+<CardGroup cols={2}>
+  <Card title="Latest Trade Price (Real-time Tick Data, Current Price, Latest Price) Batch Subscription" href="/en/websocket/trade-subscription">
+    Subscribe to the latest trade price of products. After the subscription succeeds, trade data is pushed through protocol number 22998.
+  </Card>
+  <Card title="Latest Order Book (Real-time Tick-by-Tick Depth, Order Book) Subscription" href="/en/websocket/depth-subscription">
+    Subscribe to the latest order book depth of products. After the subscription succeeds, order book data is pushed through protocol number 22999.
+  </Card>
+  <Card title="Heartbeat" href="/en/websocket/heartbeat">
+    Send a heartbeat every 10 seconds. If no heartbeat request is received within 30 seconds, the WebSocket connection will be disconnected.
+  </Card>
+  <Card title="Cancel Quote Subscription" href="/en/websocket/cancel-subscription">
+    Cancel all quote subscriptions, or cancel order book, trade, or exchange-rate subscriptions by type.
+  </Card>
+  <Card title="K-Line Push (Not Supported)" href="/en/websocket/kline-push-not-supported">
+    WebSocket does not support K-line push. K-lines can be polled or batch queried through HTTP interfaces.
+  </Card>
+  <Card title="WebSocket Request Example" href="/en/websocket/websocket-request-example">
+    View WebSocket request examples for Go, Java, PHP, and Python.
+  </Card>
+</CardGroup>
 
-1. Include your token as a URL query parameter when connecting
-2. Send a heartbeat every **10 seconds** after connection
-3. Connection is closed if no heartbeat received within **30 seconds**
-4. Each subscription request overwrites the previous one (resend the full list to add symbols)
-5. Implement automatic reconnection logic in your client
+## Protocol Number Overview
+
+| Protocol Number | Description |
+| --- | --- |
+| 22004 / 22005 | Latest trade price subscription request / response |
+| 22998 | Latest trade price push |
+| 22002 / 22003 | Latest order book subscription request / response |
+| 22999 | Latest order book push |
+| 22000 / 22001 | Heartbeat request / response |
+| 22006 / 22007 | Cancel quote subscription request / response |
+
+## Usage Flow
+
+1. Select the stock or non-stock WebSocket address according to the product type.
+2. Append the token to the connection URL and establish the WebSocket connection.
+3. Send a latest trade price or latest order book subscription request.
+4. Send a heartbeat request every 10 seconds to keep the connection valid.
+5. Receive data pushed by the server and handle automatic reconnection according to business needs.
+6. When pushes are no longer needed, send a cancel quote subscription request.
+
+<Note>
+For each WebSocket connection, every time a subscription request is sent, the backend overwrites the previous subscription request by default. When adding products, you need to resend the complete product list.
+</Note>

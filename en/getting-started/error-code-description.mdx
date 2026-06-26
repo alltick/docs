@@ -1,0 +1,29 @@
+﻿---
+title: 'Error Code Description'
+description: 'AllTick API error codes, error messages, and troubleshooting suggestions.'
+---
+
+# Error Code Description
+
+| Error Code | Error Content | Meaning |
+| --- | --- | --- |
+| 200 | ok | Success |
+| 400 | request header param invalid | The first-level parameters of the request JSON are invalid.<br /><br />Troubleshooting suggestions:<br />1. Check whether the JSON structure is complete.<br />2. Confirm that all required fields are included correctly.<br />3. Verify that the data field is a valid object.<br />4. Check whether key fields such as trace exist. |
+| 400 | request data param invalid | The data field parameters in the request JSON are invalid.<br /><br />Troubleshooting suggestions:<br />1. Check whether the data field is a valid object.<br />2. Confirm that all required fields in data are filled in correctly.<br />3. Compare the data field content with the specific interface documentation.<br />4. For POST requests, pay special attention to whether the JSON parameters in the body are complete and correct. |
+| 401 | token invalid | The token is invalid.<br /><br />Possible causes:<br />1. The Token format is incorrect.<br />2. The Token account has expired. |
+| 402 | query invalid | The query parameter of the request is invalid.<br /><br />Troubleshooting suggestions:<br />1. Check the query parameter of the GET request.<br />2. URL-encode the query parameter.<br />3. Ensure that the parameter format meets the interface requirements.<br />4. Verify that special characters are escaped correctly. |
+| 429 | Too Many Requests | The request frequency exceeds the limit specified by the plan.<br /><br />Suggestions:<br />1. Optimize the request frequency and logic.<br />2. Consider upgrading the plan to obtain a higher request frequency.<br /><br />Interface restriction pages:<br /><a href="/en/getting-started/http-interface-restrictions">HTTP Interface Restrictions</a><br /><a href="/en/getting-started/websocket-interface-limitations">WebSocket Interface Restrictions</a><br /><br /><mark style={{ color: 'red' }}>Common scenario:</mark><br />For the Basic plan, if `/kline` is requested at least twice within one second, the first request succeeds and the second request returns 429 Too Many Requests, because the Basic plan allows only one `/kline` request per second. |
+| 600 | code invalid | The requested product code is invalid.<br /><br />Troubleshooting suggestions:<br />1. Check the request URL. Stock data and forex/precious-metals data use different request URLs.<br />2. Check the product code. Compare it with the product list and make sure it is valid and accurate: <a href="https://docs.google.com/spreadsheets/d/1avkeR1heZSj6gXIkDeBt8X3nv4EzJetw4yFuKjSDYtA/edit?gid=495387863#gid=495387863">Product List</a> |
+| 601 | body empty | The request body data is empty.<br /><br />Troubleshooting suggestions:<br />1. Check the body of the POST request.<br />2. Ensure that the body contains complete JSON parameters.<br />3. Pay special attention to batch interfaces such as `/batch-kline`.<br />4. Verify that all required fields are filled in correctly. |
+| 603 | token level not enough | The number of requested products or K-lines exceeds the limit specified in the interface documentation.<br /><br />Troubleshooting suggestions:<br />1. Check the number of products. For K-line interfaces, confirm whether the total of product count and K-line type count exceeds the plan limit. For non-K-line interfaces, confirm whether the requested product count exceeds the plan limit.<br />2. Verify the K-line request. Confirm that the number of K-lines complies with the interface rules. The batch product K-line interface allows only 2 K-lines per request.<br /><br />Interface restriction page: <a href="/en/getting-started/http-interface-restrictions">HTTP Interface Restrictions</a> |
+| 604 | code unauthorized | Your token does not have permission to request this code. |
+| 605 | too many requests | Request frequency limit.<br /><br />Suggestions:<br />1. Optimize the request frequency and logic.<br />2. Consider upgrading the plan to obtain a higher request frequency.<br /><br />Interface restriction pages:<br /><a href="/en/getting-started/http-interface-restrictions">HTTP Interface Restrictions</a><br /><a href="/en/getting-started/websocket-interface-limitations">WebSocket Interface Restrictions</a> |
+| 606 | too many requests and connection will be closed | Usually caused by WebSocket interface request frequency limits.<br /><br />Troubleshooting suggestions:<br />1. Check the number of WebSocket connections and confirm whether it exceeds the maximum number allowed by the plan.<br />2. Control the request frequency and ensure that multiple WebSocket requests are at least 3 seconds apart.<br /><br />Interface restriction page: <a href="/en/getting-started/websocket-interface-limitations">WebSocket Interface Restrictions</a> |
+
+***
+
+#### AllTick Website
+
+<Note>
+Official website: <a href="https://alltick.co/">https://alltick.co/</a>
+</Note>

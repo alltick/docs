@@ -1,61 +1,24 @@
 ---
-title: 'AllTick HTTP请求示例 - Go/Python/Java/PHP调用实时行情REST API代码样例'
-description: '本页面提供AllTick REST API的HTTP请求示例代码，涵盖Go、Python、Java、PHP等主流语言，演示如何构造请求URL、设置token和query参数、发送请求以及解析响应结果，帮助开发者快速完成外汇、股票、加密货币等实时Tick数据接口的HTTP接入与调试。'
-seo:
-  keywords: 'AllTick HTTP请求示例, REST API调用样例, Go Python Java PHP代码, 实时行情HTTP接口, Tick数据请求demo, 行情API接入示例'
+title: 'REST API 概述'
+description: 'AllTick REST API 按官网文档提供 HTTP 请求示例和 HTTP接口API。'
 ---
 
 ## 概述
 
-AllTick REST API 提供以下 HTTP 接口：
+AllTick REST API 文档包含 HTTP 请求示例与 HTTP接口API。HTTP接口API 页面按照官网 API 文档组织，包含 K线、批量 K线、最新盘口、最新成交价、股票产品基础信息、停复牌信息查询，以及涨跌幅、休市、假期等说明。
 
-| 接口 | 方法 | 说明 |
-|------|------|------|
-| /kline | GET | 单产品历史K线查询 |
-| /batch-kline | POST | 批量查询产品最新2根K线 |
-| /depth-tick | GET | 最新盘口（Order Book）查询 |
-| /trade-tick | GET | 最新成交价批量查询 |
+<CardGroup cols={2}>
+  <Card title="HTTP 请求示例" href="/zh/rest-api/http-request-example">
+    查看 Go、Java、PHP、Python 的 REST API 请求示例。
+  </Card>
+  <Card title="HTTP接口API" href="/zh/rest-api/stock-http-interface-api">
+    查看官网一致的 HTTP 接口说明和可调试接口页面。
+  </Card>
+</CardGroup>
 
 ## 接口地址
 
-**股票类（美股、港股、A股）：**
-- 基础路径：`https://quote.alltick.co/quote-stock-b-api`
-
-**外汇、加密货币、贵金属、商品：**
-- 基础路径：`https://quote.alltick.co/quote-b-api`
-
-## 请求方式
-
-GET 请求的 `query` 参数需要将 JSON 进行 URL Encode 编码：
-
-```bash
-# 原始 JSON
-{
-  "trace": "unique-trace-id",
-  "data": {
-    "code": "700.HK",
-    "kline_type": 1,
-    "kline_timestamp_end": 0,
-    "query_kline_num": 2,
-    "adjust_type": 0
-  }
-}
-
-# URL Encode 后拼接到 query 参数
-https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=%7B%22trace%22...%7D
-```
-
-## K线类型
-
-| 值 | 类型 |
-|----|------|
-| 1 | 1分钟K |
-| 2 | 5分钟K |
-| 3 | 15分钟K |
-| 4 | 30分钟K |
-| 5 | 小时K |
-| 6 | 2小时K（股票不支持） |
-| 7 | 4小时K（股票不支持） |
-| 8 | 日K |
-| 9 | 周K |
-| 10 | 月K |
+| 产品类型 | Base URL |
+| --- | --- |
+| 美股、港股、A股、大盘数据 | `https://quote.alltick.co/quote-stock-b-api` |
+| 外汇、贵金属、加密货币、原油、CFD指数、商品 | `https://quote.alltick.co/quote-b-api` |

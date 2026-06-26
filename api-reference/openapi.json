@@ -395,6 +395,211 @@
           }
         }
       }
+    },
+    "/quote-stock-b-api/static_info": {
+      "get": {
+        "operationId": "getStockStaticInfo",
+        "summary": "Stock Static Info Query",
+        "description": "Batch query basic product information for US stocks, HK stocks, and A-shares.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "Your API authentication token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "URL-encoded JSON string containing trace and symbol_list fields.",
+            "schema": {
+              "type": "string",
+              "default": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+            },
+            "example": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/sse": {
+      "get": {
+        "operationId": "getSseSuspension",
+        "summary": "SSE Suspension Query",
+        "description": "Get all suspension and resumption information from the Shanghai Stock Exchange (SSE).",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "User subscription token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Query page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nyse": {
+      "get": {
+        "operationId": "getNyseSuspension",
+        "summary": "NYSE Suspension Query",
+        "description": "Get all suspension and resumption information from the New York Stock Exchange (NYSE).",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "User subscription token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Query page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nasdaq": {
+      "get": {
+        "operationId": "getNasdaqSuspension",
+        "summary": "NASDAQ Suspension Query",
+        "description": "Get all suspension and resumption information from NASDAQ.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "User subscription token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "Query page number",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "Page size",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -699,6 +904,167 @@
                       "description": "Trade direction (0=neutral, 1=buy, 2=sell)"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "StaticInfoResponse": {
+        "type": "object",
+        "properties": {
+          "ret": {
+            "type": "integer",
+            "description": "Return code (200 = success)"
+          },
+          "msg": {
+            "type": "string",
+            "description": "Response message"
+          },
+          "trace": {
+            "type": "string",
+            "description": "Request trace ID"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "static_info_list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "board": {
+                      "type": "string",
+                      "description": "Stock board"
+                    },
+                    "bps": {
+                      "type": "string",
+                      "description": "Book value per share"
+                    },
+                    "circulating_shares": {
+                      "type": "string",
+                      "description": "Circulating shares"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "Trading currency"
+                    },
+                    "dividend_yield": {
+                      "type": "string",
+                      "description": "Dividend yield"
+                    },
+                    "eps": {
+                      "type": "string",
+                      "description": "Earnings per share"
+                    },
+                    "eps_ttm": {
+                      "type": "string",
+                      "description": "Earnings per share (TTM)"
+                    },
+                    "exchange": {
+                      "type": "string",
+                      "description": "Exchange to which the product belongs"
+                    },
+                    "hk_shares": {
+                      "type": "string",
+                      "description": "Hong Kong stock shares (Hong Kong stocks only)"
+                    },
+                    "lot_size": {
+                      "type": "string",
+                      "description": "Shares per lot"
+                    },
+                    "name_cn": {
+                      "type": "string",
+                      "description": "Simplified Chinese product name"
+                    },
+                    "name_en": {
+                      "type": "string",
+                      "description": "English product name"
+                    },
+                    "name_hk": {
+                      "type": "string",
+                      "description": "Traditional Chinese product name"
+                    },
+                    "symbol": {
+                      "type": "string",
+                      "description": "Product code"
+                    },
+                    "total_shares": {
+                      "type": "string",
+                      "description": "Total shares"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuspensionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Whether the request was successful"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "Response timestamp"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "Total number of records"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "Total pages (returned for paginated queries)"
+          },
+          "currentPage": {
+            "type": "integer",
+            "description": "Current page (returned for paginated queries)"
+          },
+          "currentSize": {
+            "type": "integer",
+            "description": "Number of records on the current page (returned for paginated queries)"
+          },
+          "data": {
+            "type": "array",
+            "description": "Suspension and resumption information list",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "description": "Stock code"
+                },
+                "symbolName": {
+                  "type": "string",
+                  "description": "Stock name"
+                },
+                "haltReason": {
+                  "type": "string",
+                  "description": "Suspension reason"
+                },
+                "haltDate": {
+                  "type": "string",
+                  "description": "Suspension date"
+                },
+                "haltTime": {
+                  "type": "string",
+                  "description": "Suspension time"
+                },
+                "resumeDate": {
+                  "type": "string",
+                  "description": "Resumption date"
+                },
+                "resumeTime": {
+                  "type": "string",
+                  "description": "Resumption time"
+                },
+                "publishDate": {
+                  "type": "string",
+                  "description": "Announcement time"
                 }
               }
             }

@@ -395,6 +395,211 @@
           }
         }
       }
+    },
+    "/quote-stock-b-api/static_info": {
+      "get": {
+        "operationId": "getStockStaticInfo",
+        "summary": "Stock Static Info Query",
+        "description": "Batch query basic product information for US stocks, HK stocks, and A-shares.",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "API 認証 Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "query",
+            "in": "query",
+            "required": true,
+            "description": "trace と symbol_list フィールドを含む URL エンコード済み JSON 文字列。",
+            "schema": {
+              "type": "string",
+              "default": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+            },
+            "example": "{\"trace\":\"abc-123\",\"data\":{\"symbol_list\":[{\"code\":\"700.HK\"},{\"code\":\"AAPL.US\"}]}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功レスポンス",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StaticInfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/sse": {
+      "get": {
+        "operationId": "getSseSuspension",
+        "summary": "SSE Suspension Query",
+        "description": "上海証券取引所（SSE）の全売買停止・再開情報を取得します。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "ユーザープラン Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "照会ページ番号",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "1 ページあたりのデータ件数",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功レスポンス",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nyse": {
+      "get": {
+        "operationId": "getNyseSuspension",
+        "summary": "NYSE Suspension Query",
+        "description": "ニューヨーク証券取引所（NYSE）の全売買停止・再開情報を取得します。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "ユーザープラン Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "照会ページ番号",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "1 ページあたりのデータ件数",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功レスポンス",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/suspension/nasdaq": {
+      "get": {
+        "operationId": "getNasdaqSuspension",
+        "summary": "NASDAQ Suspension Query",
+        "description": "NASDAQ の全売買停止・再開情報を取得します。",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "description": "ユーザープラン Token",
+            "schema": {
+              "type": "string",
+              "default": "YOUR_TOKEN_HERE"
+            },
+            "example": "YOUR_TOKEN_HERE"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "description": "照会ページ番号",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "example": 1
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "description": "1 ページあたりのデータ件数",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            },
+            "example": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "成功レスポンス",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -699,6 +904,167 @@
                       "description": "取引方向（0=中立, 1=買い, 2=売り）"
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+      },
+      "StaticInfoResponse": {
+        "type": "object",
+        "properties": {
+          "ret": {
+            "type": "integer",
+            "description": "戻りコード（200 = 成功）"
+          },
+          "msg": {
+            "type": "string",
+            "description": "レスポンスメッセージ"
+          },
+          "trace": {
+            "type": "string",
+            "description": "リクエスト追跡 ID"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "static_info_list": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "board": {
+                      "type": "string",
+                      "description": "株式の所属ボード"
+                    },
+                    "bps": {
+                      "type": "string",
+                      "description": "1 株当たり純資産"
+                    },
+                    "circulating_shares": {
+                      "type": "string",
+                      "description": "流通株式数"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "description": "取引通貨"
+                    },
+                    "dividend_yield": {
+                      "type": "string",
+                      "description": "配当利回り"
+                    },
+                    "eps": {
+                      "type": "string",
+                      "description": "1 株当たり利益"
+                    },
+                    "eps_ttm": {
+                      "type": "string",
+                      "description": "1 株当たり利益 (TTM)"
+                    },
+                    "exchange": {
+                      "type": "string",
+                      "description": "商品が所属する取引所"
+                    },
+                    "hk_shares": {
+                      "type": "string",
+                      "description": "香港株の株式数（香港株のみ）"
+                    },
+                    "lot_size": {
+                      "type": "string",
+                      "description": "1 ロットの株数"
+                    },
+                    "name_cn": {
+                      "type": "string",
+                      "description": "簡体字中国語の商品名"
+                    },
+                    "name_en": {
+                      "type": "string",
+                      "description": "英語の商品名"
+                    },
+                    "name_hk": {
+                      "type": "string",
+                      "description": "繁体字中国語の商品名"
+                    },
+                    "symbol": {
+                      "type": "string",
+                      "description": "商品コード"
+                    },
+                    "total_shares": {
+                      "type": "string",
+                      "description": "総株式数"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "SuspensionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "リクエストが成功したかどうか"
+          },
+          "timestamp": {
+            "type": "string",
+            "description": "レスポンスタイムスタンプ"
+          },
+          "totalCount": {
+            "type": "integer",
+            "description": "総データ件数"
+          },
+          "totalPages": {
+            "type": "integer",
+            "description": "総ページ数（ページング照会時に返却）"
+          },
+          "currentPage": {
+            "type": "integer",
+            "description": "現在ページ（ページング照会時に返却）"
+          },
+          "currentSize": {
+            "type": "integer",
+            "description": "現在ページのデータ件数（ページング照会時に返却）"
+          },
+          "data": {
+            "type": "array",
+            "description": "売買停止・再開情報リスト",
+            "items": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "description": "株式コード"
+                },
+                "symbolName": {
+                  "type": "string",
+                  "description": "株式名"
+                },
+                "haltReason": {
+                  "type": "string",
+                  "description": "売買停止理由"
+                },
+                "haltDate": {
+                  "type": "string",
+                  "description": "売買停止日"
+                },
+                "haltTime": {
+                  "type": "string",
+                  "description": "売買停止時刻"
+                },
+                "resumeDate": {
+                  "type": "string",
+                  "description": "売買再開日"
+                },
+                "resumeTime": {
+                  "type": "string",
+                  "description": "売買再開時刻"
+                },
+                "publishDate": {
+                  "type": "string",
+                  "description": "公告時刻"
                 }
               }
             }
