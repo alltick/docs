@@ -42,7 +42,7 @@
               {
                 "group": "欢迎",
                 "pages": [
-                  "zh/welcome"
+                  "zh/index"
                 ]
               },
               {
@@ -203,7 +203,7 @@
               {
                 "group": "Welcome",
                 "pages": [
-                  "en/welcome"
+                  "en/index"
                 ]
               },
               {
@@ -364,7 +364,7 @@
               {
                 "group": "ようこそ",
                 "pages": [
-                  "ja/welcome"
+                  "ja/index"
                 ]
               },
               {
