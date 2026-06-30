@@ -1,8 +1,8 @@
 ---
 title: 'API 地址'
-description: 'REST 和 WebSocket 端点地址一览'
+description: 'AllTick 按资产类别划分端点。股票类使用独立的 Base URL，其他市场共用一个 Base URL。'
+keywords: ["API 地址","AllTick API","HTTP API","WebSocket API","实时行情","股票行情","金融数据","量化交易"]
 ---
-
 AllTick 按资产类别划分端点。股票类使用独立的 Base URL，其他市场共用一个 Base URL。
 
 ## REST API 端点
@@ -45,3 +45,5 @@ https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=URL_ENCO
 <Note>
 `/static_info` 和 `/api/suspension/*` 为股票相关接口。`/static_info` 使用 `https://quote.alltick.co/quote-stock-b-api/static_info`，停复牌接口使用 `https://quote.alltick.co/api/suspension/{sse|nyse|nasdaq}`。
 </Note>
+
+<script src="/seo-keywords.js" />

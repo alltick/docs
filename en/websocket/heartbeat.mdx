@@ -1,7 +1,8 @@
 ---
 title: 'Heartbeat'
+description: 'This page describes the heartbeat mechanism of AllTick’s stock WebSocket API, showing Ping-Pong message formats and how to keep connections alive, detect disconnects, and reconnect, so developers can maintain stable WebSocket streams for realtime tick and order book data.'
+keywords: ["AllTick WebSocket heartbeat","ping-pong mechanism","WebSocket keep-alive","stock quote persistent connection","reconnect strategy"]
 ---
-
 ## Interface Description
 
 The requester is required to send a heartbeat every 10 seconds. If no heartbeat request is received within 30 seconds, it will be considered timed out and the requester’s WebSocket connection will be disconnected.
@@ -39,3 +40,5 @@ The requester is required to send a heartbeat every 10 seconds. If no heartbeat 
 <Note>
 Official website: <a href="https://alltick.co/">https://alltick.co/</a>
 </Note>
+
+<script src="/seo-keywords.js" />

@@ -1,7 +1,8 @@
 ---
 title: 'GET 売買停止・再開情報照会インターフェース'
+description: 'このインターフェースは、世界主要取引所（SSE、NYSE、NASDAQ）の売買停止・再開情報照会を提供します。すべてのインターフェースはJSONデータを返し、公告時刻の降順で並びます。'
+keywords: ["GET 売買停止・再開情報照会インターフェース","AllTick API","HTTP API","WebSocket API","リアルタイム相場","株式相場","金融データ","クオンツ取引"]
 ---
-
 ## GET /api/suspension
 
 ## インターフェース説明
@@ -317,3 +318,5 @@ curl -X GET "https://quote.alltick.co/api/suspension/nasdaq?token=your_token&pag
   <Card title="NYSE 売買停止・再開インターフェースをデバッグ" icon="play" href="/ja/api-reference/stock/debug/suspension-nyse" />
   <Card title="NASDAQ 売買停止・再開インターフェースをデバッグ" icon="play" href="/ja/api-reference/stock/debug/suspension-nasdaq" />
 </CardGroup>
+
+<script src="/seo-keywords.js" />

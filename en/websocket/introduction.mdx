@@ -1,7 +1,8 @@
 ---
 title: 'WebSocket API Overview'
+description: 'This documentation covers AllTick’s stock WebSocket interface, including realtime trade tick streaming, order book depth updates, subscription and cancel methods, heartbeat mechanism, and message format examples, enabling developers to build low-latency quote systems for US, HK, and China A-share markets.'
+keywords: ["AllTick stock WebSocket API","realtime trade tick stream","order book depth WebSocket","stock tick streaming data","quote subscription and cancel","low-latency stock quotes"]
 ---
-
 The AllTick WebSocket API is used to receive real-time quote pushes. After a connection is established, the client sends a subscription request, and after the subscription succeeds, the server continuously pushes latest trade price and latest order book data. During the connection, heartbeats must be sent as required to avoid timeout disconnection.
 
 ## Connection Addresses
@@ -59,3 +60,5 @@ Each time a connection is established, your authentication token must be appende
 <Note>
 For each WebSocket connection, every time a subscription request is sent, the backend overwrites the previous subscription request by default. When adding products, you need to resend the complete product list.
 </Note>
+
+<script src="/seo-keywords.js" />

@@ -1,8 +1,8 @@
 ---
 title: 'API アドレス'
-description: '資産クラス別の REST・WebSocket エンドポイント URL'
+description: 'AllTick は資産クラスごとにエンドポイントを分けています。株式は専用の Base URL を使用し、その他の市場は共通の Base URL を共有します。'
+keywords: ["API アドレス","AllTick API","HTTP API","WebSocket API","リアルタイム相場","株式相場","金融データ","クオンツ取引"]
 ---
-
 AllTick は資産クラスごとにエンドポイントを分けています。株式は専用の Base URL を使用し、その他の市場は共通の Base URL を共有します。
 
 ## REST API エンドポイント
@@ -37,3 +37,5 @@ https://quote.alltick.co/quote-stock-b-api/kline?token=YOUR_TOKEN&query=URL_ENCO
 <Note>
 外国為替や暗号通貨の銘柄を照会する場合は `/quote-b-api`（REST）または `/quote-b-ws-api`（WebSocket）を使用します。株式の場合は `-stock-` を含むパスを使用します。リクエストパラメータの構造は同一で、Base URL のみが異なります。
 </Note>
+
+<script src="/seo-keywords.js" />
