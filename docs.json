@@ -51,8 +51,8 @@
                   "zh/integration-process/process",
                   {
                     "group": "行情地址说明",
-                    "root": "zh/integration-process/market-address-description",
                     "pages": [
+                      "zh/integration-process/market-address-description",
                       "zh/integration-process/http-quotes-api-address-description",
                       "zh/integration-process/websocket-quotes-api-address-description"
                     ]
@@ -60,8 +60,8 @@
                   "zh/integration-process/token-application",
                   {
                     "group": "接口限制说明",
-                    "root": "zh/integration-process/interface-restriction-description",
                     "pages": [
+                      "zh/integration-process/interface-restriction-description",
                       "zh/getting-started/http-interface-restrictions",
                       "zh/getting-started/websocket-interface-limitations",
                       "zh/getting-started/error-code-description"
@@ -69,16 +69,16 @@
                   },
                   {
                     "group": "通用标准头说明",
-                    "root": "zh/integration-process/universal-standard-header-description",
                     "pages": [
+                      "zh/integration-process/universal-standard-header-description",
                       "zh/integration-process/http-common-standard-headers",
                       "zh/integration-process/websocket-common-standard-header"
                     ]
                   },
                   {
                     "group": "产品 Code 列表",
-                    "root": "zh/integration-process/product-code-list",
                     "pages": [
+                      "zh/integration-process/product-code-list",
                       "zh/product-codes/a-shares",
                       "zh/product-codes/hk-stocks",
                       "zh/product-codes/us-stocks",
@@ -212,8 +212,8 @@
                   "en/integration-process/process",
                   {
                     "group": "Market API Address Description",
-                    "root": "en/integration-process/market-address-description",
                     "pages": [
+                      "en/integration-process/market-address-description",
                       "en/integration-process/http-quotes-api-address-description",
                       "en/integration-process/websocket-quotes-api-address-description"
                     ]
@@ -221,8 +221,8 @@
                   "en/integration-process/token-application",
                   {
                     "group": "Interface Restriction Description",
-                    "root": "en/integration-process/interface-restriction-description",
                     "pages": [
+                      "en/integration-process/interface-restriction-description",
                       "en/getting-started/http-interface-restrictions",
                       "en/getting-started/websocket-interface-limitations",
                       "en/getting-started/error-code-description"
@@ -230,16 +230,16 @@
                   },
                   {
                     "group": "Common Standard Header Description",
-                    "root": "en/integration-process/universal-standard-header-description",
                     "pages": [
+                      "en/integration-process/universal-standard-header-description",
                       "en/integration-process/http-common-standard-headers",
                       "en/integration-process/websocket-common-standard-header"
                     ]
                   },
                   {
                     "group": "Product Code List",
-                    "root": "en/integration-process/product-code-list",
                     "pages": [
+                      "en/integration-process/product-code-list",
                       "en/product-codes/a-shares",
                       "en/product-codes/hk-stocks",
                       "en/product-codes/us-stocks",
@@ -373,8 +373,8 @@
                   "ja/integration-process/process",
                   {
                     "group": "マーケット API アドレス説明",
-                    "root": "ja/integration-process/market-address-description",
                     "pages": [
+                      "ja/integration-process/market-address-description",
                       "ja/integration-process/http-quotes-api-address-description",
                       "ja/integration-process/websocket-quotes-api-address-description"
                     ]
@@ -382,8 +382,8 @@
                   "ja/integration-process/token-application",
                   {
                     "group": "インターフェース制限説明",
-                    "root": "ja/integration-process/interface-restriction-description",
                     "pages": [
+                      "ja/integration-process/interface-restriction-description",
                       "ja/getting-started/http-interface-restrictions",
                       "ja/getting-started/websocket-interface-limitations",
                       "ja/getting-started/error-code-description"
@@ -391,16 +391,16 @@
                   },
                   {
                     "group": "共通標準ヘッダー説明",
-                    "root": "ja/integration-process/universal-standard-header-description",
                     "pages": [
+                      "ja/integration-process/universal-standard-header-description",
                       "ja/integration-process/http-common-standard-headers",
                       "ja/integration-process/websocket-common-standard-header"
                     ]
                   },
                   {
                     "group": "商品 Code 一覧",
-                    "root": "ja/integration-process/product-code-list",
                     "pages": [
+                      "ja/integration-process/product-code-list",
                       "ja/product-codes/a-shares",
                       "ja/product-codes/hk-stocks",
                       "ja/product-codes/us-stocks",
